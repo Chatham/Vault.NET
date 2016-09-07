@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Vault
 {
@@ -21,7 +23,7 @@ namespace Vault
         public async Task<T> Get<T>(Uri uri, CancellationToken ct)
         {
             var result = await Get(uri, ct).ConfigureAwait(false);
-            return await JsonDeserialize<T>(result, ct);
+            return await JsonDeserialize<T>(result, ct).ConfigureAwait(false);
         }
 
         private async Task<string> Post(Uri uri, HttpContent content, CancellationToken ct)
@@ -65,17 +67,38 @@ namespace Vault
         public async Task<T> Delete<T>(Uri uri, CancellationToken ct)
         {
             var result = await Delete(uri, ct).ConfigureAwait(false);
-            return await JsonDeserialize<T>(result, ct).ConfigureAwait(false); ;
+            return await JsonDeserialize<T>(result, ct).ConfigureAwait(false);
         }
 
-        private static async Task<string> JsonSerialize<T>(T content, CancellationToken ct)
+        private readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
         {
-            return await Task.Run(() => JsonConvert.SerializeObject(content), ct).ConfigureAwait(false);   
+            ContractResolver = new PascalCaseToUnderscoreContractResolver()
+        };
+
+        private Task<string> JsonSerialize<T>(T content, CancellationToken ct)
+        {
+            return Task.Run(() => JsonConvert.SerializeObject(content, _jsonSettings), ct);
         }
 
-        private static async Task<T> JsonDeserialize<T>(string result, CancellationToken ct)
+        private Task<T> JsonDeserialize<T>(string result, CancellationToken ct)
         {
-            return await Task.Run(() => JsonConvert.DeserializeObject<T>(result), ct).ConfigureAwait(false);
+            return Task.Run(() => JsonConvert.DeserializeObject<T>(result, _jsonSettings), ct);
+        }
+
+        private class PascalCaseToUnderscoreContractResolver : DefaultContractResolver
+        {
+            protected override string ResolvePropertyName(string propertyName) => 
+                Regex.Replace(
+                    Regex.Replace(
+                        Regex.Replace(
+                            propertyName,
+                            @"([A-Z]+)([A-Z][a-z])",
+                            "$1_$2"),
+                        @"([a-z\d])([A-Z])", 
+                        "$1_$2"), 
+                    @"[-\s]", 
+                    "_")
+                .ToLower();
         }
     }
 }

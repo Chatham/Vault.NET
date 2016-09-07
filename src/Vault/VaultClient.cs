@@ -20,17 +20,17 @@ namespace Vault
             Config = config;
         }
 
-        internal Task<T> Get<T>(string path, NameValueCollection parameters, CancellationToken ct)
+        internal Task<T> Get<T>(string path, CancellationToken ct, NameValueCollection parameters = null)
         {
             return _httpClient.Get<T>(BuildVaultUri(path, parameters), ct);
         }
 
-        internal Task<TO> Put<TI, TO>(string path, NameValueCollection parameters, TI content, CancellationToken ct)
+        internal Task<TO> Put<TI, TO>(string path, TI content, CancellationToken ct, NameValueCollection parameters = null)
         {
             return _httpClient.Put<TI, TO>(BuildVaultUri(path, parameters), content, ct);
         }
 
-        private Uri BuildVaultUri(string path, NameValueCollection parameters)
+        private Uri BuildVaultUri(string path, NameValueCollection parameters = null)
         {
             var uriBuilder = new UriBuilder(Config.Address)
             {
@@ -45,7 +45,7 @@ namespace Vault
             return uriBuilder.Uri;
         }
 
-        private Sys _sys;
+        private SysEndpoint _sys;
         public ISysEndpoint Sys
         {
             get
@@ -56,7 +56,7 @@ namespace Vault
                     {
                         if (_sys == null)
                         {
-                            _sys = new Sys(this);
+                            _sys = new SysEndpoint(this);
                         }
                     }
                 }

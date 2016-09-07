@@ -1,42 +1,54 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace Vault.Endpoints
 {
     public interface ISysEndpoint
     {
-        Task<GetInitResponse> GetInit();
-        Task<GetInitResponse> GetInit(CancellationToken ct);
+        Task<bool> InitStatus();
+        Task<bool> InitStatus(CancellationToken ct);
+        Task<InitResponse> Init(InitRequest request);
+        Task<InitResponse> Init(InitRequest request, CancellationToken ct);
+
+        Task<GenerateRootStatusResponse> GenerateRootStatus();
+        Task<GenerateRootStatusResponse> GenerateRootStatus(CancellationToken ct);
+        Task<GenerateRootStatusResponse> GenerateRootInit(GenerateRootInitRequest request);
+        Task<GenerateRootStatusResponse> GenerateRootInit(GenerateRootInitRequest request, CancellationToken ct);
     }
 
-    public class GetInitResponse
+    public class InitStatusResponse
     {
         public bool Initialized { get; set; }
     }
 
-    public class PutInitRequest
+    public class InitRequest
     {
-        [JsonProperty("secret_shares")]
         public int SecretShares { get; set; }
-
-        [JsonProperty("secret_threshold")]
         public int SecretThreshold { get; set; }
-
-        [JsonProperty("pgp_keys")]
         public List<string> PgpKeys { get; set; }
     }
 
-    public class PutInitResponse
+    public class InitResponse
     {
-        [JsonProperty("keys")]
         public List<string> Keys { get; set; }
-
-        [JsonProperty("keys_base64")]
         public List<string> KeysBase64 { get; set; }
-
-        [JsonProperty("root_token")]
         public string RootToken { get; set; }
+    }
+
+    public class GenerateRootStatusResponse
+    {
+        public string Nonce { get; set; }
+        public bool Started { get; set; }
+        public int Progress { get; set; }
+        public int Required { get; set; }
+        public bool Complete { get; set; }
+        public string EncodedRootToken { get; set; }
+    }
+
+    public class GenerateRootInitRequest
+    {
+        public string Otp { get; set; }
+        public string PgpKey { get; set; }
     }
 }
