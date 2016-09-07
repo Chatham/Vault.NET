@@ -1,5 +1,5 @@
 ﻿using System;
-using Vault.Endpoints;
+using Vault.Endpoints.Sys;
 
 namespace Vault
 {
