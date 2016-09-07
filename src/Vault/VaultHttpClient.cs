@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Vault
 {
-    public class VaultHttpClient
+    public class VaultHttpClient : IVaultHttpClient
     {
         private readonly HttpClient _httpClient = new HttpClient();
 
