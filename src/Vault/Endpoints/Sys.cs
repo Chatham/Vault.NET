@@ -13,14 +13,14 @@ namespace Vault.Endpoints
             _client = client;
         }
 
-        public class SysInitResponse
-        {
-            public bool Initialized { get; set; }
-        }
-
         public Task<SysInitResponse> ReadInit()
         {
-            return _client.Get<SysInitResponse>($"{UriPathBase}/init", null, CancellationToken.None);
+            return ReadInit(CancellationToken.None);
+        }
+
+        public Task<SysInitResponse> ReadInit(CancellationToken ct)
+        {
+            return _client.Get<SysInitResponse>($"{UriPathBase}/init", null, ct);
         }
     }
 }

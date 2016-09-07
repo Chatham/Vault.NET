@@ -1,9 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace Vault.Endpoints
 {
     public interface ISysEndpoint
     {
-        Task<Sys.SysInitResponse> ReadInit();
+        Task<SysInitResponse> ReadInit();
+        Task<SysInitResponse> ReadInit(CancellationToken ct);
+    }
+
+    public class SysInitResponse
+    {
+        public bool Initialized { get; set; }
     }
 }
