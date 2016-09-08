@@ -4,25 +4,12 @@ using System.Threading.Tasks;
 
 namespace Vault.Endpoints.Sys
 {
-    public interface ISysEndpoint
+    public interface ISysEndpoint : ISysInit, ISysLeader, ISysGenerateRoot, ISysMounts
     {
-        Task<bool> InitStatus();
-        Task<bool> InitStatus(CancellationToken ct);
-        Task<InitResponse> Init(InitRequest request);
-        Task<InitResponse> Init(InitRequest request, CancellationToken ct);
+    }
 
-        Task<GenerateRootStatusResponse> GenerateRootStatus();
-        Task<GenerateRootStatusResponse> GenerateRootStatus(CancellationToken ct);
-        Task<GenerateRootStatusResponse> GenerateRootInit(string otp, string pgpKey);
-        Task<GenerateRootStatusResponse> GenerateRootInit(string otp, string pgpKey, CancellationToken ct);
-        Task GenerateRootCancel();
-        Task GenerateRootCancel(CancellationToken ct);
-        Task<GenerateRootStatusResponse> GenerateRootUpdate(string shard, string nonce);
-        Task<GenerateRootStatusResponse> GenerateRootUpdate(string shard, string nonce, CancellationToken ct);
-
-        Task<LeaderResponse> Leader();
-        Task<LeaderResponse> Leader(CancellationToken ct);
-
+    public interface ISysMounts
+    {
         Task<Dictionary<string, MountInfo>> ListMounts();
         Task<Dictionary<string, MountInfo>> ListMounts(CancellationToken ct);
         Task Mount(string path, MountInfo mountInfo);
@@ -35,5 +22,31 @@ namespace Vault.Endpoints.Sys
         Task TuneMount(string path, MountConfig mountConfig, CancellationToken ct);
         Task<MountConfig> MountConfig(string path);
         Task<MountConfig> MountConfig(string path, CancellationToken ct);
+    }
+
+    public interface ISysLeader
+    {
+        Task<LeaderResponse> Leader();
+        Task<LeaderResponse> Leader(CancellationToken ct);
+    }
+
+    public interface ISysGenerateRoot
+    {
+        Task<GenerateRootStatusResponse> GenerateRootStatus();
+        Task<GenerateRootStatusResponse> GenerateRootStatus(CancellationToken ct);
+        Task<GenerateRootStatusResponse> GenerateRootInit(string otp, string pgpKey);
+        Task<GenerateRootStatusResponse> GenerateRootInit(string otp, string pgpKey, CancellationToken ct);
+        Task GenerateRootCancel();
+        Task GenerateRootCancel(CancellationToken ct);
+        Task<GenerateRootStatusResponse> GenerateRootUpdate(string shard, string nonce);
+        Task<GenerateRootStatusResponse> GenerateRootUpdate(string shard, string nonce, CancellationToken ct);
+    }
+
+    public interface ISysInit
+    {
+        Task<bool> InitStatus();
+        Task<bool> InitStatus(CancellationToken ct);
+        Task<InitResponse> Init(InitRequest request);
+        Task<InitResponse> Init(InitRequest request, CancellationToken ct);
     }
 }
