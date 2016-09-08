@@ -7,16 +7,15 @@ namespace Vault
 {
     public class VaultClient
     {
-        public readonly VaultClientConfiguration Config;
-
         private readonly VaultHttpClient _httpClient;
+        public readonly VaultClientConfiguration _config;
+
         private readonly object _lock = new object();
 
         public VaultClient(VaultHttpClient httpClient, VaultClientConfiguration config)
         {
             _httpClient = httpClient;
-
-            Config = config;
+            _config = config;
         }
 
         internal Task<T> Get<T>(string path, CancellationToken ct, NameValueCollection parameters = null)
@@ -46,7 +45,7 @@ namespace Vault
 
         private Uri BuildVaultUri(string path, NameValueCollection parameters = null)
         {
-            var uriBuilder = new UriBuilder(Config.Address)
+            var uriBuilder = new UriBuilder(_config.Address)
             {
                 Path = path
             };
@@ -54,6 +53,12 @@ namespace Vault
             if (parameters != null)
             {
                 uriBuilder.Query = parameters.ToString();
+            }
+
+            //TODO
+            if (_config.Token != null)
+            {
+                parameters.Add("X-Vault-Token", _config.Token);
             }
 
             return uriBuilder.Uri;
