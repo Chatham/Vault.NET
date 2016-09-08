@@ -23,6 +23,11 @@ namespace Vault
             return _httpClient.Get<T>(BuildVaultUri(path, parameters), _config.Token, ct);
         }
 
+        internal Task<TO> Post<TI, TO>(string path, TI content, CancellationToken ct, NameValueCollection parameters = null)
+        {
+            return _httpClient.Post<TI, TO>(BuildVaultUri(path, parameters), content, _config.Token, ct);
+        }
+
         internal Task PostVoid<T>(string path, T content, CancellationToken ct, NameValueCollection parameters = null)
         {
             return _httpClient.PostVoid(BuildVaultUri(path, parameters), content, _config.Token, ct);
