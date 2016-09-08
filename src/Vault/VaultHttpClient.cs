@@ -56,19 +56,27 @@ namespace Vault
             return await JsonDeserialize<TO>(result, ct).ConfigureAwait(false);
         }
 
-        private async Task<string> Delete(Uri uri, CancellationToken ct)
+        public async Task Delete(Uri uri, CancellationToken ct)
         {
             using (var r = await _httpClient.DeleteAsync(uri, ct).ConfigureAwait(false))
             {
-                return await r.Content.ReadAsStringAsync().ConfigureAwait(false);
+                await r.Content.ReadAsStringAsync().ConfigureAwait(false);
             }
         }
 
-        public async Task<T> Delete<T>(Uri uri, CancellationToken ct)
-        {
-            var result = await Delete(uri, ct).ConfigureAwait(false);
-            return await JsonDeserialize<T>(result, ct).ConfigureAwait(false);
-        }
+        //private async Task<string> Delete(Uri uri, CancellationToken ct)
+        //{
+        //    using (var r = await _httpClient.DeleteAsync(uri, ct).ConfigureAwait(false))
+        //    {
+        //        return await r.Content.ReadAsStringAsync().ConfigureAwait(false);
+        //    }
+        //}
+
+        //public async Task<T> Delete<T>(Uri uri, CancellationToken ct)
+        //{
+        //    var result = await Delete(uri, ct).ConfigureAwait(false);
+        //    return await JsonDeserialize<T>(result, ct).ConfigureAwait(false);
+        //}
 
         private readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
         {

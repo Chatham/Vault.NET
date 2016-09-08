@@ -19,7 +19,7 @@ namespace Vault.Endpoints.Sys
         public string PgpKey { get; set; }
     }
 
-    public partial class Endpoint
+    public partial class SysEndpoint
     {
         public Task<GenerateRootStatusResponse> GenerateRootStatus()
         {
@@ -31,16 +31,32 @@ namespace Vault.Endpoints.Sys
             return _client.Get<GenerateRootStatusResponse>($"{UriPathBase}/generate-root/attempt", ct);
         }
 
-        public Task<GenerateRootStatusResponse> GenerateRootInit(GenerateRootInitRequest request)
+        public Task<GenerateRootStatusResponse> GenerateRootInit(string otp, string pgpKey)
         {
-            return GenerateRootInit(request, CancellationToken.None);
+            return GenerateRootInit(otp, pgpKey, CancellationToken.None);
         }
 
-        public Task<GenerateRootStatusResponse> GenerateRootInit(GenerateRootInitRequest request, CancellationToken ct)
+        public Task<GenerateRootStatusResponse> GenerateRootInit(string otp, string pgpKey, CancellationToken ct)
         {
+            var request = new GenerateRootInitRequest
+            {
+                Otp = otp,
+                PgpKey = pgpKey
+            };
+
             return
                 _client.Put<GenerateRootInitRequest, GenerateRootStatusResponse>(
                     $"{UriPathBase}/generate-root/attempt", request, CancellationToken.None);
+        }
+
+        public Task GenerateRootCancel()
+        {
+            return GenerateRootCancel(CancellationToken.None);
+        }
+
+        public Task GenerateRootCancel(CancellationToken ct)
+        {
+            return _client.Delete($"{UriPathBase}/generate-root/attempt", ct);
         }
     }
 }

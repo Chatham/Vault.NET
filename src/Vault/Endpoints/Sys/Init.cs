@@ -23,7 +23,7 @@ namespace Vault.Endpoints.Sys
         public string RootToken { get; set; }
     }
 
-    public partial class Endpoint
+    public partial class SysEndpoint
     {
         public Task<bool> InitStatus()
         {

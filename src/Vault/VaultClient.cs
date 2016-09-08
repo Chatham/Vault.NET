@@ -29,6 +29,11 @@ namespace Vault
             return _httpClient.Put<TI, TO>(BuildVaultUri(path, parameters), content, ct);
         }
 
+        internal Task Delete(string path, CancellationToken ct)
+        {
+            return _httpClient.Delete(BuildVaultUri(path), ct);
+        }
+
         private Uri BuildVaultUri(string path, NameValueCollection parameters = null)
         {
             var uriBuilder = new UriBuilder(Config.Address)
