@@ -8,7 +8,7 @@ namespace Vault
     public class VaultClient
     {
         private readonly VaultHttpClient _httpClient;
-        public readonly VaultClientConfiguration _config;
+        private readonly VaultClientConfiguration _config;
 
         private readonly object _lock = new object();
 
@@ -20,27 +20,27 @@ namespace Vault
 
         internal Task<T> Get<T>(string path, CancellationToken ct, NameValueCollection parameters = null)
         {
-            return _httpClient.Get<T>(BuildVaultUri(path, parameters), ct);
+            return _httpClient.Get<T>(BuildVaultUri(path, parameters), _config.Token, ct);
         }
 
         internal Task PostVoid<T>(string path, T content, CancellationToken ct, NameValueCollection parameters = null)
         {
-            return _httpClient.PostVoid(BuildVaultUri(path, parameters), content, ct);
+            return _httpClient.PostVoid(BuildVaultUri(path, parameters), content, _config.Token, ct);
         }
 
         internal Task PutVoid<T>(string path, T content, CancellationToken ct, NameValueCollection parameters = null)
         {
-            return _httpClient.PutVoid(BuildVaultUri(path, parameters), content, ct);
+            return _httpClient.PutVoid(BuildVaultUri(path, parameters), content, _config.Token, ct);
         }
 
         internal Task<TO> Put<TI, TO>(string path, TI content, CancellationToken ct, NameValueCollection parameters = null)
         {
-            return _httpClient.Put<TI, TO>(BuildVaultUri(path, parameters), content, ct);
+            return _httpClient.Put<TI, TO>(BuildVaultUri(path, parameters), content, _config.Token, ct);
         }
 
         internal Task Delete(string path, CancellationToken ct)
         {
-            return _httpClient.DeleteVoid(BuildVaultUri(path), ct);
+            return _httpClient.DeleteVoid(BuildVaultUri(path), _config.Token, ct);
         }
 
         private Uri BuildVaultUri(string path, NameValueCollection parameters = null)
@@ -53,12 +53,6 @@ namespace Vault
             if (parameters != null)
             {
                 uriBuilder.Query = parameters.ToString();
-            }
-
-            //TODO
-            if (_config.Token != null)
-            {
-                parameters.Add("X-Vault-Token", _config.Token);
             }
 
             return uriBuilder.Uri;

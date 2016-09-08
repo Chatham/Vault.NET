@@ -10,8 +10,8 @@ namespace Vault.Endpoints.Sys
 
     public interface ISysMounts
     {
-        Task<Dictionary<string, MountInfo>> ListMounts();
-        Task<Dictionary<string, MountInfo>> ListMounts(CancellationToken ct);
+        Task<Secret<Dictionary<string, MountInfo>>> ListMounts();
+        Task<Secret<Dictionary<string, MountInfo>>> ListMounts(CancellationToken ct);
         Task Mount(string path, MountInfo mountInfo);
         Task Mount(string path, MountInfo mountInfo, CancellationToken ct);
         Task Unmount(string path);
