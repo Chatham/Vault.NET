@@ -46,7 +46,7 @@ namespace Vault.Endpoints.Sys
 
         public Task Unmount(string path, CancellationToken ct)
         {
-            return _client.Delete($"{UriPathBase}/mounts/{path}", ct);
+            return _client.DeleteVoid($"{UriPathBase}/mounts/{path}", ct);
         }
 
         public Task Remount(string from, string to)

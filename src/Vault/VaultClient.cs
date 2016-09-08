@@ -48,7 +48,7 @@ namespace Vault
             return _httpClient.Put<TI, TO>(BuildVaultUri(path, parameters), content, _config.Token, ct);
         }
 
-        internal Task Delete(string path, CancellationToken ct)
+        internal Task DeleteVoid(string path, CancellationToken ct)
         {
             return _httpClient.DeleteVoid(BuildVaultUri(path), _config.Token, ct);
         }

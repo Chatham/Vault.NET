@@ -50,7 +50,7 @@ namespace Vault.Endpoints.Sys
 
         public Task GenerateRootCancel(CancellationToken ct)
         {
-            return _client.Delete($"{UriPathBase}/generate-root/attempt", ct);
+            return _client.DeleteVoid($"{UriPathBase}/generate-root/attempt", ct);
         }
 
         public Task<GenerateRootStatusResponse> GenerateRootUpdate(string shard, string nonce)

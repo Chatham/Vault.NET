@@ -58,10 +58,8 @@ namespace Vault.Endpoints.Sys
 
         public Task<SealStatusResponse> ResetUnsealProcess(CancellationToken ct)
         {
-            return _client.Put<ResetUnsealProcessRequest, SealStatusResponse>(
-                $"{UriPathBase}/unseal",
-                new ResetUnsealProcessRequest {Reset = true},
-                ct);
+            return _client.Put<ResetUnsealProcessRequest, SealStatusResponse>($"{UriPathBase}/unseal",
+                new ResetUnsealProcessRequest {Reset = true}, ct);
         }
 
         internal class UnsealRequest
