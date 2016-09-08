@@ -28,6 +28,11 @@ namespace Vault
             return _httpClient.PostVoid(BuildVaultUri(path, parameters), content, _config.Token, ct);
         }
 
+        internal Task PutVoid(string path, CancellationToken ct, NameValueCollection parameters = null)
+        {
+            return _httpClient.PutVoid(BuildVaultUri(path, parameters), _config.Token, ct);
+        }
+
         internal Task PutVoid<T>(string path, T content, CancellationToken ct, NameValueCollection parameters = null)
         {
             return _httpClient.PutVoid(BuildVaultUri(path, parameters), content, _config.Token, ct);
