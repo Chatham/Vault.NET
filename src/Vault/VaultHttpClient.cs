@@ -87,18 +87,21 @@ namespace Vault
 
         private class PascalCaseToUnderscoreContractResolver : DefaultContractResolver
         {
-            protected override string ResolvePropertyName(string propertyName) => 
-                Regex.Replace(
-                    Regex.Replace(
+            // Extracted from http://humanizr.net/#underscore
+            protected override string ResolvePropertyName(string propertyName)
+            {
+                return Regex.Replace(
                         Regex.Replace(
-                            propertyName,
-                            @"([A-Z]+)([A-Z][a-z])",
+                            Regex.Replace(
+                                propertyName,
+                                @"([A-Z]+)([A-Z][a-z])",
+                                "$1_$2"),
+                            @"([a-z\d])([A-Z])",
                             "$1_$2"),
-                        @"([a-z\d])([A-Z])", 
-                        "$1_$2"), 
-                    @"[-\s]", 
-                    "_")
-                .ToLower();
+                        @"[-\s]",
+                        "_")
+                    .ToLower();
+            }
         }
     }
 }

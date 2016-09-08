@@ -2,7 +2,6 @@
 using System.Collections.Specialized;
 using System.Threading;
 using System.Threading.Tasks;
-using Vault.Endpoints.Sys;
 
 namespace Vault
 {
@@ -45,8 +44,8 @@ namespace Vault
             return uriBuilder.Uri;
         }
 
-        private Endpoint _sys;
-        public ISysEndpoint Sys
+        private Endpoints.Sys.SysEndpoint _sys;
+        public Endpoints.Sys.ISysEndpoint Sys
         {
             get
             {
@@ -56,7 +55,7 @@ namespace Vault
                     {
                         if (_sys == null)
                         {
-                            _sys = new Endpoint(this);
+                            _sys = new Endpoints.Sys.SysEndpoint(this);
                         }
                     }
                 }
