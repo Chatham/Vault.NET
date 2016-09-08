@@ -12,8 +12,8 @@ namespace Vault.Endpoints.Sys
 
         Task<GenerateRootStatusResponse> GenerateRootStatus();
         Task<GenerateRootStatusResponse> GenerateRootStatus(CancellationToken ct);
-        Task<GenerateRootStatusResponse> GenerateRootInit(GenerateRootInitRequest request);
-        Task<GenerateRootStatusResponse> GenerateRootInit(GenerateRootInitRequest request, CancellationToken ct);
+        Task<GenerateRootStatusResponse> GenerateRootInit(string otp, string pgpKey);
+        Task<GenerateRootStatusResponse> GenerateRootInit(string otp, string pgpKey, CancellationToken ct);
         Task GenerateRootCancel();
         Task GenerateRootCancel(CancellationToken ct);
 
