@@ -26,6 +26,15 @@ namespace Vault
             return await JsonDeserialize<T>(result, ct).ConfigureAwait(false);
         }
 
+        public async Task PostVoid<T>(Uri uri, T content, CancellationToken ct)
+        {
+            var httpContent = await JsonSerialize(content, ct).ConfigureAwait(false);
+            using (var r = await _httpClient.PostAsync(uri, new StringContent(httpContent), ct).ConfigureAwait(false))
+            {
+                await r.Content.ReadAsStringAsync().ConfigureAwait(false);
+            }
+        }
+
         private async Task<string> Post(Uri uri, HttpContent content, CancellationToken ct)
         {
             using (var r = await _httpClient.PostAsync(uri, content, ct).ConfigureAwait(false))
@@ -49,6 +58,15 @@ namespace Vault
             }
         }
 
+        public async Task PutVoid<T>(Uri uri, T content, CancellationToken ct)
+        {
+            var httpContent = await JsonSerialize(content, ct).ConfigureAwait(false);
+            using (var r = await _httpClient.PutAsync(uri, new StringContent(httpContent), ct).ConfigureAwait(false))
+            {
+                await r.Content.ReadAsStringAsync().ConfigureAwait(false);
+            }
+        }
+
         public async Task<TO> Put<TI, TO>(Uri uri, TI content, CancellationToken ct)
         {
             var httpContent = await JsonSerialize(content, ct).ConfigureAwait(false);
@@ -56,7 +74,7 @@ namespace Vault
             return await JsonDeserialize<TO>(result, ct).ConfigureAwait(false);
         }
 
-        public async Task Delete(Uri uri, CancellationToken ct)
+        public async Task DeleteVoid(Uri uri, CancellationToken ct)
         {
             using (var r = await _httpClient.DeleteAsync(uri, ct).ConfigureAwait(false))
             {

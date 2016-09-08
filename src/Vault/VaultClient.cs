@@ -24,6 +24,16 @@ namespace Vault
             return _httpClient.Get<T>(BuildVaultUri(path, parameters), ct);
         }
 
+        internal Task PostVoid<T>(string path, T content, CancellationToken ct, NameValueCollection parameters = null)
+        {
+            return _httpClient.PostVoid(BuildVaultUri(path, parameters), content, ct);
+        }
+
+        internal Task PutVoid<T>(string path, T content, CancellationToken ct, NameValueCollection parameters = null)
+        {
+            return _httpClient.PutVoid(BuildVaultUri(path, parameters), content, ct);
+        }
+
         internal Task<TO> Put<TI, TO>(string path, TI content, CancellationToken ct, NameValueCollection parameters = null)
         {
             return _httpClient.Put<TI, TO>(BuildVaultUri(path, parameters), content, ct);
@@ -31,7 +41,7 @@ namespace Vault
 
         internal Task Delete(string path, CancellationToken ct)
         {
-            return _httpClient.Delete(BuildVaultUri(path), ct);
+            return _httpClient.DeleteVoid(BuildVaultUri(path), ct);
         }
 
         private Uri BuildVaultUri(string path, NameValueCollection parameters = null)

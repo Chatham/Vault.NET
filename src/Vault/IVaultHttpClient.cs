@@ -9,6 +9,6 @@ namespace Vault
         Task<T> Get<T>(Uri uri, CancellationToken ct);
         Task<TO> Post<TI, TO>(Uri uri, TI content, CancellationToken ct);
         Task<TO> Put<TI, TO>(Uri uri, TI content, CancellationToken ct);
-        Task Delete(Uri uri, CancellationToken ct);
+        Task DeleteVoid(Uri uri, CancellationToken ct);
     }
 }

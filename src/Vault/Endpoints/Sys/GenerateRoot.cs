@@ -13,12 +13,6 @@ namespace Vault.Endpoints.Sys
         public string EncodedRootToken { get; set; }
     }
 
-    public class GenerateRootInitRequest
-    {
-        public string Otp { get; set; }
-        public string PgpKey { get; set; }
-    }
-
     public partial class SysEndpoint
     {
         public Task<GenerateRootStatusResponse> GenerateRootStatus()
@@ -57,6 +51,35 @@ namespace Vault.Endpoints.Sys
         public Task GenerateRootCancel(CancellationToken ct)
         {
             return _client.Delete($"{UriPathBase}/generate-root/attempt", ct);
+        }
+
+        public Task<GenerateRootStatusResponse> GenerateRootUpdate(string shard, string nonce)
+        {
+            return GenerateRootUpdate(shard, nonce, CancellationToken.None);
+        }
+
+        public Task<GenerateRootStatusResponse> GenerateRootUpdate(string shard, string nonce, CancellationToken ct)
+        {
+            var request = new GenerateRootUpdateRequest
+            {
+                Shard = shard,
+                Nonce = nonce
+            };
+
+            return _client.Put<GenerateRootUpdateRequest, GenerateRootStatusResponse>($"{UriPathBase}/generate-root/update", 
+                request, ct);
+        }
+
+        internal class GenerateRootInitRequest
+        {
+            public string Otp { get; set; }
+            public string PgpKey { get; set; }
+        }
+
+        internal class GenerateRootUpdateRequest
+        {
+            public string Shard { get; set; }
+            public string Nonce { get; set; }
         }
     }
 }
