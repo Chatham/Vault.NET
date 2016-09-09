@@ -87,6 +87,7 @@ namespace Vault
         {
             using (var r = await HttpSendRequest(method, uri, body, vaultToken, ct))
             {
+                r.EnsureSuccessStatusCode();
                 await r.Content.ReadAsStringAsync();
             }
         }
@@ -95,6 +96,7 @@ namespace Vault
         {
             using (var r = await HttpSendRequest(method, uri, body, vaultToken, ct))
             {
+                r.EnsureSuccessStatusCode();
                 var content = await r.Content.ReadAsStringAsync();
                 return await JsonDeserialize<T>(content, ct).ConfigureAwait(false);
             }
