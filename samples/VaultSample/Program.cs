@@ -7,9 +7,7 @@ namespace VaultSample
     {
         public static void Main(string[] args)
         {
-            var httpClient = new VaultHttpClient();
-
-            var v = new VaultClient(httpClient, VaultClientConfiguration.Default);
+            var v = new VaultClient();
 
             foreach (var m in v.Sys.ListMounts().Result.Data)
             {

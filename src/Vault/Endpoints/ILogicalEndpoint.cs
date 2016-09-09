@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Vault.Endpoints
 {
-    public interface ILogical
+    public interface ILogicalEndpoint
     {
         Task Delete(string path);
         Task Delete(string path, CancellationToken ct);

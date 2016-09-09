@@ -12,9 +12,13 @@ namespace Vault
 
         private readonly object _lock = new object();
 
-        public VaultClient(VaultHttpClient httpClient, VaultClientConfiguration config)
+        public VaultClient() : this(VaultClientConfiguration.Default)
         {
-            _httpClient = httpClient;
+        }
+
+        public VaultClient(VaultClientConfiguration config)
+        {
+            _httpClient = new VaultHttpClient();
             _config = config;
         }
 
@@ -92,8 +96,8 @@ namespace Vault
             }
         }
 
-        private Endpoints.Logical _logical;
-        public Endpoints.ILogical Logical
+        private Endpoints.LogicalEndpoint _logical;
+        public Endpoints.ILogicalEndpoint LogicalEndpoint
         {
             get
             {
@@ -103,7 +107,7 @@ namespace Vault
                     {
                         if (_logical == null)
                         {
-                            _logical = new Endpoints.Logical(this);
+                            _logical = new Endpoints.LogicalEndpoint(this);
                         }
                     }
                 }

@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 
 namespace Vault.Endpoints
 {
-    public class Logical : ILogical
+    public class LogicalEndpoint : ILogicalEndpoint
     {
         private readonly VaultClient _client;
         private const string UriBasePath = "/v1";
         private const string WrappedResponseLocation = "cubbyhole/response";
 
-        public Logical(VaultClient client)
+        public LogicalEndpoint(VaultClient client)
         {
             _client = client;
         }
