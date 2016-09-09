@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Vault.Endpoints
 {
-    public class LogicalEndpoint : ILogicalEndpoint
+    public class LogicalEndpoint
     {
         private readonly VaultClient _client;
         private const string UriBasePath = "/v1";
@@ -37,8 +37,7 @@ namespace Vault.Endpoints
 
         public Task<Secret<TData>> List<TData>(string path, CancellationToken ct)
         {
-            var queryParams = new NameValueCollection {{"list", "true"}};
-            return _client.Get<Secret<TData>>($"{UriBasePath}/{path}", ct, queryParams);
+            return _client.List<Secret<TData>>($"{UriBasePath}/{path}", ct);
         }
 
         public Task Write<T>(string path, T data)

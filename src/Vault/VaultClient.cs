@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,14 +23,20 @@ namespace Vault
             _config = config;
         }
 
-        internal Task<T> Get<T>(string path, CancellationToken ct, NameValueCollection parameters = null)
-        {
-            return _httpClient.Get<T>(BuildVaultUri(path, parameters), _config.Token, ct);
-        }
-
         internal Task<T> Get<T>(string path, string token, CancellationToken ct)
         {
             return _httpClient.Get<T>(BuildVaultUri(path), token, ct);
+        }
+
+        internal Task<T> Get<T>(string path, CancellationToken ct)
+        {
+            return _httpClient.Get<T>(BuildVaultUri(path), _config.Token, ct);
+        }
+
+        internal Task<T> List<T>(string path, CancellationToken ct)
+        {
+            return _httpClient.Get<T>(BuildVaultUri(path, new NameValueCollection { { "list", "true" } }),
+                _config.Token, ct);
         }
 
         internal Task<TO> Post<TI, TO>(string path, TI content, CancellationToken ct)
@@ -93,25 +100,6 @@ namespace Vault
                     }
                 }
                 return _sys;
-            }
-        }
-
-        private Endpoints.LogicalEndpoint _logical;
-        public Endpoints.ILogicalEndpoint LogicalEndpoint
-        {
-            get
-            {
-                if (_logical == null)
-                {
-                    lock (_lock)
-                    {
-                        if (_logical == null)
-                        {
-                            _logical = new Endpoints.LogicalEndpoint(this);
-                        }
-                    }
-                }
-                return _logical;
             }
         }
     }

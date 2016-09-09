@@ -20,8 +20,6 @@ namespace Vault
             _httpClient.DefaultRequestHeaders.Accept
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
-         
-        public string Token { get; set; }
 
         public Task<T> Get<T>(Uri uri, string vaultToken, CancellationToken ct)
         {
