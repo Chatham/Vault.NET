@@ -36,7 +36,7 @@ namespace Vault.Endpoints.Sys
 
         public Task Mount(string path, MountInfo mountInfo, CancellationToken ct)
         {
-            return _client.PutVoid($"{UriPathBase}/mounts/{path}", mountInfo, ct);
+            return _client.PostVoid($"{UriPathBase}/mounts/{path}", mountInfo, ct);
         }
 
         public Task Unmount(string path)

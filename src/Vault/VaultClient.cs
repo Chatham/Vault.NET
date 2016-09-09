@@ -23,29 +23,34 @@ namespace Vault
             return _httpClient.Get<T>(BuildVaultUri(path, parameters), _config.Token, ct);
         }
 
-        internal Task<TO> Post<TI, TO>(string path, TI content, CancellationToken ct, NameValueCollection parameters = null)
+        internal Task<T> Get<T>(string path, string token, CancellationToken ct)
         {
-            return _httpClient.Post<TI, TO>(BuildVaultUri(path, parameters), content, _config.Token, ct);
+            return _httpClient.Get<T>(BuildVaultUri(path), token, ct);
         }
 
-        internal Task PostVoid<T>(string path, T content, CancellationToken ct, NameValueCollection parameters = null)
+        internal Task<TO> Post<TI, TO>(string path, TI content, CancellationToken ct)
         {
-            return _httpClient.PostVoid(BuildVaultUri(path, parameters), content, _config.Token, ct);
+            return _httpClient.Post<TI, TO>(BuildVaultUri(path), content, _config.Token, ct);
         }
 
-        internal Task PutVoid(string path, CancellationToken ct, NameValueCollection parameters = null)
+        internal Task PostVoid<T>(string path, T content, CancellationToken ct)
         {
-            return _httpClient.PutVoid(BuildVaultUri(path, parameters), _config.Token, ct);
+            return _httpClient.PostVoid(BuildVaultUri(path), content, _config.Token, ct);
         }
 
-        internal Task PutVoid<T>(string path, T content, CancellationToken ct, NameValueCollection parameters = null)
+        internal Task PutVoid(string path, CancellationToken ct)
         {
-            return _httpClient.PutVoid(BuildVaultUri(path, parameters), content, _config.Token, ct);
+            return _httpClient.PutVoid(BuildVaultUri(path), _config.Token, ct);
         }
 
-        internal Task<TO> Put<TI, TO>(string path, TI content, CancellationToken ct, NameValueCollection parameters = null)
+        internal Task PutVoid<T>(string path, T content, CancellationToken ct)
         {
-            return _httpClient.Put<TI, TO>(BuildVaultUri(path, parameters), content, _config.Token, ct);
+            return _httpClient.PutVoid(BuildVaultUri(path), content, _config.Token, ct);
+        }
+
+        internal Task<TO> Put<TI, TO>(string path, TI content, CancellationToken ct)
+        {
+            return _httpClient.Put<TI, TO>(BuildVaultUri(path), content, _config.Token, ct);
         }
 
         internal Task DeleteVoid(string path, CancellationToken ct)
