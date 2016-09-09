@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Vault.Endpoints
 {
-    public class Logical
+    public class Logical : ILogical
     {
         private readonly VaultClient _client;
         private const string UriBasePath = "/v1";
@@ -63,7 +63,7 @@ namespace Vault.Endpoints
 
         public Task<Secret<TData>> Unwrap<TData>(string unwrappingToken)
         {
-            return Read<TData>(WrappedResponseLocation, unwrappingToken, CancellationToken.None);
+            return Unwrap<TData>(unwrappingToken, CancellationToken.None);
         }
 
         public Task<Secret<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct)

@@ -91,5 +91,24 @@ namespace Vault
                 return _sys;
             }
         }
+
+        private Endpoints.Logical _logical;
+        public Endpoints.ILogical Logical
+        {
+            get
+            {
+                if (_logical == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_logical == null)
+                        {
+                            _logical = new Endpoints.Logical(this);
+                        }
+                    }
+                }
+                return _logical;
+            }
+        }
     }
 }
