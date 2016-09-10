@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Vault
 {
@@ -76,15 +76,19 @@ namespace Vault
                 Path = path
             };
 
-            if (parameters != null)
+            if (parameters == null) return uriBuilder.Uri;
+
+            var parseParameters = QueryHelpers.ParseQuery(string.Empty);
+            foreach (var k in parameters.AllKeys)
             {
-                uriBuilder.Query = parameters.ToString();
+                parseParameters.Add(k, parameters[k]);
             }
+            uriBuilder.Query = parseParameters.ToString();
 
             return uriBuilder.Uri;
         }
 
-        private Endpoints.Sys.SysEndpoint _sys;
+        private Endpoints.Sys.ISysEndpoint _sys;
         public Endpoints.Sys.ISysEndpoint Sys
         {
             get
@@ -100,6 +104,25 @@ namespace Vault
                     }
                 }
                 return _sys;
+            }
+        }
+
+        private Endpoints.Secret.SecretEndpoint _secret;
+        public Endpoints.Secret.SecretEndpoint Secret
+        {
+            get
+            {
+                if (_secret == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_secret == null)
+                        {
+                            _secret = new Endpoints.Secret.SecretEndpoint(this);
+                        }
+                    }
+                }
+                return _secret;
             }
         }
     }

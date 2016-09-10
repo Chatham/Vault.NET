@@ -9,6 +9,7 @@
       "type": "platform",
       "version": "1.0.0"
     },
+    "System.Threading.Tasks": "4.0.11",
     "Vault": "1.0.0-*"
   },
 
