@@ -9,7 +9,7 @@ namespace Vault.Endpoints
         public bool Renewable { get; set; }
         public int LeaseDuration { get; set; }
         public TData Data { get; set; }
-        public dynamic WrappedInformation { get; set; }
+        //public dynamic WrappedInformation { get; set; }
         public List<string> Warnings { get; set; }
     }
 }

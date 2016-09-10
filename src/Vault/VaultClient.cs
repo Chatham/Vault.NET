@@ -107,8 +107,8 @@ namespace Vault
             }
         }
 
-        private Endpoints.Secret.SecretEndpoint _secret;
-        public Endpoints.Secret.SecretEndpoint Secret
+        private Endpoints.SecretEndpoint _secret;
+        public Endpoints.SecretEndpoint Secret
         {
             get
             {
@@ -118,12 +118,13 @@ namespace Vault
                     {
                         if (_secret == null)
                         {
-                            _secret = new Endpoints.Secret.SecretEndpoint(this);
+                            _secret = new Endpoints.SecretEndpoint(this);
                         }
                     }
                 }
                 return _secret;
             }
         }
+
     }
 }
