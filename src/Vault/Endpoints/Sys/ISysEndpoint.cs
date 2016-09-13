@@ -58,5 +58,31 @@ namespace Vault.Endpoints.Sys
         Task<List<string>> Capabilities(string token, string path, CancellationToken ct);
         Task<List<string>> CapabilitiesSelf(string path);
         Task<List<string>> CapabilitiesSelf(string path, CancellationToken ct);
+
+        Task Rotate();
+        Task Rotate(CancellationToken ct);
+        Task<KeyStatus> KeyStatus();
+        Task<KeyStatus> KeyStatus(CancellationToken ct);
+
+        Task<string> AuditHash(string path, string input);
+        Task<string> AuditHash(string path, string input, CancellationToken ct);
+        Task<Dictionary<string, Audit>> ListAudit();
+        Task<Dictionary<string, Audit>> ListAudit(CancellationToken ct);
+        Task EnableAudit(string path, string auditType, string description, Dictionary<string, string> option);
+        Task EnableAudit(string path, string auditType, string description, Dictionary<string, string> options, CancellationToken ct);
+        Task DisableAudit(string path);
+        Task DisableAudit(string path, CancellationToken ct);
+
+        Task<List<string>> ListPolicies();
+        Task<List<string>> ListPolicies(CancellationToken ct);
+        Task<string> GetPolicy(string name);
+        Task<string> GetPolicy(string name, CancellationToken ct);
+        Task PutPolicy(string name, string rules);
+        Task PutPolicy(string name, string rules, CancellationToken ct);
+        Task DeletePolicy(string name);
+        Task DeletePolicy(string name, CancellationToken ct);
+
+        Task StepDown();
+        Task StepDown(CancellationToken ct);
     }
 }
