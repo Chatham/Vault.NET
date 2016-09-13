@@ -39,12 +39,12 @@ namespace Vault.Endpoints
             return _client.List<Secret<TData>>($"{UriBasePath}/{path}", ct);
         }
 
-        public Task Write<TParameters>(string path, TParameters parameters)
+        public Task Write<TData>(string path, TData parameters)
         {
             return Write(path, parameters, CancellationToken.None);
         }
 
-        public Task Write<TParameters>(string path, TParameters parameters, CancellationToken ct)
+        public Task Write<TData>(string path, TData parameters, CancellationToken ct)
         {
             return _client.PutVoid($"{UriBasePath}/{path}", parameters, ct);
         }
