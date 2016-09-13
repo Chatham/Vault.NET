@@ -70,13 +70,13 @@ namespace Vault.Endpoints.Sys
                 request, ct);
         }
 
-        internal class GenerateRootInitRequest
+        private class GenerateRootInitRequest
         {
             public string Otp { get; set; }
             public string PgpKey { get; set; }
         }
 
-        internal class GenerateRootUpdateRequest
+        private class GenerateRootUpdateRequest
         {
             public string Shard { get; set; }
             public string Nonce { get; set; }

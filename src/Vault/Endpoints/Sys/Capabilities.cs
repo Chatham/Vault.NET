@@ -39,13 +39,13 @@ namespace Vault.Endpoints.Sys
             return response.Capabilities;
         }
 
-        internal class CapabilitiesRequest
+        private class CapabilitiesRequest
         {
             public string Token { get; set; }
             public string Path { get; set; }
         }
 
-        internal class CapabilitiesResponse
+        private class CapabilitiesResponse
         {
             public List<string> Capabilities { get; set; }
         }

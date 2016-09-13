@@ -14,18 +14,27 @@ namespace VaultSample
                 {
                     var v = new VaultClient();
 
-                    await v.Secret.Write("secret/blah", new Dictionary<string, object> { { "abc", "123" } });
-                    var z = await v.Secret.Read<Dictionary<string, object>>("secret/blah");
-                    foreach (var entry in z.Data)
+                    //await v.Secret.Write("secret/blah", new Dictionary<string, object> { { "abc", "123" } });
+                    //var z = await v.Secret.Read<Dictionary<string, object>>("secret/blah");
+                    //foreach (var entry in z.Data)
+                    //{
+                    //    Console.WriteLine($"{entry.Key}:{entry.Value}");
+                    //}
+
+                    //var mounts = await v.Sys.ListMounts();
+                    //foreach (var m in mounts.Data)
+                    //{
+                    //    Console.WriteLine(m.Value.Type);
+                    //}
+
+                    await v.Sys.PutPolicy("abc", "path \"*\" {policy = \"read\"}");
+
+                    var policies = await v.Sys.ListPolicies();
+                    foreach (var p in policies)
                     {
-                        Console.WriteLine($"{entry.Key}:{entry.Value}");
+                        Console.WriteLine(p);
                     }
 
-                    var mounts = await v.Sys.ListMounts();
-                    foreach (var m in mounts.Data)
-                    {
-                        Console.WriteLine(m.Value.Type);
-                    }
                     Console.Read();
                 }
             ).Wait();

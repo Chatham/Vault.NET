@@ -52,12 +52,12 @@ namespace Vault.Endpoints.Sys
             return _client.DeleteVoid($"{UriPathBase}/policy/{name}", ct);
         }
 
-        internal class ListPoliciesResponse
+        private class ListPoliciesResponse
         {
             public List<string> Policies { get; set; }
         }
 
-        internal class PolicyRequest
+        private class PolicyRequest
         {
             public string Rules { get; set; }
         }

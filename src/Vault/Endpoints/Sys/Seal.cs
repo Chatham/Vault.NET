@@ -62,12 +62,12 @@ namespace Vault.Endpoints.Sys
                 new ResetUnsealProcessRequest {Reset = true}, ct);
         }
 
-        internal class UnsealRequest
+        private class UnsealRequest
         {
             public string Key { get; set; }
         }
 
-        internal class ResetUnsealProcessRequest
+        private class ResetUnsealProcessRequest
         {
             public bool Reset { get; set; }
         }

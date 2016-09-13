@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -56,7 +54,7 @@ namespace Vault.Endpoints.Sys
                 Description = description,
                 Options = options
             };
-            return _client.PutVoid($"{UriPathBase}/audit/{path}", req, ct);
+            return _client.PutVoid($"{UriPathBase}/audit/{path}", request, ct);
         }
 
         public Task DisableAudit(string path)
@@ -74,12 +72,12 @@ namespace Vault.Endpoints.Sys
             public string Input { get; set; }
         }
 
-        internal class AuditHashResponse
+        private class AuditHashResponse
         {
             public string Hash { get; set; }
         }
 
-        internal class EnableAuditRequest
+        private class EnableAuditRequest
         {
             public string AuditType { get; set; }
             public string Description { get; set; }

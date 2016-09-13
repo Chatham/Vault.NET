@@ -111,7 +111,7 @@ namespace Vault.Endpoints.Sys
             return _client.Put<RekeyUpdateRequest, RekeyUpdateResponse>($"{UriPathBase}/rekey/update", request, ct);
         }
 
-        internal class RekeyUpdateRequest
+        private class RekeyUpdateRequest
         {
             public string Key { get; set; }
             public string Nonce { get; set; }

@@ -54,7 +54,7 @@ namespace Vault.Endpoints.Sys
             return _client.DeleteVoid($"{UriPathBase}/auth/{path}", ct);
         }
 
-        internal class EnableAuthRequest
+        private class EnableAuthRequest
         {
             public string Type { get; set; }
             public string Description { get; set; }
