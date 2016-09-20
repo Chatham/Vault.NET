@@ -18,7 +18,7 @@ namespace Vault.Tests
             {
                 "server",
                 "-dev",
-                $"-dev-root-token_id={RootToken}",
+                $"-dev-root-token-id={RootToken}",
                 $"-dev-listen-address={ListenAddress}"
             });
 

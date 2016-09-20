@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace Vault
 {
-    public class VaultClient
+    public class VaultClient : IVaultClient
     {
         private readonly VaultHttpClient _httpClient;
         private readonly VaultClientConfiguration _config;
@@ -107,8 +107,8 @@ namespace Vault
             }
         }
 
-        private Endpoints.SecretEndpoint _secret;
-        public Endpoints.SecretEndpoint Secret
+        private Endpoints.ISecretEndpoint _secret;
+        public Endpoints.ISecretEndpoint Secret
         {
             get
             {
