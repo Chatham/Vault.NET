@@ -42,7 +42,6 @@ namespace Vault.Tests
                 throw new Exception($"Process could not be started: {_process.StandardError}");
             }
 
-
             var config = new VaultClientConfiguration
             {
                 Address = new UriBuilder(ListenAddress).Uri,
