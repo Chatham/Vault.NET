@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace Vault.Tests
 {
-    public class VaultServer : IDisposable
+    public class VaultTestServer : IDisposable
     {
         private Process _process;
         public string RootToken = Guid.NewGuid().ToString();
-        public string ListenAddress = $"127.0.0.1:{GetRandomUnusedPort()}";
+        public string ListenAddress = $"127.0.0.1:{ GetRandomUnusedPort() }";
 
-        public void StartTestServer()
+        public VaultClient StartServer()
         {
             var vaultArgs = string.Join(" ", new List<string>
             {
@@ -22,13 +23,37 @@ namespace Vault.Tests
                 $"-dev-listen-address={ListenAddress}"
             });
 
-            var processInfo = new ProcessStartInfo("vault", vaultArgs);
-            _process = Process.Start(processInfo);
+            _process = new Process
+            {
+                StartInfo = new ProcessStartInfo("vault", vaultArgs),
+            };
+            _process.StartInfo.RedirectStandardOutput = true;
+            _process.StartInfo.RedirectStandardError = true;
+
+            if (!_process.Start())
+            {
+                throw new Exception($"Process did not start successfully: {_process.StandardError}");
+            }
+
+            Thread.Sleep(1000);
+
+            if (_process.HasExited)
+            {
+                throw new Exception($"Process could not be started: {_process.StandardError}");
+            }
+
+
+            var config = new VaultClientConfiguration
+            {
+                Address = new UriBuilder(ListenAddress).Uri,
+                Token = RootToken
+            };
+
+            return new VaultClient(config);
         }
 
         private static int GetRandomUnusedPort()
         {
-            return 5000;
             var listener = new TcpListener(IPAddress.Any, 0);
             listener.Start();
             var port = ((IPEndPoint)listener.LocalEndpoint).Port;
@@ -44,6 +69,7 @@ namespace Vault.Tests
             {
                 if (disposing)
                 {
+                    _process.Kill();
                     _process.Dispose();
                 }
 

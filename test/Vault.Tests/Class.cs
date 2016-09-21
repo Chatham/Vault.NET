@@ -1,6 +1,4 @@
-﻿using System;
-using Xunit;
-using Vault;
+﻿using Xunit;
 using System.Threading.Tasks;
 
 namespace Vault.Tests
@@ -10,20 +8,16 @@ namespace Vault.Tests
         [Fact]
         public async Task TestServer()
         {
-            using (var server = new VaultServer())
+            using (var server = new VaultTestServer())
             {
-                server.StartTestServer();
+                var client = server.StartServer();
+                var mounts = await client.Sys.ListMounts();
 
-                var config = new VaultClientConfiguration
+                var str = "";
+                foreach (var m in mounts.Data)
                 {
-                    Address = new UriBuilder(server.ListenAddress).Uri,
-                    Token = server.RootToken
-                };
-
-                var client = new VaultClient(config);
-
-                Console.WriteLine(await client.Sys.InitStatus());
-
+                    str += m.Key;
+                }
             }
         }
     }
