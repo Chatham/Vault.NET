@@ -5,33 +5,33 @@ namespace Vault.Endpoints.Sys
 {
     public partial class SysEndpoint
     {
-        public Task<Secret<object>> Renew(string leaseId, int increment)
+        public Task<Secret<T>> Renew<T>(string leaseId, int increment)
         {
-            return Renew(leaseId, increment, CancellationToken.None);
+            return Renew<T>(leaseId, increment, CancellationToken.None);
         }
 
-        public Task<Secret<object>> Renew(string leaseId, int increment, CancellationToken ct)
+        public Task<Secret<T>> Renew<T>(string leaseId, int increment, CancellationToken ct)
         {
             var request = new RenewRequest
             {
                 Increment = increment,
                 LeaseId = leaseId
             };
-            return _client.Put<RenewRequest, Secret<dynamic>>($"{UriPathBase}/renew", request, ct);
+            return _client.Put<RenewRequest, Secret<T>>($"{UriPathBase}/renew", request, ct);
         }
 
-        public Task<Secret<object>> Renew(string leaseId)
+        public Task<Secret<T>> Renew<T>(string leaseId)
         {
-            return Renew(leaseId, CancellationToken.None);
+            return Renew<T>(leaseId, CancellationToken.None);
         }
 
-        public Task<Secret<object>> Renew(string leaseId, CancellationToken ct)
+        public Task<Secret<T>> Renew<T>(string leaseId, CancellationToken ct)
         {
             var request = new RenewRequest
             {
                 LeaseId = leaseId
             };
-            return _client.Put<RenewRequest, Secret<dynamic>>($"{UriPathBase}/renew", request, ct);
+            return _client.Put<RenewRequest, Secret<T>>($"{UriPathBase}/renew", request, ct);
         }
 
         public Task Revoke(string id)
