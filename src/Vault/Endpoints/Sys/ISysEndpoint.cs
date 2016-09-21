@@ -45,6 +45,8 @@ namespace Vault.Endpoints.Sys
         Task<SealStatusResponse> ResetUnsealProcess();
         Task<SealStatusResponse> ResetUnsealProcess(CancellationToken ct);
 
+        Task<Secret<object>> Renew(string leaseId);
+        Task<Secret<object>> Renew(string leaseId, CancellationToken ct);
         Task<Secret<object>> Renew(string leaseId, int increment);
         Task<Secret<object>> Renew(string leaseId, int increment, CancellationToken ct);
         Task Revoke(string id);

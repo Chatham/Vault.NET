@@ -20,6 +20,20 @@ namespace Vault.Endpoints.Sys
             return _client.Put<RenewRequest, Secret<dynamic>>($"{UriPathBase}/renew", request, ct);
         }
 
+        public Task<Secret<object>> Renew(string leaseId)
+        {
+            return Renew(leaseId, CancellationToken.None);
+        }
+
+        public Task<Secret<object>> Renew(string leaseId, CancellationToken ct)
+        {
+            var request = new RenewRequest
+            {
+                LeaseId = leaseId
+            };
+            return _client.Put<RenewRequest, Secret<dynamic>>($"{UriPathBase}/renew", request, ct);
+        }
+
         public Task Revoke(string id)
         {
             return Revoke(id, CancellationToken.None);
