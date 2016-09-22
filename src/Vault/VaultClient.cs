@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Linq;
 
 namespace Vault
 {
@@ -78,12 +80,8 @@ namespace Vault
 
             if (parameters == null) return uriBuilder.Uri;
 
-            var parseParameters = QueryHelpers.ParseQuery(string.Empty);
-            foreach (var k in parameters.AllKeys)
-            {
-                parseParameters.Add(k, parameters[k]);
-            }
-            uriBuilder.Query = parseParameters.ToString();
+            var dict = parameters.AllKeys.ToDictionary(t => t, t => parameters[t]);
+            uriBuilder.Query = QueryHelpers.AddQueryString(string.Empty, dict); ;
 
             return uriBuilder.Uri;
         }
