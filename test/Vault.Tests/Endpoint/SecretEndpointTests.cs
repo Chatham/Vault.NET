@@ -10,7 +10,7 @@ namespace Vault.Tests.Endpoint
     public class SecretEndpointTests
     {
         [Fact]
-        public async Task Read_NonExistentSecret_ReturnsNullData()
+        public async Task GenericRead_NonExistentSecret_ReturnsNullData()
         {
             using (var server = new VaultTestServer())
             {
@@ -27,7 +27,7 @@ namespace Vault.Tests.Endpoint
         }
 
         [Fact]
-        public async Task ReadWrite_SecretExists_ReturnsSecretData()
+        public async Task GenericReadWrite_SecretExists_ReturnsSecretData()
         {
             using (var server = new VaultTestServer())
             {
@@ -49,7 +49,7 @@ namespace Vault.Tests.Endpoint
         }
 
         [Fact]
-        public async Task List_NoSecret_ReturnsNullData()
+        public async Task GenericList_NoSecret_ReturnsNullData()
         {
             using (var server = new VaultTestServer())
             {
@@ -67,7 +67,7 @@ namespace Vault.Tests.Endpoint
         }
 
         [Fact]
-        public async Task List_OneSecret_ReturnsListOfSecretKeys()
+        public async Task GenericList_OneSecret_ReturnsListOfSecretKeys()
         {
             using (var server = new VaultTestServer())
             {
@@ -92,5 +92,33 @@ namespace Vault.Tests.Endpoint
             }
         }
 
+        [Fact]
+        public async Task GenericDelete_SecretRemoved_ReturnsNullSecretData()
+        {
+            using (var server = new VaultTestServer())
+            {
+                var client = server.TestClient();
+                var secretPath = "secret/data";
+
+                var expected = new Dictionary<string, string> { { "abc", "123" } };
+
+                var mountPoint = Guid.NewGuid().ToString();
+                await client.Sys.Mount(mountPoint, new MountInfo { Type = "generic" });
+                await client.Secret.Write($"{mountPoint}/{secretPath}", expected);
+
+                var secret = await client.Secret.Read<Dictionary<string, string>>($"{mountPoint}/{secretPath}");
+
+                Assert.NotNull(secret);
+                Assert.NotNull(secret.Data);
+                Assert.Equal(expected, secret.Data);
+
+                await client.Secret.Delete($"{mountPoint}/{secretPath}");
+
+                secret = await client.Secret.Read<Dictionary<string, string>>($"{mountPoint}/{secretPath}");
+                
+                Assert.NotNull(secret);
+                Assert.Null(secret.Data);
+            }
+        }
     }
 }
