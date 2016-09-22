@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -85,7 +86,11 @@ namespace Vault
         {
             using (var r = await HttpSendRequest(method, uri, body, vaultToken, ct))
             {
-                r.EnsureSuccessStatusCode();
+                if (r.StatusCode != HttpStatusCode.NotFound && !r.IsSuccessStatusCode)
+                {
+                    throw new Exceptions.VaultRequestException($"Unexpected response, status code {r.StatusCode}", r.StatusCode);
+                }
+
                 await r.Content.ReadAsStringAsync();
             }
         }
@@ -94,7 +99,11 @@ namespace Vault
         {
             using (var r = await HttpSendRequest(method, uri, body, vaultToken, ct))
             {
-                r.EnsureSuccessStatusCode();
+                if (r.StatusCode != HttpStatusCode.NotFound && !r.IsSuccessStatusCode)
+                {
+                    throw new Exceptions.VaultRequestException($"Unexpected response, status code {r.StatusCode}", r.StatusCode);
+                }
+
                 var content = await r.Content.ReadAsStringAsync();
                 return await JsonDeserialize<T>(content, ct).ConfigureAwait(false);
             }

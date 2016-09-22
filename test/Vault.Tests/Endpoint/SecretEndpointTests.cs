@@ -9,30 +9,65 @@ namespace Vault.Tests.Endpoint
     public class SecretEndpointTests
     {
         [Fact]
-        public async Task Read_NoData_Throws404Exception()
+        public async Task Read_NonExistentSecret_ReturnsNullData()
         {
             using (var server = new VaultTestServer())
             {
-                var client = server.StartServer();
+                var client = server.TestClient();
 
                 var mountPoint = Guid.NewGuid().ToString();
                 await client.Sys.Mount(mountPoint, new MountInfo {Type = "generic"});
 
-                Exception actual = null;
-                try
-                {
-                    await client.Secret.Read<Dictionary<string, string>>($"{mountPoint}/bogus/token");
-                }
-                catch (Exception ex)
-                {
-                    actual = ex;
-                }
+                var secret = await client.Secret.Read<Dictionary<string, string>>($"{mountPoint}/bogus/token");
 
-                Assert.NotNull(actual);
-                Assert.Equal(typeof(System.Net.Http.HttpRequestException), actual.GetType());
-                Assert.Contains("404", actual.Message);
-
+                Assert.NotNull(secret);
+                Assert.Null(secret.Data);
             }
         }
+
+        [Fact]
+        public async Task ReadWrite_SecretExists_ReturnsSecretData()
+        {
+            using (var server = new VaultTestServer())
+            {
+                var client = server.TestClient();
+                var secretPath = "secret/data";
+
+                var expected = new Dictionary<string, string> {{"abc", "123"}};
+
+                var mountPoint = Guid.NewGuid().ToString();
+                await client.Sys.Mount(mountPoint, new MountInfo { Type = "generic" });
+                await client.Secret.Write($"{mountPoint}/{secretPath}", expected);
+
+                var secret = await client.Secret.Read<Dictionary<string, string>>($"{mountPoint}/{secretPath}");
+
+                Assert.NotNull(secret);
+                Assert.NotNull(secret.Data);
+                Assert.Equal(expected, secret.Data);
+            }
+        }
+
+        [Fact]
+        public async Task List_NoSecret_ReturnsNullData()
+        {
+            using (var server = new VaultTestServer())
+            {
+                var client = server.TestClient();
+                var secretPath = "secret/data";
+
+                var expected = new Dictionary<string, string> { { "abc", "123" } };
+
+                var mountPoint = Guid.NewGuid().ToString();
+                await client.Sys.Mount(mountPoint, new MountInfo { Type = "generic" });
+                await client.Secret.Write($"{mountPoint}/{secretPath}", expected);
+
+                var secret = await client.Secret.Read<Dictionary<string, string>>($"{mountPoint}/{secretPath}");
+
+                Assert.NotNull(secret);
+                Assert.NotNull(secret.Data);
+                Assert.Equal(expected, secret.Data);
+            }
+        }
+
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 
 namespace Vault.Tests
 {
@@ -13,7 +12,7 @@ namespace Vault.Tests
         public string RootToken = Guid.NewGuid().ToString();
         public string ListenAddress = $"127.0.0.1:{ GetRandomUnusedPort() }";
 
-        public VaultClient StartServer()
+        public VaultClient TestClient()
         {
             var vaultArgs = string.Join(" ", new List<string>
             {
@@ -34,8 +33,6 @@ namespace Vault.Tests
             {
                 throw new Exception($"Process did not start successfully: {_process.StandardError}");
             }
-
-            Thread.Sleep(1000);
 
             if (_process.HasExited)
             {
