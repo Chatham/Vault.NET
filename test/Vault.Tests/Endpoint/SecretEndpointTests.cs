@@ -106,12 +106,14 @@ namespace Vault.Tests.Endpoint
                 var mountPoint = Guid.NewGuid().ToString();
                 await client.Sys.Mount(mountPoint, new MountInfo { Type = "generic" });
                 await client.Secret.Write($"{mountPoint}/{secretPath}", data);
+                await client.Secret.Write($"{mountPoint}/{secretPath}/subdata", data);
 
                 var secret = await client.Secret.List<GenericList>($"{mountPoint}/secret/");
 
                 var expected = new List<string>
                 {
-                    "data"
+                    "data",
+                    "data/"
                 };
 
                 Assert.NotNull(secret);
