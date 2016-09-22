@@ -1,5 +1,7 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Vault.Endpoints
 {
@@ -29,6 +31,16 @@ namespace Vault.Endpoints
             return _client.Get<Secret<TData>>($"{UriBasePath}/{path}", token, ct);
         }
 
+        public Task<Secret> Read(string path, TimeSpan wrapTTL)
+        {
+            return Read(path, wrapTTL, CancellationToken.None);
+        }
+
+        public Task<Secret> Read(string path, TimeSpan wrapTTL, CancellationToken ct)
+        {
+            return _client.Get<Secret>($"{UriBasePath}/{path}", wrapTTL, ct);
+        }
+ 
         public Task<Secret<TData>> List<TData>(string path)
         {
             return List<TData>(path, CancellationToken.None);
@@ -64,9 +76,15 @@ namespace Vault.Endpoints
             return Unwrap<TData>(unwrappingToken, CancellationToken.None);
         }
 
-        public Task<Secret<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct)
+        public async Task<Secret<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct)
         {
-            return Read<TData>(WrappedResponseLocation, unwrappingToken, ct);
+            var wrappedSecret = await Read<WrappedSecret<TData>>(WrappedResponseLocation, unwrappingToken, ct).ConfigureAwait(false);
+            return await Task.Run(() => JsonConvert.DeserializeObject<Secret<TData>>(wrappedSecret.Data.Response), ct).ConfigureAwait(false); ;
+        }
+
+        internal class WrappedSecret<TData>
+        {
+            public string Response { get; set; }
         }
     }
 }

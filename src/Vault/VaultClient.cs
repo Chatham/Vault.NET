@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,20 +24,35 @@ namespace Vault
             _config = config;
         }
 
-        internal Task<T> Get<T>(string path, string token, CancellationToken ct)
-        {
-            return _httpClient.Get<T>(BuildVaultUri(path), token, ct);
-        }
-
         internal Task<T> Get<T>(string path, CancellationToken ct)
         {
-            return _httpClient.Get<T>(BuildVaultUri(path), _config.Token, ct);
+            return Get<T>(path, _config.Token, ct);
+        }
+
+        internal Task<T> Get<T>(string path, TimeSpan wrapTTL, CancellationToken ct)
+        {
+            return Get<T>(path, _config.Token, wrapTTL, ct);
+        }
+
+        internal Task<T> Get<T>(string path, string token, CancellationToken ct)
+        {
+            return Get<T>(path, token, TimeSpan.Zero, ct);
+        }
+
+        private Task<T> Get<T>(string path, string token, TimeSpan wrapTTL, CancellationToken ct)
+        {
+            return _httpClient.Get<T>(BuildVaultUri(path), token, wrapTTL, ct);
         }
 
         internal Task<T> List<T>(string path, CancellationToken ct)
         {
+            return List<T>(path, TimeSpan.Zero, ct);
+        }
+
+        internal Task<T> List<T>(string path, TimeSpan wrapTTL, CancellationToken ct)
+        {
             return _httpClient.Get<T>(BuildVaultUri(path, new NameValueCollection { { "list", "true" } }),
-                _config.Token, ct);
+                _config.Token, wrapTTL, ct);
         }
 
         internal Task<TO> Post<TI, TO>(string path, TI content, CancellationToken ct)

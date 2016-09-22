@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Vault.Endpoints
@@ -11,6 +12,8 @@ namespace Vault.Endpoints
         Task<Secret<TData>> List<TData>(string path, CancellationToken ct);
         Task<Secret<TData>> Read<TData>(string path);
         Task<Secret<TData>> Read<TData>(string path, CancellationToken ct);
+        Task<Secret> Read(string path, TimeSpan wrapTTL);
+        Task<Secret> Read(string path, TimeSpan wrapTTL, CancellationToken ct);
         Task<Secret<TData>> Unwrap<TData>(string unwrappingToken);
         Task<Secret<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct);
         Task Write<TParameters>(string path, TParameters data);
