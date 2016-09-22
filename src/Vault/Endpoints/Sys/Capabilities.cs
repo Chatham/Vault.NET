@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Vault.Endpoints.Sys
 {
@@ -39,14 +40,18 @@ namespace Vault.Endpoints.Sys
             return response.Capabilities;
         }
 
-        private class CapabilitiesRequest
+        internal class CapabilitiesRequest
         {
+            [JsonProperty("token")]
             public string Token { get; set; }
+
+            [JsonProperty("path")]
             public string Path { get; set; }
         }
 
-        private class CapabilitiesResponse
+        internal class CapabilitiesResponse
         {
+            [JsonProperty("capabilities")]
             public List<string> Capabilities { get; set; }
         }
     }

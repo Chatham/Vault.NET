@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Vault.Endpoints.Sys
 {
@@ -52,13 +53,15 @@ namespace Vault.Endpoints.Sys
             return _client.DeleteVoid($"{UriPathBase}/policy/{name}", ct);
         }
 
-        private class ListPoliciesResponse
+        internal class ListPoliciesResponse
         {
+            [JsonProperty("policies")]
             public List<string> Policies { get; set; }
         }
 
-        private class PolicyRequest
+        internal class PolicyRequest
         {
+            [JsonProperty("rules")]
             public string Rules { get; set; }
         }
     }

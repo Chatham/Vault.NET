@@ -118,38 +118,14 @@ namespace Vault
             }
         }
 
-        private readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
+        private static Task<string> JsonSerialize<T>(T content, CancellationToken ct)
         {
-            ContractResolver = new PascalCaseToUnderscoreContractResolver()
-        };
-
-        private Task<string> JsonSerialize<T>(T content, CancellationToken ct)
-        {
-            return Task.Run(() => JsonConvert.SerializeObject(content, _jsonSettings), ct);
+            return Task.Run(() => JsonConvert.SerializeObject(content), ct);
         }
 
-        private Task<T> JsonDeserialize<T>(string result, CancellationToken ct)
+        private static Task<T> JsonDeserialize<T>(string result, CancellationToken ct)
         {
-            return Task.Run(() => JsonConvert.DeserializeObject<T>(result, _jsonSettings), ct);
-        }
-
-        private class PascalCaseToUnderscoreContractResolver : DefaultContractResolver
-        {
-            // Extracted from http://humanizr.net/#underscore
-            protected override string ResolvePropertyName(string propertyName)
-            {
-                return Regex.Replace(
-                        Regex.Replace(
-                            Regex.Replace(
-                                propertyName,
-                                @"([A-Z]+)([A-Z][a-z])",
-                                "$1_$2"),
-                            @"([a-z\d])([A-Z])",
-                            "$1_$2"),
-                        @"[-\s]",
-                        "_")
-                    .ToLower();
-            }
+            return Task.Run(() => JsonConvert.DeserializeObject<T>(result), ct);
         }
     }
 }

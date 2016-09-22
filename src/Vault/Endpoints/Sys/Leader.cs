@@ -1,13 +1,19 @@
 ﻿
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Vault.Endpoints.Sys
 {
     public class LeaderResponse
     {
+        [JsonProperty("ha_enabled")]
         public bool HaEnables { get; set; }
+
+        [JsonProperty("is_self")]
         public bool IsSelf { get; set; }
+
+        [JsonProperty("leader_address")]
         public string LeaderAddress { get; set; }
     }
 

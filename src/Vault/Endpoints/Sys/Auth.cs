@@ -1,20 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Vault.Endpoints.Sys
 {
     public class AuthMount
     {
+        [JsonProperty("type")]
         public string Type { get; set; }
+
+        [JsonProperty("description")]
         public string Description { get; set; }
+
+        [JsonProperty("config")]
         public AuthConfigOptions Config { get; set; }
     }
 
     public class AuthConfigOptions
-    { 
-        public int DefaultLeaseTtl { get; set; }
-        public int MaxLeaseTtl { get; set; }
+    {
+        [JsonProperty("default_lease_ttl")]
+        public int DefaultLeaseTTL { get; set; }
+
+        [JsonProperty("max_lease_ttl")]
+        public int MaxLeaseTTL { get; set; }
     }
 
     public partial class SysEndpoint
@@ -54,9 +63,12 @@ namespace Vault.Endpoints.Sys
             return _client.DeleteVoid($"{UriPathBase}/auth/{path}", ct);
         }
 
-        private class EnableAuthRequest
+        internal class EnableAuthRequest
         {
+            [JsonProperty("type")]
             public string Type { get; set; }
+
+            [JsonProperty("description")]
             public string Description { get; set; }
         }
     }

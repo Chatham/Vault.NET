@@ -1,14 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Vault.Endpoints.Sys
 {
     public class Audit
     {
+        [JsonProperty("path")]
         public string Path { get; set; }
+
+        [JsonProperty("type")]
         public string Type { get; set; }
+
+        [JsonProperty("description")]
         public string Description { get; set; }
+
+        [JsonProperty("options")]
         public Dictionary<string, string> Options { get; set; }
     }
 
@@ -69,18 +77,25 @@ namespace Vault.Endpoints.Sys
 
         internal class AuditHashRequest
         {
+            [JsonProperty("input")]
             public string Input { get; set; }
         }
 
-        private class AuditHashResponse
+        internal class AuditHashResponse
         {
+            [JsonProperty("hash")]
             public string Hash { get; set; }
         }
 
-        private class EnableAuditRequest
+        internal class EnableAuditRequest
         {
+            [JsonProperty("audit_type")]
             public string AuditType { get; set; }
+
+            [JsonProperty("description")]
             public string Description { get; set; }
+
+            [JsonProperty("options")]
             public Dictionary<string, string> Options { get; set; }
         }
     }

@@ -1,16 +1,30 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Vault.Endpoints.Sys
 {
     public class SealStatusResponse
     {
+        [JsonProperty("sealed")]
         public bool Sealed { get; set; }
+
+        [JsonProperty("t")]
         public int T { get; set; }
+
+        [JsonProperty("n")]
         public int N { get; set; }
+
+        [JsonProperty("progress")]
         public int Progress { get; set; }
+
+        [JsonProperty("version")]
         public string Version { get; set; }
+
+        [JsonProperty("cluster_name")]
         public string ClusterName { get; set; }
+
+        [JsonProperty("cluster_id")]
         public string ClusterId { get; set; }
     } 
 
@@ -62,13 +76,15 @@ namespace Vault.Endpoints.Sys
                 new ResetUnsealProcessRequest {Reset = true}, ct);
         }
 
-        private class UnsealRequest
+        internal class UnsealRequest
         {
+            [JsonProperty("key")]
             public string Key { get; set; }
         }
 
-        private class ResetUnsealProcessRequest
+        internal class ResetUnsealProcessRequest
         {
+            [JsonProperty("reset")]
             public bool Reset { get; set; }
         }
     }

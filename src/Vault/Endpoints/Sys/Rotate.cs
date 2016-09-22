@@ -1,11 +1,15 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Vault.Endpoints.Sys
 {
     public class KeyStatus
     {
+        [JsonProperty("term")]
         public int Term { get; set; }
+
+        [JsonProperty("install_time")]
         public string InstallTime { get; set; }
     }
 

@@ -1,19 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Vault.Endpoints.Sys
 {
     public class MountInfo
     {
+        [JsonProperty("type")]
         public string Type { get; set; }
+
+        [JsonProperty("description")]
         public string Description { get; set; }
+
+        [JsonProperty("config")]
         public MountConfig Config { get; set; }
     }
 
     public class MountConfig
     {
+        [JsonProperty("default_lease_ttl")]
         public string DefaultLeaseTtl { get; set; }
+
+        [JsonProperty("max_lease_ttl")]
         public string MaxLeaseTtl { get; set; }
     }
 
@@ -84,9 +93,12 @@ namespace Vault.Endpoints.Sys
             return _client.Get<MountConfig>($"{UriPathBase}/mounts/{path}/tune", ct);
         }
 
-        private class RemountRequest
+        internal class RemountRequest
         {
+            [JsonProperty("from")]
             public string From { get; set; }
+
+            [JsonProperty("to")]
             public string To { get; set; }
         }
     }

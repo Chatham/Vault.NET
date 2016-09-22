@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Vault.Endpoints.Sys
 {
@@ -64,9 +65,12 @@ namespace Vault.Endpoints.Sys
             return _client.PutVoid($"{UriPathBase}/revoke-force/{id}", ct);
         }
 
-        private class RenewRequest
+        internal class RenewRequest
         {
+            [JsonProperty("increment")]
             public int Increment { get; set; }
+
+            [JsonProperty("lease_id")]
             public string LeaseId { get; set; }
         }
     }
