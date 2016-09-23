@@ -28,7 +28,7 @@ namespace Vault
         public async Task PostVoid<T>(Uri uri, T content, string vaultToken, CancellationToken ct)
         {
             var httpContent = await JsonSerialize(content, ct).ConfigureAwait(false);
-            await HttpRequestVoid(HttpMethod.Post, uri, httpContent, vaultToken, ct);
+            await HttpRequestVoid(HttpMethod.Post, uri, httpContent, vaultToken, ct).ConfigureAwait(false);
         }
 
         public async Task<TO> Post<TI, TO>(Uri uri, TI content, string vaultToken, CancellationToken ct)
@@ -39,7 +39,7 @@ namespace Vault
 
         public async Task PutVoid(Uri uri, string vaultToken, CancellationToken ct)
         {
-            await HttpRequestVoid(HttpMethod.Put, uri, null, vaultToken, ct);
+            await HttpRequestVoid(HttpMethod.Put, uri, null, vaultToken, ct).ConfigureAwait(false);
         }
 
         public async Task PutVoid<T>(Uri uri, T content, string vaultToken, CancellationToken ct)
@@ -56,7 +56,7 @@ namespace Vault
 
         public async Task DeleteVoid(Uri uri, string vaultToken, CancellationToken ct)
         {
-            await HttpRequestVoid(HttpMethod.Delete, uri, null, vaultToken, ct);
+            await HttpRequestVoid(HttpMethod.Delete, uri, null, vaultToken, ct).ConfigureAwait(false);
         }
 
         public async Task<T> Delete<T>(Uri uri, string vaultToken, CancellationToken ct)

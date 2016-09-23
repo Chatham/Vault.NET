@@ -78,11 +78,11 @@ namespace Vault.Endpoints
 
         public async Task<Secret<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct)
         {
-            var wrappedSecret = await Read<WrappedSecret<TData>>(WrappedResponseLocation, unwrappingToken, ct).ConfigureAwait(false);
+            var wrappedSecret = await Read<WrappedSecret>(WrappedResponseLocation, unwrappingToken, ct).ConfigureAwait(false);
             return await Task.Run(() => JsonConvert.DeserializeObject<Secret<TData>>(wrappedSecret.Data.Response), ct).ConfigureAwait(false); ;
         }
 
-        internal class WrappedSecret<TData>
+        internal class WrappedSecret
         {
             public string Response { get; set; }
         }
