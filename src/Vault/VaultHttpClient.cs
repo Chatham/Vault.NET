@@ -74,7 +74,7 @@ namespace Vault
             }
             if (wrapTTL != TimeSpan.Zero)
             {
-                requestMessage.Headers.Add("X-Vault-Wrap-TTL", $"{wrapTTL:ss}");
+                requestMessage.Headers.Add("X-Vault-Wrap-TTL", $"{(int)wrapTTL.TotalSeconds}");
             }
             if (body != null)
             {

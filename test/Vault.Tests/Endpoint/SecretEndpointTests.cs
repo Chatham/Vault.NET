@@ -62,7 +62,7 @@ namespace Vault.Tests.Endpoint
                 await client.Sys.Mount(mountPoint, new MountInfo { Type = "generic" });
                 await client.Secret.Write($"{mountPoint}/{secretPath}", expected);
 
-                var secret = await client.Secret.Read($"{mountPoint}/{secretPath}", TimeSpan.FromSeconds(30));
+                var secret = await client.Secret.Read($"{mountPoint}/{secretPath}", TimeSpan.FromSeconds(120));
 
                 Assert.NotNull(secret);
                 Assert.Null(secret.Data);
@@ -108,7 +108,7 @@ namespace Vault.Tests.Endpoint
                 await client.Secret.Write($"{mountPoint}/{secretPath}", data);
                 await client.Secret.Write($"{mountPoint}/{secretPath}/subdata", data);
 
-                var secret = await client.Secret.List<GenericList>($"{mountPoint}/secret/");
+                var secret = await client.Secret.List<ListInfo>($"{mountPoint}/secret/");
 
                 var expected = new List<string>
                 {
