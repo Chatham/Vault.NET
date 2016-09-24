@@ -4,12 +4,12 @@ using Newtonsoft.Json;
 
 namespace Vault.Models.Secret.Pki
 {
-    public class PkiIssueRequest
+    public class RootGenerateRequest
     {
         [JsonProperty("common_name")]
         public string CommonName { get; set; }
 
-        [JsonProperty("alt_names", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty("alt_names", NullValueHandling = NullValueHandling.Ignore)]
         private string _altNames;
 
         [JsonIgnore]
@@ -19,21 +19,20 @@ namespace Vault.Models.Secret.Pki
             set { _altNames = string.Join(",", value); }
         }
 
-        [JsonProperty("ip_sans", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        private string _ipSans;
-
-        [JsonIgnore]
-        public List<string> IpSans
-        {
-            get { return _ipSans.Split(',').ToList(); }
-            set { _ipSans = string.Join(",", value); }
-        }
-
         [JsonProperty("ttl", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public int Ttl { get; set; }
+        public string Ttl { get; set; }
 
         [JsonProperty("format", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public CertificateType Format { get; set; }
+
+        [JsonProperty("key_type", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public PrivateKeyType KeyType { get; set; }
+
+        [JsonProperty("key_bits", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int KeyBits { get; set; }
+
+        [JsonProperty("max_path_length", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int MaxPathLenth { get; set; }
 
         [JsonProperty("exclude_cn_from_sans", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool ExcludeCnFromSans { get; set; }

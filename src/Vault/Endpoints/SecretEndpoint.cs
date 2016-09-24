@@ -51,14 +51,24 @@ namespace Vault.Endpoints
             return _client.List<Secret<TData>>($"{UriBasePath}/{path}", ct);
         }
 
-        public Task Write<TData>(string path, TData data)
+        public Task Write<TParameters>(string path, TParameters data)
         {
             return Write(path, data, CancellationToken.None);
         }
 
-        public Task Write<TData>(string path, TData data, CancellationToken ct)
+        public Task Write<TParameters>(string path, TParameters data, CancellationToken ct)
         {
             return _client.PutVoid($"{UriBasePath}/{path}", data, ct);
+        }
+
+        public Task<Secret<TData>>  Write<TParameters, TData>(string path, TParameters data)
+        {
+            return Write<TParameters, TData>(path, data, CancellationToken.None);
+        }
+
+        public Task<Secret<TData>> Write<TParameters, TData>(string path, TParameters data, CancellationToken ct)
+        {
+            return _client.Put<TParameters, Secret<TData>>($"{UriBasePath}/{path}", data, ct);
         }
 
         public Task Delete(string path)

@@ -18,5 +18,7 @@ namespace Vault.Endpoints
         Task<Secret<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct);
         Task Write<TParameters>(string path, TParameters data);
         Task Write<TParameters>(string path, TParameters data, CancellationToken ct);
+        Task<Secret<TData>> Write<TParameters, TData>(string path, TParameters data);
+        Task<Secret<TData>> Write<TParameters, TData>(string path, TParameters data, CancellationToken ct);
     }
 }

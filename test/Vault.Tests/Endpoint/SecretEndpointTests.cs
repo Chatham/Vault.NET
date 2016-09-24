@@ -34,7 +34,7 @@ namespace Vault.Tests.Endpoint
                 var client = server.TestClient();
                 var secretPath = "secret/data";
 
-                var expected = new Dictionary<string, string> {{"abc", "123"}};
+                var expected = new GenericSecret {{"abc", "123"}};
 
                 var mountPoint = Guid.NewGuid().ToString();
                 await client.Sys.Mount(mountPoint, new MountInfo { Type = "generic" });
