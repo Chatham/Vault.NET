@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace Vault.Models.Secret.Pki
 {
@@ -8,16 +10,30 @@ namespace Vault.Models.Secret.Pki
         public string CommonName { get; set; }
 
         [JsonProperty("alt_names")]
-        public string AltNames { get; set; }
+        private string _altNames;
+
+        [JsonIgnore]
+        public List<string> AltNames
+        {
+            get { return _altNames.Split(',').ToList(); }
+            set { _altNames = string.Join(",", value); }
+        }
 
         [JsonProperty("ip_sans")]
-        public string IpSans { get; set; }
+        private string _ipSans;
+
+        [JsonIgnore]
+        public List<string> IpSans
+        {
+            get { return _ipSans.Split(',').ToList(); }
+            set { _ipSans = string.Join(",", value); }
+        }
 
         [JsonProperty("ttl")]
         public int Ttl { get; set; }
 
         [JsonProperty("format")]
-        public string Format { get; set; }
+        public CertificateType Format { get; set; }
 
         [JsonProperty("exclude_cn_from_sans")]
         public bool ExcludeCnFromSans { get; set; }
