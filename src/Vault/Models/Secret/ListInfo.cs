@@ -2,7 +2,7 @@
 
 namespace Vault.Models.Secret
 {
-    public class GenericList
+    public class ListInfo
     {
         public List<string> Keys { get; set; }
     }
