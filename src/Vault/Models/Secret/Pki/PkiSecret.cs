@@ -12,7 +12,7 @@ namespace Vault.Models.Secret.Pki
         public string PrivateKey { get; set; }
 
         [JsonProperty("private_key_type")]
-        public string PrivateKeyType { get; set; }
+        public PrivateKeyType PrivateKeyType { get; set; }
 
         [JsonProperty("certificate")]
         public string Certificate { get; set; }
