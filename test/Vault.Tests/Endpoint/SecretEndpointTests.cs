@@ -19,7 +19,7 @@ namespace Vault.Tests.Endpoint
                 var mountPoint = Guid.NewGuid().ToString();
                 await client.Sys.Mount(mountPoint, new MountInfo {Type = "generic"});
 
-                var secret = await client.Secret.Read<GenericSecret>($"{mountPoint}/bogus/token");
+                var secret = await client.Secret.Read<Dictionary<string, string>>($"{mountPoint}/bogus/token");
 
                 Assert.NotNull(secret);
                 Assert.Null(secret.Data);
@@ -34,13 +34,13 @@ namespace Vault.Tests.Endpoint
                 var client = server.TestClient();
                 var secretPath = "secret/data";
 
-                var expected = new GenericSecret {{"abc", "123"}};
+                var expected = new Dictionary<string, string> { {"abc", "123"}};
 
                 var mountPoint = Guid.NewGuid().ToString();
                 await client.Sys.Mount(mountPoint, new MountInfo { Type = "generic" });
                 await client.Secret.Write($"{mountPoint}/{secretPath}", expected);
 
-                var secret = await client.Secret.Read<GenericSecret>($"{mountPoint}/{secretPath}");
+                var secret = await client.Secret.Read<Dictionary<string, string>>($"{mountPoint}/{secretPath}");
 
                 Assert.NotNull(secret);
                 Assert.NotNull(secret.Data);

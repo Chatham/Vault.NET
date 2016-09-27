@@ -116,14 +116,23 @@ namespace Vault
             }
         }
 
-        private static Task<string> JsonSerialize<T>(T content, CancellationToken ct)
+        public static Task<string> JsonSerialize<T>(T content, CancellationToken ct)
         {
-            return Task.Run(() => JsonConvert.SerializeObject(content), ct);
+            return Task.Run(() => JsonConvert.SerializeObject(content, VaultJsonSerializerSettings()), ct);
         }
 
-        private static Task<T> JsonDeserialize<T>(string result, CancellationToken ct)
+        public static Task<T> JsonDeserialize<T>(string result, CancellationToken ct)
         {
-            return Task.Run(() => JsonConvert.DeserializeObject<T>(result), ct);
+            return Task.Run(() => JsonConvert.DeserializeObject<T>(result, VaultJsonSerializerSettings()), ct);
+        }
+
+        private static JsonSerializerSettings VaultJsonSerializerSettings()
+        {
+            return new JsonSerializerSettings
+            {
+                DefaultValueHandling = DefaultValueHandling.Ignore
+
+            };
         }
     }
 }

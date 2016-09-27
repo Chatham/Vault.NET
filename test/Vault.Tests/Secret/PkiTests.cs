@@ -9,7 +9,7 @@ namespace Vault.Tests.Secret
     public class PkiTests
     {
         [Fact]
-        public async Task PkiSecret_SetUpRootCA_CanIssueCertificates()
+        public async Task SecretPki_SetUpRootCA_CanIssueCertificates()
         {
             using (var server = new VaultTestServer())
             {

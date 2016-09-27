@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
+using Vault.Util;
 
 namespace Vault.Models.Secret.Pki
 {
@@ -9,32 +9,32 @@ namespace Vault.Models.Secret.Pki
         [JsonProperty("common_name")]
         public string CommonName { get; set; }
 
-        [JsonProperty("alt_names", NullValueHandling = NullValueHandling.Ignore)]
-        private string _altNames;
-
-        [JsonIgnore]
-        public List<string> AltNames
+        [JsonProperty("alt_names")]
+        private string _altNames
         {
-            get { return _altNames.Split(',').ToList(); }
-            set { _altNames = string.Join(",", value); }
+            get { return StringUtil.ListToCsvString(AltNames); }
+            set { AltNames = StringUtil.CsvStringToList(value); }
         }
 
-        [JsonProperty("ttl", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore]
+        public List<string> AltNames { get; set; }
+
+        [JsonProperty("ttl")]
         public string Ttl { get; set; }
 
-        [JsonProperty("format", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public CertificateType Format { get; set; }
+        [JsonProperty("format")]
+        public CertificateType? Format { get; set; }
 
-        [JsonProperty("key_type", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public PrivateKeyType KeyType { get; set; }
+        [JsonProperty("key_type")]
+        public PrivateKeyType? KeyType { get; set; }
 
-        [JsonProperty("key_bits", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public int KeyBits { get; set; }
+        [JsonProperty("key_bits")]
+        public int? KeyBits { get; set; }
 
-        [JsonProperty("max_path_length", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public int MaxPathLenth { get; set; }
+        [JsonProperty("max_path_length")]
+        public int? MaxPathLenth { get; set; }
 
-        [JsonProperty("exclude_cn_from_sans", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public bool ExcludeCnFromSans { get; set; }
+        [JsonProperty("exclude_cn_from_sans")]
+        public bool? ExcludeCnFromSans { get; set; }
     }
 }

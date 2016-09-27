@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
+using Vault.Util;
 
 namespace Vault.Models.Secret.Pki
 {
@@ -9,33 +9,33 @@ namespace Vault.Models.Secret.Pki
         [JsonProperty("common_name")]
         public string CommonName { get; set; }
 
-        [JsonProperty("alt_names", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        private string _altNames;
-
-        [JsonIgnore]
-        public List<string> AltNames
+        [JsonProperty("alt_names")]
+        private string _altNames
         {
-            get { return _altNames.Split(',').ToList(); }
-            set { _altNames = string.Join(",", value); }
+            get { return StringUtil.ListToCsvString(AltNames); }
+            set { AltNames = StringUtil.CsvStringToList(value); }
         }
 
-        [JsonProperty("ip_sans", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        private string _ipSans;
-
         [JsonIgnore]
-        public List<string> IpSans
+        public List<string> AltNames { get; set; }
+
+        [JsonProperty("ip_sans")]
+        private string _ipSans
         {
-            get { return _ipSans.Split(',').ToList(); }
-            set { _ipSans = string.Join(",", value); }
+            get { return StringUtil.ListToCsvString(IpSans); }
+            set { IpSans = StringUtil.CsvStringToList(value); }
         }
 
-        [JsonProperty("ttl", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public int Ttl { get; set; }
+        [JsonIgnore]
+        public List<string> IpSans;
 
-        [JsonProperty("format", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public CertificateType Format { get; set; }
+        [JsonProperty("ttl")]
+        public int? Ttl { get; set; }
 
-        [JsonProperty("exclude_cn_from_sans", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public bool ExcludeCnFromSans { get; set; }
+        [JsonProperty("format")]
+        public CertificateType? Format { get; set; }
+
+        [JsonProperty("exclude_cn_from_sans")]
+        public bool? ExcludeCnFromSans { get; set; }
     }
 }
