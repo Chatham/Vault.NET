@@ -4,7 +4,7 @@ using Vault.Util;
 
 namespace Vault.Models.Secret.Pki
 {
-    public class RootGenerateRequest
+    public class PkiRootGenerateRequest
     {
         [JsonProperty("common_name")]
         public string CommonName { get; set; }

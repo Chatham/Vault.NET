@@ -3,16 +3,10 @@ using Newtonsoft.Json;
 
 namespace Vault.Models.Secret.Pki
 {
-    public class PkiSecret
+    public class PkiCertificate
     {
         [JsonProperty("serial_number")]
         public string SerialNumber { get; set; }
-
-        [JsonProperty("private_key")]
-        public string PrivateKey { get; set; }
-
-        [JsonProperty("private_key_type")]
-        public PrivateKeyType PrivateKeyType { get; set; }
 
         [JsonProperty("certificate")]
         public string Certificate { get; set; }
