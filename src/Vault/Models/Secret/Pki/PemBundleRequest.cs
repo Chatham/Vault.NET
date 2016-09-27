@@ -2,7 +2,7 @@
 
 namespace Vault.Models.Secret.Pki
 {
-    public class PkiConfigCaRequest
+    public class PemBundleRequest
     {
         [JsonProperty("pem_bundle")]
         public string PemBundle { get; set; }

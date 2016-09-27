@@ -4,13 +4,13 @@ using Vault.Util;
 
 namespace Vault.Models.Secret.Pki
 {
-    public class PkiIssueRequest
+    public class RootGenerateRequest
     {
         [JsonProperty("common_name")]
         public string CommonName { get; set; }
 
         [JsonProperty("alt_names")]
-        private string AltNamesRequest
+        private string _altNames
         {
             get { return StringUtil.ListToCsvString(AltNames); }
             set { AltNames = StringUtil.CsvStringToList(value); }
@@ -19,21 +19,20 @@ namespace Vault.Models.Secret.Pki
         [JsonIgnore]
         public List<string> AltNames { get; set; }
 
-        [JsonProperty("ip_sans")]
-        private string _ipSans
-        {
-            get { return StringUtil.ListToCsvString(IpSans); }
-            set { IpSans = StringUtil.CsvStringToList(value); }
-        }
-
-        [JsonIgnore]
-        public List<string> IpSans;
-
         [JsonProperty("ttl")]
-        public int? Ttl { get; set; }
+        public string Ttl { get; set; }
 
         [JsonProperty("format")]
         public CertificateType? Format { get; set; }
+
+        [JsonProperty("key_type")]
+        public PrivateKeyType? KeyType { get; set; }
+
+        [JsonProperty("key_bits")]
+        public int? KeyBits { get; set; }
+
+        [JsonProperty("max_path_length")]
+        public int? MaxPathLenth { get; set; }
 
         [JsonProperty("exclude_cn_from_sans")]
         public bool? ExcludeCnFromSans { get; set; }

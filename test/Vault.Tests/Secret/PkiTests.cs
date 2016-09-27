@@ -24,7 +24,7 @@ namespace Vault.Tests.Secret
                 };
                 await client.Sys.TuneMount(mountPoint, mountConfig);
 
-                var rootCaConfig = new PkiRootGenerateRequest
+                var rootCaConfig = new RootGenerateRequest
                 {
                     CommonName = "Vault Testing Root Certificate Authority",
                     Ttl = "87600h"
@@ -40,13 +40,13 @@ namespace Vault.Tests.Secret
                 };
                 await client.Secret.Write($"{mountPoint}/roles/{roleName}", role);
 
-                var certRequest = new PkiIssueRequest
+                var certRequest = new IssueRequest
                 {
                     CommonName = "Test Cert"
                 };
                 var cert =
                     await
-                        client.Secret.Write<PkiIssueRequest, PkiIssue>($"{mountPoint}/issue/{roleName}",
+                        client.Secret.Write<IssueRequest, IssueResponse>($"{mountPoint}/issue/{roleName}",
                             certRequest);
 
                 Assert.NotNull(cert.Data);

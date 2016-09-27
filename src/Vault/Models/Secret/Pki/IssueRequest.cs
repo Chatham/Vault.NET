@@ -4,7 +4,7 @@ using Vault.Util;
 
 namespace Vault.Models.Secret.Pki
 {
-    public class PkiRootGenerateRequest
+    public class IssueRequest
     {
         [JsonProperty("common_name")]
         public string CommonName { get; set; }
@@ -19,20 +19,21 @@ namespace Vault.Models.Secret.Pki
         [JsonIgnore]
         public List<string> AltNames { get; set; }
 
+        [JsonProperty("ip_sans")]
+        private string _ipSans
+        {
+            get { return StringUtil.ListToCsvString(IpSans); }
+            set { IpSans = StringUtil.CsvStringToList(value); }
+        }
+
+        [JsonIgnore]
+        public List<string> IpSans;
+
         [JsonProperty("ttl")]
-        public string Ttl { get; set; }
+        public int? Ttl { get; set; }
 
         [JsonProperty("format")]
         public CertificateType? Format { get; set; }
-
-        [JsonProperty("key_type")]
-        public PrivateKeyType? KeyType { get; set; }
-
-        [JsonProperty("key_bits")]
-        public int? KeyBits { get; set; }
-
-        [JsonProperty("max_path_length")]
-        public int? MaxPathLenth { get; set; }
 
         [JsonProperty("exclude_cn_from_sans")]
         public bool? ExcludeCnFromSans { get; set; }

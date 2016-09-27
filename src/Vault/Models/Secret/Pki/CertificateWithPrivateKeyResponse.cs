@@ -2,7 +2,7 @@
 
 namespace Vault.Models.Secret.Pki
 {
-    public class PkiCertificateWithPrivateKeyResponse : PkiCertificate
+    public class CertificateWithPrivateKeyResponse : CertificateResponse
     {
         [JsonProperty("private_key")]
         public string PrivateKey { get; set; }

@@ -20,10 +20,10 @@ namespace Vault.Endpoints.Sys
     public class AuthConfigOptions
     {
         [JsonProperty("default_lease_ttl")]
-        public int DefaultLeaseTTL { get; set; }
+        public int? DefaultLeaseTTL { get; set; }
 
         [JsonProperty("max_lease_ttl")]
-        public int MaxLeaseTTL { get; set; }
+        public int? MaxLeaseTTL { get; set; }
     }
 
     public partial class SysEndpoint

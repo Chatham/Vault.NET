@@ -11,12 +11,11 @@ namespace Vault
 {
     public class VaultHttpClient : IVaultHttpClient
     {
-        private readonly HttpClient _httpClient;
+        private static readonly HttpClient HttpClient = new HttpClient();
 
         public VaultHttpClient()
         {
-            _httpClient = new HttpClient();
-            _httpClient.DefaultRequestHeaders.Accept
+            HttpClient.DefaultRequestHeaders.Accept
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
@@ -64,7 +63,7 @@ namespace Vault
             return await HttpRequest<T>(HttpMethod.Delete, uri, null, vaultToken, ct).ConfigureAwait(false);
         }
 
-        private Task<HttpResponseMessage> HttpSendRequest(HttpMethod method, Uri uri, string body, string vaultToken, TimeSpan wrapTTL, CancellationToken ct)
+        private static Task<HttpResponseMessage> HttpSendRequest(HttpMethod method, Uri uri, string body, string vaultToken, TimeSpan wrapTTL, CancellationToken ct)
         {
             var requestMessage = new HttpRequestMessage(method, uri);
 
@@ -81,10 +80,10 @@ namespace Vault
                 requestMessage.Content = new StringContent(body, Encoding.UTF8, "application/json");
             }
 
-            return _httpClient.SendAsync(requestMessage, ct);
+            return HttpClient.SendAsync(requestMessage, ct);
         }
 
-        private async Task HttpRequestVoid(HttpMethod method, Uri uri, string body, string vaultToken, CancellationToken ct)
+        private static async Task HttpRequestVoid(HttpMethod method, Uri uri, string body, string vaultToken, CancellationToken ct)
         {
             using (var r = await HttpSendRequest(method, uri, body, vaultToken, TimeSpan.Zero, ct))
             {
@@ -97,12 +96,12 @@ namespace Vault
             }
         }
 
-        private async Task<T> HttpRequest<T>(HttpMethod method, Uri uri, string body, string vaultToken, CancellationToken ct)
+        private static async Task<T> HttpRequest<T>(HttpMethod method, Uri uri, string body, string vaultToken, CancellationToken ct)
         {
             return await HttpRequest<T>(method, uri, body, vaultToken, TimeSpan.Zero, ct).ConfigureAwait(false);
         }
 
-        private async Task<T> HttpRequest<T>(HttpMethod method, Uri uri, string body, string vaultToken, TimeSpan wrapTTL, CancellationToken ct)
+        private static async Task<T> HttpRequest<T>(HttpMethod method, Uri uri, string body, string vaultToken, TimeSpan wrapTTL, CancellationToken ct)
         {
             using (var r = await HttpSendRequest(method, uri, body, vaultToken, wrapTTL, ct))
             {
@@ -131,7 +130,6 @@ namespace Vault
             return new JsonSerializerSettings
             {
                 DefaultValueHandling = DefaultValueHandling.Ignore
-
             };
         }
     }
