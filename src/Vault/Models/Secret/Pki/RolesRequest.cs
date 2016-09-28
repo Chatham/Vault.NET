@@ -16,11 +16,7 @@ namespace Vault.Models.Secret.Pki
         public bool? AllowLocalhost { get; set; }
 
         [JsonProperty("allowed_domains")]
-        private string _allowedDomains
-        {
-            get { return StringUtil.ListToCsvString(AllowedDomains); }
-            set { AllowedDomains = StringUtil.CsvStringToList(value); }
-        }
+        private string _allowedDomains => StringUtil.ListToCsvString(AllowedDomains);
 
         [JsonIgnore]
         public List<string> AllowedDomains { get; set; }
@@ -59,11 +55,7 @@ namespace Vault.Models.Secret.Pki
         public int? KeyBits { get; set; }
 
         [JsonProperty("key_usage")]
-        private string _keyUsage
-        {
-            get { return StringUtil.ListToCsvString(KeyUsage); }
-            set { KeyUsage = StringUtil.CsvStringToList(value); }
-        }
+        private string _keyUsage => StringUtil.ListToCsvString(KeyUsage);
 
         [JsonIgnore]
         public List<string> KeyUsage { get; set; }

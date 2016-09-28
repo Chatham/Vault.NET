@@ -10,11 +10,7 @@ namespace Vault.Models.Secret.Pki
         public string CommonName { get; set; }
 
         [JsonProperty("alt_names")]
-        private string _altNames
-        {
-            get { return StringUtil.ListToCsvString(AltNames); }
-            set { AltNames = StringUtil.CsvStringToList(value); }
-        }
+        private string _altNames => StringUtil.ListToCsvString(AltNames);
 
         [JsonIgnore]
         public List<string> AltNames { get; set; }
@@ -33,6 +29,5 @@ namespace Vault.Models.Secret.Pki
 
         [JsonProperty("exclude_cn_from_sans")]
         public bool? ExcludeCnFromSans { get; set; }
-
     }
 }

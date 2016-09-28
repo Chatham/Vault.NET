@@ -110,6 +110,7 @@ namespace Vault.Tests.Secret
                 Assert.Equal($"CN={commonName}", x509Cert.SubjectName.Name);
             }
         }
+
         [Fact]
         public async Task SecretPki_BuildIntermediateCAChain_CanIssueCertificatesWithChain()
         {
@@ -121,8 +122,6 @@ namespace Vault.Tests.Secret
                 await client.Sys.Mount("pki1", new MountInfo { Type = "pki" });
                 await client.Sys.Mount("pki2", new MountInfo { Type = "pki" });
                 await client.Sys.Mount("pki3", new MountInfo { Type = "pki" });
-
-
 
                 var mountConfig = new MountConfig
                 {

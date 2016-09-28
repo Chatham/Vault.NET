@@ -10,21 +10,13 @@ namespace Vault.Models.Secret.Pki
         public string CommonName { get; set; }
 
         [JsonProperty("alt_names")]
-        private string _altNames
-        {
-            get { return StringUtil.ListToCsvString(AltNames); }
-            set { AltNames = StringUtil.CsvStringToList(value); }
-        }
+        private string _altNames => StringUtil.ListToCsvString(AltNames);
 
         [JsonIgnore]
         public List<string> AltNames { get; set; }
 
         [JsonProperty("ip_sans")]
-        private string _ipSans
-        {
-            get { return StringUtil.ListToCsvString(IpSans); }
-            set { IpSans = StringUtil.CsvStringToList(value); }
-        }
+        private string _ipSans => StringUtil.ListToCsvString(IpSans);
 
         [JsonIgnore]
         public List<string> IpSans;
