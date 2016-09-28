@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Vault.Models;
+using Vault.Models.Secret;
 
 namespace Vault.Endpoints
 {
@@ -13,8 +13,8 @@ namespace Vault.Endpoints
         Task<Secret<TData>> List<TData>(string path, CancellationToken ct);
         Task<Secret<TData>> Read<TData>(string path);
         Task<Secret<TData>> Read<TData>(string path, CancellationToken ct);
-        Task<Secret> Read(string path, TimeSpan wrapTTL);
-        Task<Secret> Read(string path, TimeSpan wrapTTL, CancellationToken ct);
+        Task<WrappedSecret> Read(string path, TimeSpan wrapTtl);
+        Task<WrappedSecret> Read(string path, TimeSpan wrapTtl, CancellationToken ct);
         Task<Secret<TData>> Unwrap<TData>(string unwrappingToken);
         Task<Secret<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct);
         Task Write<TParameters>(string path, TParameters data);

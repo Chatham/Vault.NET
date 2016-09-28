@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Vault.Models;
+using Vault.Models.Secret;
 
 namespace Vault.Endpoints
 {
@@ -32,14 +32,14 @@ namespace Vault.Endpoints
             return _client.Get<Secret<TData>>($"{UriBasePath}/{path}", token, ct);
         }
 
-        public Task<Secret> Read(string path, TimeSpan wrapTTL)
+        public Task<WrappedSecret> Read(string path, TimeSpan wrapTtl)
         {
-            return Read(path, wrapTTL, CancellationToken.None);
+            return Read(path, wrapTtl, CancellationToken.None);
         }
 
-        public Task<Secret> Read(string path, TimeSpan wrapTTL, CancellationToken ct)
+        public Task<WrappedSecret> Read(string path, TimeSpan wrapTtl, CancellationToken ct)
         {
-            return _client.Get<Secret>($"{UriBasePath}/{path}", wrapTTL, ct);
+            return _client.Get<WrappedSecret>($"{UriBasePath}/{path}", wrapTtl, ct);
         }
  
         public Task<Secret<TData>> List<TData>(string path)
@@ -89,11 +89,11 @@ namespace Vault.Endpoints
 
         public async Task<Secret<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct)
         {
-            var wrappedSecret = await Read<WrappedSecret>(WrappedResponseLocation, unwrappingToken, ct).ConfigureAwait(false);
+            var wrappedSecret = await Read<WrappedSecretData>(WrappedResponseLocation, unwrappingToken, ct).ConfigureAwait(false);
             return await Task.Run(() => JsonConvert.DeserializeObject<Secret<TData>>(wrappedSecret.Data.Response), ct).ConfigureAwait(false); ;
         }
 
-        internal class WrappedSecret
+        internal class WrappedSecretData
         {
             public string Response { get; set; }
         }

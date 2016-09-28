@@ -65,7 +65,6 @@ namespace Vault.Tests.Endpoint
                 var secret = await client.Secret.Read($"{mountPoint}/{secretPath}", TimeSpan.FromSeconds(120));
 
                 Assert.NotNull(secret);
-                Assert.Null(secret.Data);
                 Assert.NotNull(secret.WrapInfo);
 
                 var unwrappedSecret = await client.Secret.Unwrap<Dictionary<string, string>>(secret.WrapInfo.Token);
