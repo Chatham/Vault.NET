@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Vault.Models;
 
 namespace Vault.Endpoints.Sys
 {

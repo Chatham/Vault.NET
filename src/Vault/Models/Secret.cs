@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Vault.Endpoints
+namespace Vault.Models
 {
     public class Secret : Secret<object> { }
 
