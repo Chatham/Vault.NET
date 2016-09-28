@@ -38,7 +38,7 @@ namespace Vault.Endpoints
         public string Token { get; set; }
 
         [JsonProperty("ttl")]
-        public int TTL { get; set; }
+        public int Ttl { get; set; }
 
         [JsonProperty("creation_time")]
         public string CreationTime { get; set; }
