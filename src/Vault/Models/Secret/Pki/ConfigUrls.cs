@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Vault.Models.Secret.Pki
 {
-    public class PkiConfigUrls
+    public class ConfigUrls
     {
         [JsonProperty("issuing_certificates")]
         public List<string> IssuingCertificates { get; set; }

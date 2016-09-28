@@ -4,7 +4,7 @@ using Vault.Util;
 
 namespace Vault.Models.Secret.Pki
 {
-    public class PkiRoleRequest
+    public class RolesRequest
     {
         [JsonProperty("ttl")]
         public string Ttl { get; set; }

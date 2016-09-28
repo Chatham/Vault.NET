@@ -5,7 +5,7 @@ using Newtonsoft.Json.Converters;
 namespace Vault.Models.Secret.Pki
 {
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum CertificateType
+    public enum CertificateFormat
     {
         [EnumMember(Value = "pem")]
         Pem,

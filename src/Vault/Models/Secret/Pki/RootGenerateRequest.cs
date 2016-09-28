@@ -23,7 +23,7 @@ namespace Vault.Models.Secret.Pki
         public string Ttl { get; set; }
 
         [JsonProperty("format")]
-        public CertificateType? Format { get; set; }
+        public CertificateFormat? Format { get; set; }
 
         [JsonProperty("key_type")]
         public PrivateKeyType? KeyType { get; set; }

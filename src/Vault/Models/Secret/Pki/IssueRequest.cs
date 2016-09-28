@@ -33,7 +33,7 @@ namespace Vault.Models.Secret.Pki
         public int? Ttl { get; set; }
 
         [JsonProperty("format")]
-        public CertificateType? Format { get; set; }
+        public CertificateFormat? Format { get; set; }
 
         [JsonProperty("exclude_cn_from_sans")]
         public bool? ExcludeCnFromSans { get; set; }
