@@ -10,28 +10,27 @@ namespace Vault
     public class VaultClient : IVaultClient
     {
         private readonly VaultHttpClient _httpClient;
-        private readonly VaultClientConfiguration _config;
+        private readonly string _token;
+
+        public Uri Address { get; set; }
 
         private readonly object _lock = new object();
 
-        public VaultClient() : this(VaultClientConfiguration.Default)
-        {
-        }
-
-        public VaultClient(VaultClientConfiguration config)
+        public VaultClient(Uri address, string token)
         {
             _httpClient = new VaultHttpClient();
-            _config = config;
+            _token = token;
+            Address = address;
         }
 
         internal Task<T> Get<T>(string path, CancellationToken ct)
         {
-            return Get<T>(path, _config.Token, ct);
+            return Get<T>(path, _token, ct);
         }
 
         internal Task<T> Get<T>(string path, TimeSpan wrapTTL, CancellationToken ct)
         {
-            return Get<T>(path, _config.Token, wrapTTL, ct);
+            return Get<T>(path, _token, wrapTTL, ct);
         }
 
         internal Task<T> Get<T>(string path, string token, CancellationToken ct)
@@ -52,42 +51,42 @@ namespace Vault
         internal Task<T> List<T>(string path, TimeSpan wrapTTL, CancellationToken ct)
         {
             return _httpClient.Get<T>(BuildVaultUri(path, new NameValueCollection { { "list", "true" } }),
-                _config.Token, wrapTTL, ct);
+                _token, wrapTTL, ct);
         }
 
         internal Task<TO> Post<TI, TO>(string path, TI content, CancellationToken ct)
         {
-            return _httpClient.Post<TI, TO>(BuildVaultUri(path), content, _config.Token, ct);
+            return _httpClient.Post<TI, TO>(BuildVaultUri(path), content, _token, ct);
         }
 
         internal Task PostVoid<T>(string path, T content, CancellationToken ct)
         {
-            return _httpClient.PostVoid(BuildVaultUri(path), content, _config.Token, ct);
+            return _httpClient.PostVoid(BuildVaultUri(path), content, _token, ct);
         }
 
         internal Task PutVoid(string path, CancellationToken ct)
         {
-            return _httpClient.PutVoid(BuildVaultUri(path), _config.Token, ct);
+            return _httpClient.PutVoid(BuildVaultUri(path), _token, ct);
         }
 
         internal Task PutVoid<T>(string path, T content, CancellationToken ct)
         {
-            return _httpClient.PutVoid(BuildVaultUri(path), content, _config.Token, ct);
+            return _httpClient.PutVoid(BuildVaultUri(path), content, _token, ct);
         }
 
         internal Task<TO> Put<TI, TO>(string path, TI content, CancellationToken ct)
         {
-            return _httpClient.Put<TI, TO>(BuildVaultUri(path), content, _config.Token, ct);
+            return _httpClient.Put<TI, TO>(BuildVaultUri(path), content, _token, ct);
         }
 
         internal Task DeleteVoid(string path, CancellationToken ct)
         {
-            return _httpClient.DeleteVoid(BuildVaultUri(path), _config.Token, ct);
+            return _httpClient.DeleteVoid(BuildVaultUri(path), _token, ct);
         }
 
         private Uri BuildVaultUri(string path, NameValueCollection parameters = null)
         {
-            var uriBuilder = new UriBuilder(_config.Address)
+            var uriBuilder = new UriBuilder(Address)
             {
                 Path = path
             };

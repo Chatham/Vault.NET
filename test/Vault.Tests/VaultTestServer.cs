@@ -42,13 +42,7 @@ namespace Vault.Tests
                 throw new Exception($"Process could not be started: {_process.StandardError}");
             }
 
-            var config = new VaultClientConfiguration
-            {
-                Address = new UriBuilder(ListenAddress).Uri,
-                Token = RootToken
-            };
-
-            return new VaultClient(config);
+            return new VaultClient(new UriBuilder(ListenAddress).Uri, RootToken);
         }
 
         private static int GetRandomUnusedPort()
