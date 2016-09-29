@@ -4,15 +4,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Linq;
+using Vault.Endpoints;
+using Vault.Endpoints.Sys;
 
 namespace Vault
 {
     public class VaultClient : IVaultClient
     {
         private readonly VaultHttpClient _httpClient;
-        private readonly string _token;
+        private string _token;
 
         public Uri Address { get; set; }
+
+        public string Token
+        {
+            set { _token = value; }
+        }
 
         private readonly object _lock = new object();
 
@@ -99,8 +106,8 @@ namespace Vault
             return uriBuilder.Uri;
         }
 
-        private Endpoints.Sys.ISysEndpoint _sys;
-        public Endpoints.Sys.ISysEndpoint Sys
+        private ISysEndpoint _sys;
+        public ISysEndpoint Sys
         {
             get
             {
@@ -110,7 +117,7 @@ namespace Vault
                     {
                         if (_sys == null)
                         {
-                            _sys = new Endpoints.Sys.SysEndpoint(this);
+                            _sys = new SysEndpoint(this);
                         }
                     }
                 }
@@ -118,8 +125,8 @@ namespace Vault
             }
         }
 
-        private Endpoints.IEndpoint _secret;
-        public Endpoints.IEndpoint Secret
+        private IEndpoint _secret;
+        public IEndpoint Secret
         {
             get
             {
@@ -129,7 +136,7 @@ namespace Vault
                     {
                         if (_secret == null)
                         {
-                            _secret = new Endpoints.Endpoint(this);
+                            _secret = new Endpoint(this);
                         }
                     }
                 }
@@ -137,8 +144,8 @@ namespace Vault
             }
         }
 
-        private Endpoints.IEndpoint _auth;
-        public Endpoints.IEndpoint Auth
+        private IEndpoint _auth;
+        public IEndpoint Auth
         {
             get
             {
@@ -148,7 +155,7 @@ namespace Vault
                     {
                         if (_auth == null)
                         {
-                            _auth = new Endpoints.Endpoint(this, "auth");
+                            _auth = new Endpoint(this, "auth");
                         }
                     }
                 }
