@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Vault.Models.Auth.Token
 {
-    public class RolesResponse
+    public class RolesRequest
     {
         [JsonProperty("allowed_policies")]
         public List<string> AllowedPolicies { get; set; }
