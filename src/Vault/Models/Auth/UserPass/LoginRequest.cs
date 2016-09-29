@@ -1,6 +1,10 @@
-﻿namespace Vault.Models.Auth.UserPass
+﻿using Newtonsoft.Json;
+
+namespace Vault.Models.Auth.UserPass
 {
-    public class LoginRequest : UsersPasswordRequest
+    public class LoginRequest
     {
+        [JsonProperty("password")]
+        public string Password { get; set; }
     }
 }

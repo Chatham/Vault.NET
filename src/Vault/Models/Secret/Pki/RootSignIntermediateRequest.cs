@@ -2,11 +2,8 @@
 
 namespace Vault.Models.Secret.Pki
 {
-    public class RootSignIntermediateRequest : RootGenerateRequest
+    public class RootSignIntermediateRequest : SignRequest
     {
-        [JsonProperty("csr")]
-        public string Csr { get; set; }
-
         [JsonProperty("use_csr_values")]
         public bool? UseCsrValues { get; set; }
     }
