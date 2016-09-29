@@ -5,9 +5,9 @@ using Vault.Endpoints.Sys;
 using Vault.Models.Secret;
 using Xunit;
 
-namespace Vault.Tests.Endpoint
+namespace Vault.Tests.Secret
 {
-    public class SecretEndpointTests
+    public class GenericSecretTests
     {
         [Fact]
         public async Task GenericRead_NonExistentSecret_ReturnsNullData()

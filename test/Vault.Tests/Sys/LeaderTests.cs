@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Xunit;
 
-namespace Vault.Tests.Endpoint.Sys
+namespace Vault.Tests.Sys
 {
     public class LeaderTests
     {

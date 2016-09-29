@@ -5,7 +5,7 @@ using Vault.Models;
 using Vault.Models.Auth.UserPass;
 using Xunit;
 
-namespace Vault.Tests.Endpoint.Auth
+namespace Vault.Tests.Auth
 {
     public class UserPassTests
     {
