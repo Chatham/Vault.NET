@@ -88,5 +88,12 @@ namespace Vault.Endpoints.Sys
 
         Task StepDown();
         Task StepDown(CancellationToken ct);
+
+        Task<Dictionary<string, AuthMount>> ListAuth();
+        Task<Dictionary<string, AuthMount>> ListAuth(CancellationToken ct);
+        Task EnableAuth(string path, string authType, string description);
+        Task EnableAuth(string path, string authType, string description, CancellationToken ct);
+        Task DisableAuth(string path);
+        Task DisableAuth(string path, CancellationToken ct);
     }
 }

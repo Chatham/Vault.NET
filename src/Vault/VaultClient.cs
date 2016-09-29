@@ -119,8 +119,8 @@ namespace Vault
             }
         }
 
-        private Endpoints.ISecretEndpoint _secret;
-        public Endpoints.ISecretEndpoint Secret
+        private Endpoints.IEndpoint _secret;
+        public Endpoints.IEndpoint Secret
         {
             get
             {
@@ -130,11 +130,30 @@ namespace Vault
                     {
                         if (_secret == null)
                         {
-                            _secret = new Endpoints.SecretEndpoint(this);
+                            _secret = new Endpoints.Endpoint(this);
                         }
                     }
                 }
                 return _secret;
+            }
+        }
+
+        private Endpoints.IEndpoint _auth;
+        public Endpoints.IEndpoint Auth
+        {
+            get
+            {
+                if (_auth == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_auth == null)
+                        {
+                            _auth = new Endpoints.Endpoint(this, "auth");
+                        }
+                    }
+                }
+                return _auth;
             }
         }
 

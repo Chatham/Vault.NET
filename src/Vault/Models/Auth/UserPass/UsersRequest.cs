@@ -6,9 +6,6 @@ namespace Vault.Models.Auth.UserPass
 {
     public class UsersRequest
     {
-        [JsonProperty("username")]
-        public string Username { get; set; }
-
         [JsonProperty("password")]
         public string Password { get; set; }
 
