@@ -28,6 +28,10 @@ namespace Vault
             _httpClient = new VaultHttpClient();
             _token = token;
             Address = address;
+
+            _sys = new Lazy<ISysEndpoint>(() => new SysEndpoint(this));
+            _secret = new Lazy<IEndpoint>(() => new Endpoint(this));
+            _auth = new Lazy<IEndpoint>(() => new Endpoint(this, "auth"));
         }
 
         internal Task<T> Get<T>(string path, CancellationToken ct)
@@ -106,62 +110,13 @@ namespace Vault
             return uriBuilder.Uri;
         }
 
-        private ISysEndpoint _sys;
-        public ISysEndpoint Sys
-        {
-            get
-            {
-                if (_sys == null)
-                {
-                    lock (_lock)
-                    {
-                        if (_sys == null)
-                        {
-                            _sys = new SysEndpoint(this);
-                        }
-                    }
-                }
-                return _sys;
-            }
-        }
+        private readonly Lazy<ISysEndpoint> _sys;
+        public ISysEndpoint Sys => _sys.Value;
 
-        private IEndpoint _secret;
-        public IEndpoint Secret
-        {
-            get
-            {
-                if (_secret == null)
-                {
-                    lock (_lock)
-                    {
-                        if (_secret == null)
-                        {
-                            _secret = new Endpoint(this);
-                        }
-                    }
-                }
-                return _secret;
-            }
-        }
+        private readonly Lazy<IEndpoint> _secret;
+        public IEndpoint Secret => _secret.Value;
 
-        private IEndpoint _auth;
-        public IEndpoint Auth
-        {
-            get
-            {
-                if (_auth == null)
-                {
-                    lock (_lock)
-                    {
-                        if (_auth == null)
-                        {
-                            _auth = new Endpoint(this, "auth");
-                        }
-                    }
-                }
-                return _auth;
-            }
-        }
-
+        private readonly Lazy<IEndpoint> _auth;
+        public IEndpoint Auth => _auth.Value;
     }
 }
