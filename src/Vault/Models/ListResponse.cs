@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Vault.Models.Secret
+namespace Vault.Models
 {
     public class ListResponse
     {
