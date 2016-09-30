@@ -21,8 +21,6 @@ namespace Vault
             set { _token = value; }
         }
 
-        private readonly object _lock = new object();
-
         public VaultClient(Uri address, string token)
         {
             _httpClient = new VaultHttpClient();
