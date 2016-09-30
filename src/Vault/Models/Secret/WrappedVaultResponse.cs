@@ -2,7 +2,7 @@
 
 namespace Vault.Models.Secret
 {
-    public class WrappedSecret : SecretInfo
+    public class WrappedVaultResponse : VaultResponseInfo
     {
         [JsonProperty("wrap_info")]
         public SecretWrapInfo WrapInfo { get; set; }

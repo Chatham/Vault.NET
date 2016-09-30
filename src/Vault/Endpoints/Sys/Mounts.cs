@@ -29,14 +29,14 @@ namespace Vault.Endpoints.Sys
 
     public partial class SysEndpoint
     {
-        public Task<Secret<Dictionary<string, MountInfo>>> ListMounts()
+        public Task<VaultResponse<Dictionary<string, MountInfo>>> ListMounts()
         {
             return ListMounts(CancellationToken.None);
         }
 
-        public Task<Secret<Dictionary<string, MountInfo>>> ListMounts(CancellationToken ct)
+        public Task<VaultResponse<Dictionary<string, MountInfo>>> ListMounts(CancellationToken ct)
         {
-            return _client.Get< Secret<Dictionary<string, MountInfo>>>($"{UriPathBase}/mounts", ct);
+            return _client.Get< VaultResponse<Dictionary<string, MountInfo>>>($"{UriPathBase}/mounts", ct);
         }
 
         public Task Mount(string path, MountInfo mountInfo)

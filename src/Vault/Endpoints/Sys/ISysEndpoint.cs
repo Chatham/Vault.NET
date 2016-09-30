@@ -7,8 +7,8 @@ namespace Vault.Endpoints.Sys
 {
     public interface ISysEndpoint
     {
-        Task<Secret<Dictionary<string, MountInfo>>> ListMounts();
-        Task<Secret<Dictionary<string, MountInfo>>> ListMounts(CancellationToken ct);
+        Task<VaultResponse<Dictionary<string, MountInfo>>> ListMounts();
+        Task<VaultResponse<Dictionary<string, MountInfo>>> ListMounts(CancellationToken ct);
         Task Mount(string path, MountInfo mountInfo);
         Task Mount(string path, MountInfo mountInfo, CancellationToken ct);
         Task Unmount(string path);
@@ -46,10 +46,10 @@ namespace Vault.Endpoints.Sys
         Task<SealStatusResponse> ResetUnsealProcess();
         Task<SealStatusResponse> ResetUnsealProcess(CancellationToken ct);
 
-        Task<Secret<TData>> Renew<TData>(string leaseId);
-        Task<Secret<TData>> Renew<TData>(string leaseId, CancellationToken ct);
-        Task<Secret<TData>> Renew<TData>(string leaseId, int increment);
-        Task<Secret<TData>> Renew<TData>(string leaseId, int increment, CancellationToken ct);
+        Task<VaultResponse<TData>> Renew<TData>(string leaseId);
+        Task<VaultResponse<TData>> Renew<TData>(string leaseId, CancellationToken ct);
+        Task<VaultResponse<TData>> Renew<TData>(string leaseId, int increment);
+        Task<VaultResponse<TData>> Renew<TData>(string leaseId, int increment, CancellationToken ct);
         Task Revoke(string id);
         Task Revoke(string id, CancellationToken ct);
         Task RevokeForce(string id);

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Vault.Models
 {
-    public class SecretInfo
+    public class VaultResponseInfo
     {
         [JsonProperty("request_id")]
         public string RequestId { get; set; }

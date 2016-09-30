@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 
 namespace Vault.Models
 {
-    public class SecretWithoutData : Secret<object> { }
+    public class VaultResponseWithoutData : VaultResponse<object> { }
 
-    public class Secret<TData> : SecretInfo
+    public class VaultResponse<TData> : VaultResponseInfo
     {
         [JsonProperty("data")]
         public TData Data { get; set; }

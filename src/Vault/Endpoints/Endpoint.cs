@@ -25,39 +25,39 @@ namespace Vault.Endpoints
 
         }
 
-        public Task<Secret<TData>> Read<TData>(string path)
+        public Task<VaultResponse<TData>> Read<TData>(string path)
         {
             return Read<TData>(path, CancellationToken.None);
         }
 
-        public Task<Secret<TData>> Read<TData>(string path, CancellationToken ct)
+        public Task<VaultResponse<TData>> Read<TData>(string path, CancellationToken ct)
         {
-            return _client.Get<Secret<TData>>($"{_uriBasePath}/{path}", ct);
+            return _client.Get<VaultResponse<TData>>($"{_uriBasePath}/{path}", ct);
         }
 
-        private Task<Secret<TData>> Read<TData>(string path, string token, CancellationToken ct)
+        private Task<VaultResponse<TData>> Read<TData>(string path, string token, CancellationToken ct)
         {
-            return _client.Get<Secret<TData>>($"{_uriBasePath}/{path}", token, ct);
+            return _client.Get<VaultResponse<TData>>($"{_uriBasePath}/{path}", token, ct);
         }
 
-        public Task<WrappedSecret> Read(string path, TimeSpan wrapTtl)
+        public Task<WrappedVaultResponse> Read(string path, TimeSpan wrapTtl)
         {
             return Read(path, wrapTtl, CancellationToken.None);
         }
 
-        public Task<WrappedSecret> Read(string path, TimeSpan wrapTtl, CancellationToken ct)
+        public Task<WrappedVaultResponse> Read(string path, TimeSpan wrapTtl, CancellationToken ct)
         {
-            return _client.Get<WrappedSecret>($"{_uriBasePath}/{path}", wrapTtl, ct);
+            return _client.Get<WrappedVaultResponse>($"{_uriBasePath}/{path}", wrapTtl, ct);
         }
  
-        public Task<Secret<TData>> List<TData>(string path)
+        public Task<VaultResponse<TData>> List<TData>(string path)
         {
             return List<TData>(path, CancellationToken.None);
         }
 
-        public Task<Secret<TData>> List<TData>(string path, CancellationToken ct)
+        public Task<VaultResponse<TData>> List<TData>(string path, CancellationToken ct)
         {
-            return _client.List<Secret<TData>>($"{_uriBasePath}/{path}", ct);
+            return _client.List<VaultResponse<TData>>($"{_uriBasePath}/{path}", ct);
         }
 
         public Task Write<TParameters>(string path, TParameters data)
@@ -70,14 +70,14 @@ namespace Vault.Endpoints
             return _client.PutVoid($"{_uriBasePath}/{path}", data, ct);
         }
 
-        public Task<Secret<TData>>  Write<TParameters, TData>(string path, TParameters data)
+        public Task<VaultResponse<TData>>  Write<TParameters, TData>(string path, TParameters data)
         {
             return Write<TParameters, TData>(path, data, CancellationToken.None);
         }
 
-        public Task<Secret<TData>> Write<TParameters, TData>(string path, TParameters data, CancellationToken ct)
+        public Task<VaultResponse<TData>> Write<TParameters, TData>(string path, TParameters data, CancellationToken ct)
         {
-            return _client.Put<TParameters, Secret<TData>>($"{_uriBasePath}/{path}", data, ct);
+            return _client.Put<TParameters, VaultResponse<TData>>($"{_uriBasePath}/{path}", data, ct);
         }
 
         public Task Delete(string path)
@@ -90,15 +90,15 @@ namespace Vault.Endpoints
             return _client.DeleteVoid($"{_uriBasePath}/{path}", ct);
         }
 
-        public Task<Secret<TData>> Unwrap<TData>(string unwrappingToken)
+        public Task<VaultResponse<TData>> Unwrap<TData>(string unwrappingToken)
         {
             return Unwrap<TData>(unwrappingToken, CancellationToken.None);
         }
 
-        public async Task<Secret<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct)
+        public async Task<VaultResponse<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct)
         {
             var wrappedSecret = await Read<WrappedSecretData>(WrappedResponseLocation, unwrappingToken, ct).ConfigureAwait(false);
-            return await Task.Run(() => JsonConvert.DeserializeObject<Secret<TData>>(wrappedSecret.Data.Response), ct).ConfigureAwait(false); ;
+            return await Task.Run(() => JsonConvert.DeserializeObject<VaultResponse<TData>>(wrappedSecret.Data.Response), ct).ConfigureAwait(false); ;
         }
 
         internal class WrappedSecretData
