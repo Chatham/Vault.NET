@@ -37,9 +37,9 @@ namespace Vault
             return Get<T>(path, _token, ct);
         }
 
-        internal Task<T> Get<T>(string path, TimeSpan wrapTTL, CancellationToken ct)
+        internal Task<T> Get<T>(string path, TimeSpan wrapTtl, CancellationToken ct)
         {
-            return Get<T>(path, _token, wrapTTL, ct);
+            return Get<T>(path, _token, wrapTtl, ct);
         }
 
         internal Task<T> Get<T>(string path, string token, CancellationToken ct)
@@ -47,9 +47,9 @@ namespace Vault
             return Get<T>(path, token, TimeSpan.Zero, ct);
         }
 
-        private Task<T> Get<T>(string path, string token, TimeSpan wrapTTL, CancellationToken ct)
+        private Task<T> Get<T>(string path, string token, TimeSpan wrapTtl, CancellationToken ct)
         {
-            return _httpClient.Get<T>(BuildVaultUri(path), token, wrapTTL, ct);
+            return _httpClient.Get<T>(BuildVaultUri(path), token, wrapTtl, ct);
         }
 
         internal Task<T> List<T>(string path, CancellationToken ct)
@@ -57,10 +57,10 @@ namespace Vault
             return List<T>(path, TimeSpan.Zero, ct);
         }
 
-        internal Task<T> List<T>(string path, TimeSpan wrapTTL, CancellationToken ct)
+        internal Task<T> List<T>(string path, TimeSpan wrapTtl, CancellationToken ct)
         {
             return _httpClient.Get<T>(BuildVaultUri(path, new NameValueCollection { { "list", "true" } }),
-                _token, wrapTTL, ct);
+                _token, wrapTtl, ct);
         }
 
         internal Task<TO> Post<TI, TO>(string path, TI content, CancellationToken ct)
@@ -103,8 +103,7 @@ namespace Vault
             if (parameters == null) return uriBuilder.Uri;
 
             var dict = parameters.AllKeys.ToDictionary(t => t, t => parameters[t]);
-            uriBuilder.Query = QueryHelpers.AddQueryString(string.Empty, dict); ;
-
+            uriBuilder.Query = QueryHelpers.AddQueryString(string.Empty, dict);
             return uriBuilder.Uri;
         }
 

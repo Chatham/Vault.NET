@@ -98,7 +98,7 @@ namespace Vault.Endpoints
         public async Task<VaultResponse<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct)
         {
             var wrappedSecret = await Read<WrappedSecretData>(WrappedResponseLocation, unwrappingToken, ct).ConfigureAwait(false);
-            return await Task.Run(() => JsonConvert.DeserializeObject<VaultResponse<TData>>(wrappedSecret.Data.Response), ct).ConfigureAwait(false); ;
+            return await Task.Run(() => JsonConvert.DeserializeObject<VaultResponse<TData>>(wrappedSecret.Data.Response), ct).ConfigureAwait(false);
         }
 
         internal class WrappedSecretData
