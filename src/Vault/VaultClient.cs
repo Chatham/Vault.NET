@@ -27,9 +27,9 @@ namespace Vault
             _token = token;
             Address = address;
 
-            _sys = new Lazy<ISysEndpoint>(() => new SysEndpoint(this));
-            _secret = new Lazy<IEndpoint>(() => new Endpoint(this));
-            _auth = new Lazy<IEndpoint>(() => new Endpoint(this, "auth"));
+            _sys = new Lazy<ISysEndpoint>(() => new SysEndpoint(this), LazyThreadSafetyMode.PublicationOnly);
+            _secret = new Lazy<IEndpoint>(() => new Endpoint(this), LazyThreadSafetyMode.PublicationOnly);
+            _auth = new Lazy<IEndpoint>(() => new Endpoint(this, "auth"), LazyThreadSafetyMode.PublicationOnly);
         }
 
         internal Task<T> Get<T>(string path, CancellationToken ct)
