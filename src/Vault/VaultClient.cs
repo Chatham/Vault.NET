@@ -13,7 +13,7 @@ namespace Vault
     {
         private readonly VaultHttpClient _httpClient = new VaultHttpClient();
 
-        private const string DefaultAddress = "https:/127.0.0.1:8200";
+        private const string DefaultAddress = "https://127.0.0.1:8200";
         public Uri Address { get; set; }
 
         private string _token;
