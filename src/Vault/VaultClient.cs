@@ -11,19 +11,21 @@ namespace Vault
 {
     public class VaultClient : IVaultClient
     {
-        private readonly VaultHttpClient _httpClient;
-        private string _token;
+        private readonly VaultHttpClient _httpClient = new VaultHttpClient();
 
+        private const string DefaultAddress = "https:/127.0.0.1:8200";
         public Uri Address { get; set; }
 
+        private string _token;
         public string Token
         {
             set { _token = value; }
         }
 
+        public VaultClient() : this(new Uri(DefaultAddress), null) { }
+
         public VaultClient(Uri address, string token)
         {
-            _httpClient = new VaultHttpClient();
             _token = token;
             Address = address;
 
