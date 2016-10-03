@@ -70,6 +70,16 @@ namespace Vault.Endpoints
             return _client.PutVoid($"{_uriBasePath}/{path}", data, ct);
         }
 
+        public Task<VaultResponse<TData>> Write<TData>(string path)
+        {
+            return Write<TData>(path, CancellationToken.None);
+        }
+
+        public Task<VaultResponse<TData>> Write<TData>(string path, CancellationToken ct)
+        {
+            return _client.Put<VaultResponse<TData>>($"{_uriBasePath}/{path}", ct);
+        }
+
         public Task<VaultResponse<TData>>  Write<TParameters, TData>(string path, TParameters data)
         {
             return Write<TParameters, TData>(path, data, CancellationToken.None);

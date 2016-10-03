@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Vault.Endpoints.Sys;
+using Vault.Models;
 using Vault.Models.Secret;
 using Xunit;
 

@@ -13,6 +13,15 @@ namespace Vault
     {
         private readonly VaultHttpClient _httpClient = new VaultHttpClient();
 
+        private readonly Lazy<ISysEndpoint> _sys;
+        public ISysEndpoint Sys => _sys.Value;
+
+        private readonly Lazy<IEndpoint> _secret;
+        public IEndpoint Secret => _secret.Value;
+
+        private readonly Lazy<IEndpoint> _auth;
+        public IEndpoint Auth => _auth.Value;
+
         private const string DefaultAddress = "https://127.0.0.1:8200";
         public Uri Address { get; set; }
 
@@ -85,6 +94,11 @@ namespace Vault
             return _httpClient.PutVoid(BuildVaultUri(path), content, _token, ct);
         }
 
+        internal Task<TO> Put<TO>(string path, CancellationToken ct)
+        {
+            return _httpClient.Put<TO>(BuildVaultUri(path), _token, ct);
+        }
+
         internal Task<TO> Put<TI, TO>(string path, TI content, CancellationToken ct)
         {
             return _httpClient.Put<TI, TO>(BuildVaultUri(path), content, _token, ct);
@@ -108,14 +122,5 @@ namespace Vault
             uriBuilder.Query = QueryHelpers.AddQueryString(string.Empty, dict);
             return uriBuilder.Uri;
         }
-
-        private readonly Lazy<ISysEndpoint> _sys;
-        public ISysEndpoint Sys => _sys.Value;
-
-        private readonly Lazy<IEndpoint> _secret;
-        public IEndpoint Secret => _secret.Value;
-
-        private readonly Lazy<IEndpoint> _auth;
-        public IEndpoint Auth => _auth.Value;
     }
 }

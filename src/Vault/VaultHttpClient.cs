@@ -47,6 +47,11 @@ namespace Vault
             await HttpRequestVoid(HttpMethod.Put, uri, httpContent, vaultToken, ct).ConfigureAwait(false);
         }
 
+        public async Task<T> Put<T>(Uri uri, string vaultToken, CancellationToken ct)
+        {
+            return await HttpRequest<T>(HttpMethod.Put, uri, null, vaultToken, ct).ConfigureAwait(false);
+        }
+
         public async Task<TO> Put<TI, TO>(Uri uri, TI content, string vaultToken, CancellationToken ct)
         {
             var httpContent = await JsonSerialize(content, ct).ConfigureAwait(false);

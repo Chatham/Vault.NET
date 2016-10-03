@@ -20,6 +20,8 @@ namespace Vault.Endpoints
         Task<VaultResponse<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct);
         Task Write<TParameters>(string path, TParameters data);
         Task Write<TParameters>(string path, TParameters data, CancellationToken ct);
+        Task<VaultResponse<TData>> Write<TData>(string path);
+        Task<VaultResponse<TData>> Write<TData>(string path, CancellationToken ct);
         Task<VaultResponse<TData>> Write<TParameters, TData>(string path, TParameters data);
         Task<VaultResponse<TData>> Write<TParameters, TData>(string path, TParameters data, CancellationToken ct);
     }
