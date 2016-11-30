@@ -11,7 +11,7 @@ namespace Vault
 {
     public class VaultClient : IVaultClient
     {
-        private readonly VaultHttpClient _httpClient = new VaultHttpClient();
+        private readonly IVaultHttpClient _httpClient;
 
         private readonly Lazy<ISysEndpoint> _sys;
         public ISysEndpoint Sys => _sys.Value;
@@ -33,8 +33,11 @@ namespace Vault
 
         public VaultClient() : this(new Uri(DefaultAddress), null) { }
 
-        public VaultClient(Uri address, string token)
+        public VaultClient(Uri address, string token) : this(new VaultHttpClient(), address, token) { }
+
+        public VaultClient(IVaultHttpClient httpClient, Uri address, string token)
         {
+            _httpClient = httpClient;
             _token = token;
             Address = address;
 
