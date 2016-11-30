@@ -7,12 +7,7 @@ namespace Vault.Endpoints.Sys
 {
     public partial class SysEndpoint
     {
-        public Task<VaultResponse<TData>> Renew<TData>(string leaseId, int increment)
-        {
-            return Renew<TData>(leaseId, increment, CancellationToken.None);
-        }
-
-        public Task<VaultResponse<TData>> Renew<TData>(string leaseId, int increment, CancellationToken ct)
+        public Task<VaultResponse<TData>> Renew<TData>(string leaseId, int increment, CancellationToken ct = default(CancellationToken))
         {
             var request = new RenewRequest
             {
@@ -22,12 +17,7 @@ namespace Vault.Endpoints.Sys
             return _client.Put<RenewRequest, VaultResponse<TData>>($"{UriPathBase}/renew", request, ct);
         }
 
-        public Task<VaultResponse<TData>> Renew<TData>(string leaseId)
-        {
-            return Renew<TData>(leaseId, CancellationToken.None);
-        }
-
-        public Task<VaultResponse<TData>> Renew<TData>(string leaseId, CancellationToken ct)
+        public Task<VaultResponse<TData>> Renew<TData>(string leaseId, CancellationToken ct = default(CancellationToken))
         {
             var request = new RenewRequest
             {
@@ -36,32 +26,17 @@ namespace Vault.Endpoints.Sys
             return _client.Put<RenewRequest, VaultResponse<TData>>($"{UriPathBase}/renew", request, ct);
         }
 
-        public Task Revoke(string id)
-        {
-            return Revoke(id, CancellationToken.None);
-        }
-
-        public Task Revoke(string id, CancellationToken ct)
+        public Task Revoke(string id, CancellationToken ct = default(CancellationToken))
         {
             return _client.PutVoid($"{UriPathBase}/revoke/{id}", ct);
         }
 
-        public Task RevokePrefix(string id)
-        {
-            return RevokePrefix(id, CancellationToken.None);
-        }
-
-        public Task RevokePrefix(string id, CancellationToken ct)
+        public Task RevokePrefix(string id, CancellationToken ct = default(CancellationToken))
         {
             return _client.PutVoid($"{UriPathBase}/revoke-prefix/{id}", ct);
         }
 
-        public Task RevokeForce(string id)
-        {
-            return RevokeForce(id, CancellationToken.None);
-        }
-
-        public Task RevokeForce(string id, CancellationToken ct)
+        public Task RevokeForce(string id, CancellationToken ct = default(CancellationToken))
         {
             return _client.PutVoid($"{UriPathBase}/revoke-force/{id}", ct);
         }

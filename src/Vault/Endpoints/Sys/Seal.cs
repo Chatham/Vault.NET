@@ -30,32 +30,17 @@ namespace Vault.Endpoints.Sys
 
     public partial class SysEndpoint
     {
-        public Task<SealStatusResponse> SealStatus()
-        {
-            return SealStatus(CancellationToken.None);
-        }
-
-        public Task<SealStatusResponse> SealStatus(CancellationToken ct)
+        public Task<SealStatusResponse> SealStatus(CancellationToken ct = default(CancellationToken))
         {
             return _client.Get<SealStatusResponse>($"${UriPathBase}/seal-status", ct);
         }
 
-        public Task Seal()
-        {
-            return Seal(CancellationToken.None);
-        }
-
-        public Task Seal(CancellationToken ct)
+        public Task Seal(CancellationToken ct = default(CancellationToken))
         {
             return _client.PutVoid($"{UriPathBase}/seal", ct);
         }
 
-        public Task<SealStatusResponse> Unseal(string shard)
-        {
-            return Unseal(shard, CancellationToken.None);
-        }
-
-        public Task<SealStatusResponse> Unseal(string shard, CancellationToken ct)
+        public Task<SealStatusResponse> Unseal(string shard, CancellationToken ct = default(CancellationToken))
         {
             var unsealRequest = new UnsealRequest
             {
@@ -65,12 +50,7 @@ namespace Vault.Endpoints.Sys
             return _client.Put<UnsealRequest, SealStatusResponse>($"{UriPathBase}/unseal", unsealRequest, ct);
         }
 
-        public Task<SealStatusResponse> ResetUnsealProcess()
-        {
-            return ResetUnsealProcess(CancellationToken.None);
-        }
-
-        public Task<SealStatusResponse> ResetUnsealProcess(CancellationToken ct)
+        public Task<SealStatusResponse> ResetUnsealProcess(CancellationToken ct = default(CancellationToken))
         {
             return _client.Put<ResetUnsealProcessRequest, SealStatusResponse>($"{UriPathBase}/unseal",
                 new ResetUnsealProcessRequest {Reset = true}, ct);

@@ -19,9 +19,9 @@ namespace Vault
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public Task<T> Get<T>(Uri uri, string vaultToken, TimeSpan wrapTTL, CancellationToken ct)
+        public Task<T> Get<T>(Uri uri, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
         {
-            return HttpRequest<T>(HttpMethod.Get, uri, null, vaultToken, wrapTTL, ct);
+            return HttpRequest<T>(HttpMethod.Get, uri, null, vaultToken, wrapTtl, ct);
         }
 
         public async Task PostVoid<T>(Uri uri, T content, string vaultToken, CancellationToken ct)

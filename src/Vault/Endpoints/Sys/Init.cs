@@ -37,23 +37,13 @@ namespace Vault.Endpoints.Sys
 
     public partial class SysEndpoint
     {
-        public Task<bool> InitStatus()
-        {
-            return InitStatus(CancellationToken.None);
-        }
-
-        public async Task<bool> InitStatus(CancellationToken ct)
+        public async Task<bool> InitStatus(CancellationToken ct = default(CancellationToken))
         {
             var result = await _client.Get<InitStatusResponse>($"{UriPathBase}/init", ct);
             return result.Initialized;
         }
 
-        public Task<InitResponse> Init(InitRequest request)
-        {
-            return Init(request, CancellationToken.None);
-        }
-
-        public Task<InitResponse> Init(InitRequest request, CancellationToken ct)
+        public Task<InitResponse> Init(InitRequest request, CancellationToken ct = default(CancellationToken))
         {
             return _client.Put<InitRequest, InitResponse>($"{UriPathBase}/init", request, ct);
         }

@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Vault.Models;
-using Vault.Models.Secret;
 
 namespace Vault.Endpoints
 {
@@ -25,87 +24,47 @@ namespace Vault.Endpoints
 
         }
 
-        public Task<VaultResponse<TData>> Read<TData>(string path)
-        {
-            return Read<TData>(path, CancellationToken.None);
-        }
-
-        public Task<VaultResponse<TData>> Read<TData>(string path, CancellationToken ct)
+        public Task<VaultResponse<TData>> Read<TData>(string path, CancellationToken ct = default(CancellationToken))
         {
             return _client.Get<VaultResponse<TData>>($"{_uriBasePath}/{path}", ct);
         }
 
-        private Task<VaultResponse<TData>> Read<TData>(string path, string token, CancellationToken ct)
+        private Task<VaultResponse<TData>> Read<TData>(string path, string token, CancellationToken ct = default(CancellationToken))
         {
             return _client.Get<VaultResponse<TData>>($"{_uriBasePath}/{path}", token, ct);
         }
 
-        public Task<WrappedVaultResponse> Read(string path, TimeSpan wrapTtl)
-        {
-            return Read(path, wrapTtl, CancellationToken.None);
-        }
-
-        public Task<WrappedVaultResponse> Read(string path, TimeSpan wrapTtl, CancellationToken ct)
+        public Task<WrappedVaultResponse> Read(string path, TimeSpan wrapTtl, CancellationToken ct = default(CancellationToken))
         {
             return _client.Get<WrappedVaultResponse>($"{_uriBasePath}/{path}", wrapTtl, ct);
         }
  
-        public Task<VaultResponse<TData>> List<TData>(string path)
-        {
-            return List<TData>(path, CancellationToken.None);
-        }
-
-        public Task<VaultResponse<TData>> List<TData>(string path, CancellationToken ct)
+        public Task<VaultResponse<TData>> List<TData>(string path, CancellationToken ct = default(CancellationToken))
         {
             return _client.List<VaultResponse<TData>>($"{_uriBasePath}/{path}", ct);
         }
 
-        public Task Write<TParameters>(string path, TParameters data)
-        {
-            return Write(path, data, CancellationToken.None);
-        }
-
-        public Task Write<TParameters>(string path, TParameters data, CancellationToken ct)
+        public Task Write<TParameters>(string path, TParameters data, CancellationToken ct = default(CancellationToken))
         {
             return _client.PutVoid($"{_uriBasePath}/{path}", data, ct);
         }
 
-        public Task<VaultResponse<TData>> Write<TData>(string path)
-        {
-            return Write<TData>(path, CancellationToken.None);
-        }
-
-        public Task<VaultResponse<TData>> Write<TData>(string path, CancellationToken ct)
+        public Task<VaultResponse<TData>> Write<TData>(string path, CancellationToken ct = default(CancellationToken))
         {
             return _client.Put<VaultResponse<TData>>($"{_uriBasePath}/{path}", ct);
         }
 
-        public Task<VaultResponse<TData>>  Write<TParameters, TData>(string path, TParameters data)
-        {
-            return Write<TParameters, TData>(path, data, CancellationToken.None);
-        }
-
-        public Task<VaultResponse<TData>> Write<TParameters, TData>(string path, TParameters data, CancellationToken ct)
+        public Task<VaultResponse<TData>> Write<TParameters, TData>(string path, TParameters data, CancellationToken ct = default(CancellationToken))
         {
             return _client.Put<TParameters, VaultResponse<TData>>($"{_uriBasePath}/{path}", data, ct);
         }
 
-        public Task Delete(string path)
-        {
-            return Delete(path, CancellationToken.None);
-        }
-
-        public Task Delete(string path, CancellationToken ct)
+        public Task Delete(string path, CancellationToken ct = default(CancellationToken))
         {
             return _client.DeleteVoid($"{_uriBasePath}/{path}", ct);
         }
 
-        public Task<VaultResponse<TData>> Unwrap<TData>(string unwrappingToken)
-        {
-            return Unwrap<TData>(unwrappingToken, CancellationToken.None);
-        }
-
-        public async Task<VaultResponse<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct)
+        public async Task<VaultResponse<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct = default(CancellationToken))
         {
             var wrappedSecret = await Read<WrappedSecretData>(WrappedResponseLocation, unwrappingToken, ct).ConfigureAwait(false);
             return await Task.Run(() => JsonConvert.DeserializeObject<VaultResponse<TData>>(wrappedSecret.Data.Response), ct).ConfigureAwait(false);

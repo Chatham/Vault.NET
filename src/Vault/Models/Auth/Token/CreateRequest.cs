@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using Vault.Util;
 
 namespace Vault.Models.Auth.Token
 {

@@ -7,12 +7,7 @@ namespace Vault.Endpoints.Sys
 {
     public partial class SysEndpoint
     {
-        public Task<List<string>> CapabilitiesSelf(string path)
-        {
-            return CapabilitiesSelf(path, CancellationToken.None);
-        }
-
-        public async Task<List<string>> CapabilitiesSelf(string path, CancellationToken ct)
+        public async Task<List<string>> CapabilitiesSelf(string path, CancellationToken ct = default(CancellationToken))
         {
             var request = new CapabilitiesRequest
             {
@@ -23,12 +18,7 @@ namespace Vault.Endpoints.Sys
             return response.Capabilities;
         }
 
-        public Task<List<string>> Capabilities(string token, string path)
-        {
-            return Capabilities(token, path, CancellationToken.None);
-        }
-
-        public async Task<List<string>> Capabilities(string token, string path, CancellationToken ct)
+        public async Task<List<string>> Capabilities(string token, string path, CancellationToken ct = default(CancellationToken))
         {
             var request = new CapabilitiesRequest
             {

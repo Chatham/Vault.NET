@@ -27,22 +27,12 @@ namespace Vault.Endpoints.Sys
 
     public partial class SysEndpoint
     {
-        public Task<GenerateRootStatusResponse> GenerateRootStatus()
-        {
-            return GenerateRootStatus(CancellationToken.None);
-        }
-
-        public Task<GenerateRootStatusResponse> GenerateRootStatus(CancellationToken ct)
+        public Task<GenerateRootStatusResponse> GenerateRootStatus(CancellationToken ct = default(CancellationToken))
         {
             return _client.Get<GenerateRootStatusResponse>($"{UriPathBase}/generate-root/attempt", ct);
         }
 
-        public Task<GenerateRootStatusResponse> GenerateRootInit(string otp, string pgpKey)
-        {
-            return GenerateRootInit(otp, pgpKey, CancellationToken.None);
-        }
-
-        public Task<GenerateRootStatusResponse> GenerateRootInit(string otp, string pgpKey, CancellationToken ct)
+        public Task<GenerateRootStatusResponse> GenerateRootInit(string otp, string pgpKey, CancellationToken ct = default(CancellationToken))
         {
             var request = new GenerateRootInitRequest
             {
@@ -52,25 +42,16 @@ namespace Vault.Endpoints.Sys
 
             return
                 _client.Put<GenerateRootInitRequest, GenerateRootStatusResponse>(
-                    $"{UriPathBase}/generate-root/attempt", request, CancellationToken.None);
+                    $"{UriPathBase}/generate-root/attempt", request, ct);
         }
 
-        public Task GenerateRootCancel()
-        {
-            return GenerateRootCancel(CancellationToken.None);
-        }
-
-        public Task GenerateRootCancel(CancellationToken ct)
+        public Task GenerateRootCancel(CancellationToken ct = default(CancellationToken))
         {
             return _client.DeleteVoid($"{UriPathBase}/generate-root/attempt", ct);
         }
 
-        public Task<GenerateRootStatusResponse> GenerateRootUpdate(string shard, string nonce)
-        {
-            return GenerateRootUpdate(shard, nonce, CancellationToken.None);
-        }
-
-        public Task<GenerateRootStatusResponse> GenerateRootUpdate(string shard, string nonce, CancellationToken ct)
+        public Task<GenerateRootStatusResponse> GenerateRootUpdate(string shard, string nonce, 
+            CancellationToken ct = default(CancellationToken))
         {
             var request = new GenerateRootUpdateRequest
             {

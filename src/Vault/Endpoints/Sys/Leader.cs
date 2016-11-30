@@ -18,12 +18,7 @@ namespace Vault.Endpoints.Sys
 
     public partial class SysEndpoint
     {
-        public Task<LeaderResponse> Leader()
-        {
-            return Leader(CancellationToken.None);
-        }
-
-        public Task<LeaderResponse> Leader(CancellationToken ct)
+        public Task<LeaderResponse> Leader(CancellationToken ct = default(CancellationToken))
         {
             return _client.Get<LeaderResponse>($"{UriPathBase}/leader", ct);
         }

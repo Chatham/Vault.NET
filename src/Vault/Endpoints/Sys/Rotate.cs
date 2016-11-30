@@ -15,22 +15,12 @@ namespace Vault.Endpoints.Sys
 
     public partial class SysEndpoint
     {
-        public Task Rotate()
-        {
-            return Rotate(CancellationToken.None);
-        }
-
-        public Task Rotate(CancellationToken ct)
+        public Task Rotate(CancellationToken ct = default(CancellationToken))
         {
             return _client.PutVoid($"{UriPathBase}/rotate", ct);
         }
 
-        public Task<KeyStatus> KeyStatus()
-        {
-            return KeyStatus(CancellationToken.None);
-        }
-
-        public Task<KeyStatus> KeyStatus(CancellationToken ct)
+        public Task<KeyStatus> KeyStatus(CancellationToken ct = default(CancellationToken))
         {
             return _client.Get<KeyStatus>($"{UriPathBase}/key-status", ct);
         }

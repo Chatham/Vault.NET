@@ -29,42 +29,22 @@ namespace Vault.Endpoints.Sys
 
     public partial class SysEndpoint
     {
-        public Task<VaultResponse<Dictionary<string, MountInfo>>> ListMounts()
-        {
-            return ListMounts(CancellationToken.None);
-        }
-
-        public Task<VaultResponse<Dictionary<string, MountInfo>>> ListMounts(CancellationToken ct)
+        public Task<VaultResponse<Dictionary<string, MountInfo>>> ListMounts(CancellationToken ct = default(CancellationToken))
         {
             return _client.Get< VaultResponse<Dictionary<string, MountInfo>>>($"{UriPathBase}/mounts", ct);
         }
 
-        public Task Mount(string path, MountInfo mountInfo)
-        {
-            return Mount(path, mountInfo, CancellationToken.None);
-        }
-
-        public Task Mount(string path, MountInfo mountInfo, CancellationToken ct)
+        public Task Mount(string path, MountInfo mountInfo, CancellationToken ct = default(CancellationToken))
         {
             return _client.PostVoid($"{UriPathBase}/mounts/{path}", mountInfo, ct);
         }
 
-        public Task Unmount(string path)
-        {
-            return Unmount(path, CancellationToken.None);
-        }
-
-        public Task Unmount(string path, CancellationToken ct)
+        public Task Unmount(string path, CancellationToken ct = default(CancellationToken))
         {
             return _client.DeleteVoid($"{UriPathBase}/mounts/{path}", ct);
         }
 
-        public Task Remount(string from, string to)
-        {
-            return Remount(from, to, CancellationToken.None);
-        }
-
-        public Task Remount(string from, string to, CancellationToken ct)
+        public Task Remount(string from, string to, CancellationToken ct = default(CancellationToken))
         {
             var request = new RemountRequest
             {
@@ -74,22 +54,12 @@ namespace Vault.Endpoints.Sys
             return _client.PutVoid($"{UriPathBase}/remount", request, ct);
         }
 
-        public Task TuneMount(string path, MountConfig mountConfig)
-        {
-            return TuneMount(path, mountConfig, CancellationToken.None);
-        }
-
-        public Task TuneMount(string path, MountConfig mountConfig, CancellationToken ct)
+        public Task TuneMount(string path, MountConfig mountConfig, CancellationToken ct = default(CancellationToken))
         {
             return _client.PostVoid($"{UriPathBase}/mounts/{path}/tune", mountConfig, ct);
         }
 
-        public Task<MountConfig> MountConfig(string path)
-        {
-            return MountConfig(path, CancellationToken.None);
-        }
-
-        public Task<MountConfig> MountConfig(string path, CancellationToken ct)
+        public Task<MountConfig> MountConfig(string path, CancellationToken ct = default(CancellationToken))
         {
             return _client.Get<MountConfig>($"{UriPathBase}/mounts/{path}/tune", ct);
         }

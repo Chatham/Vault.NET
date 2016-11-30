@@ -70,72 +70,37 @@ namespace Vault.Endpoints.Sys
 
     public partial class SysEndpoint
     {
-        public Task<RekeyStatusResponse> RekeyStatus()
-        {
-            return RekeyStatus(CancellationToken.None);
-        }
-
-        public Task<RekeyStatusResponse> RekeyStatus(CancellationToken ct)
+        public Task<RekeyStatusResponse> RekeyStatus(CancellationToken ct = default(CancellationToken))
         {
             return _client.Get<RekeyStatusResponse>($"{UriPathBase}/rekey/init", ct);
         }
 
-        public Task<RekeyStatusResponse> RekeyRecoveryKeyStatus()
-        {
-            return RekeyRecoveryKeyStatus(CancellationToken.None);
-        }
-
-        public Task<RekeyStatusResponse> RekeyRecoveryKeyStatus(CancellationToken ct)
+        public Task<RekeyStatusResponse> RekeyRecoveryKeyStatus(CancellationToken ct = default(CancellationToken))
         {
             return _client.Get<RekeyStatusResponse>($"{UriPathBase}/rekey-recovery-key/init", ct);
         }
 
-        public Task<RekeyStatusResponse> RekeyInit(RekeyInitRequest config)
-        {
-            return RekeyInit(config, CancellationToken.None);
-        }
-
-        public Task<RekeyStatusResponse> RekeyInit(RekeyInitRequest config, CancellationToken ct)
+        public Task<RekeyStatusResponse> RekeyInit(RekeyInitRequest config, CancellationToken ct = default(CancellationToken))
         {
             return _client.Put<RekeyInitRequest, RekeyStatusResponse>($"{UriPathBase}/rekey/init", config, ct);
         }
 
-        public Task<RekeyStatusResponse> RekeyRecoveryKeyInit(RekeyInitRequest config)
-        {
-            return RekeyRecoveryKeyInit(config, CancellationToken.None);
-        }
-
-        public Task<RekeyStatusResponse> RekeyRecoveryKeyInit(RekeyInitRequest config, CancellationToken ct)
+        public Task<RekeyStatusResponse> RekeyRecoveryKeyInit(RekeyInitRequest config, CancellationToken ct = default(CancellationToken))
         {
             return _client.Put<RekeyInitRequest, RekeyStatusResponse>($"{UriPathBase}/rekey-recovery-key/init", config, ct);
         }
 
-        public Task RekeyCancel()
-        {
-            return RekeyCancel(CancellationToken.None);
-        }
-
-        public Task RekeyCancel(CancellationToken ct)
+        public Task RekeyCancel(CancellationToken ct = default(CancellationToken))
         {
             return _client.DeleteVoid($"{UriPathBase}/rekey/init", ct);
         }
 
-        public Task RekeyRecoveryKeyCancel()
-        {
-            return RekeyRecoveryKeyCancel(CancellationToken.None);
-        }
-
-        public Task RekeyRecoveryKeyCancel(CancellationToken ct)
+        public Task RekeyRecoveryKeyCancel(CancellationToken ct = default(CancellationToken))
         {
             return _client.DeleteVoid($"{UriPathBase}/rekey-recovery-key/init", ct);
         }
 
-        public Task<RekeyUpdateResponse> RekeyUpdate(string shard, string nonce)
-        {
-            return RekeyUpdate(shard, nonce, CancellationToken.None);
-        }
-
-        public Task<RekeyUpdateResponse> RekeyUpdate(string shard, string nonce, CancellationToken ct)
+        public Task<RekeyUpdateResponse> RekeyUpdate(string shard, string nonce, CancellationToken ct = default(CancellationToken))
         {
             var request = new RekeyUpdateRequest
             {
