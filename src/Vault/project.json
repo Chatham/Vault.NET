@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "0.6.2-*",
 
   "dependencies": {
     "Microsoft.AspNetCore.WebUtilities": "1.0.0",
