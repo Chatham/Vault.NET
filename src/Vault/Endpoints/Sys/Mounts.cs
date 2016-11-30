@@ -31,7 +31,7 @@ namespace Vault.Endpoints.Sys
     {
         public Task<VaultResponse<Dictionary<string, MountInfo>>> ListMounts(CancellationToken ct = default(CancellationToken))
         {
-            return _client.Get< VaultResponse<Dictionary<string, MountInfo>>>($"{UriPathBase}/mounts", ct);
+            return _client.Get<VaultResponse<Dictionary<string, MountInfo>>>($"{UriPathBase}/mounts", ct);
         }
 
         public Task Mount(string path, MountInfo mountInfo, CancellationToken ct = default(CancellationToken))
