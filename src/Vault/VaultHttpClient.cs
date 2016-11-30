@@ -19,9 +19,9 @@ namespace Vault
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public Task<T> Get<T>(Uri uri, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
+        public Task<T> Get<T>(Uri uri, string vaultToken, CancellationToken ct)
         {
-            return HttpRequest<T>(HttpMethod.Get, uri, null, vaultToken, wrapTtl, ct);
+            return HttpRequest<T>(HttpMethod.Get, uri, null, vaultToken, ct);
         }
 
         public async Task PostVoid<T>(Uri uri, T content, string vaultToken, CancellationToken ct)
@@ -68,17 +68,13 @@ namespace Vault
             return await HttpRequest<T>(HttpMethod.Delete, uri, null, vaultToken, ct).ConfigureAwait(false);
         }
 
-        private static Task<HttpResponseMessage> HttpSendRequest(HttpMethod method, Uri uri, string body, string vaultToken, TimeSpan wrapTTL, CancellationToken ct)
+        private static Task<HttpResponseMessage> HttpSendRequest(HttpMethod method, Uri uri, string body, string vaultToken, CancellationToken ct)
         {
             var requestMessage = new HttpRequestMessage(method, uri);
 
             if (vaultToken != null)
             {
                 requestMessage.Headers.Add("X-Vault-Token", vaultToken);
-            }
-            if (wrapTTL != TimeSpan.Zero)
-            {
-                requestMessage.Headers.Add("X-Vault-Wrap-TTL", $"{(int)wrapTTL.TotalSeconds}");
             }
             if (body != null)
             {
@@ -90,7 +86,7 @@ namespace Vault
 
         private static async Task HttpRequestVoid(HttpMethod method, Uri uri, string body, string vaultToken, CancellationToken ct)
         {
-            using (var r = await HttpSendRequest(method, uri, body, vaultToken, TimeSpan.Zero, ct))
+            using (var r = await HttpSendRequest(method, uri, body, vaultToken, ct))
             {
                 if (r.StatusCode != HttpStatusCode.NotFound && !r.IsSuccessStatusCode)
                 {
@@ -103,12 +99,7 @@ namespace Vault
 
         private static async Task<T> HttpRequest<T>(HttpMethod method, Uri uri, string body, string vaultToken, CancellationToken ct)
         {
-            return await HttpRequest<T>(method, uri, body, vaultToken, TimeSpan.Zero, ct).ConfigureAwait(false);
-        }
-
-        private static async Task<T> HttpRequest<T>(HttpMethod method, Uri uri, string body, string vaultToken, TimeSpan wrapTTL, CancellationToken ct)
-        {
-            using (var r = await HttpSendRequest(method, uri, body, vaultToken, wrapTTL, ct))
+            using (var r = await HttpSendRequest(method, uri, body, vaultToken, ct))
             {
                 if (r.StatusCode != HttpStatusCode.NotFound && !r.IsSuccessStatusCode)
                 {

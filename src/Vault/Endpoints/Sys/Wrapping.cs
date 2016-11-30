@@ -26,14 +26,14 @@ namespace Vault.Endpoints.Sys
             return _client.Post<WrappingTokenRequest, WrappingLookupResponse>($"{UriPathBase}/wrapping/lookup", request, ct);
         }
 
-        public Task<SecretWrapInfo> Rewrap(string token, CancellationToken ct = default(CancellationToken))
+        public Task<WrappedVaultResponse> Rewrap(string token, CancellationToken ct = default(CancellationToken))
         {
             var request = new WrappingTokenRequest
             {
                 Token = token
             };
 
-            return _client.Post<WrappingTokenRequest, SecretWrapInfo>($"{UriPathBase}/wrapping/rewrap", request, ct);
+            return _client.Post<WrappingTokenRequest, WrappedVaultResponse>($"{UriPathBase}/wrapping/rewrap", request, ct);
         }
 
         public Task<T> Unwrap<T>(string token, CancellationToken ct = default(CancellationToken))
@@ -46,9 +46,9 @@ namespace Vault.Endpoints.Sys
             return _client.Post<WrappingTokenRequest, T>($"{UriPathBase}/wrapping/unwrap", request, ct);
         }
 
-        public Task<SecretWrapInfo> Wrap<T>(T content, CancellationToken ct = default(CancellationToken))
+        public Task<WrappedVaultResponse> Wrap<T>(T content, CancellationToken ct = default(CancellationToken))
         {
-            return _client.Post<T, SecretWrapInfo>($"{UriPathBase}/wrapping/wrap", content, ct);
+            return _client.Post<T, WrappedVaultResponse>($"{UriPathBase}/wrapping/wrap", content, ct);
         }
     }
 

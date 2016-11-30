@@ -58,8 +58,8 @@ namespace Vault.Endpoints.Sys
         Task DisableAuth(string path, CancellationToken ct = default(CancellationToken));
 
         Task<WrappingLookupResponse> WrapLookup(string token, CancellationToken ct = default(CancellationToken));
-        Task<SecretWrapInfo> Rewrap(string token, CancellationToken ct = default(CancellationToken));
+        Task<WrappedVaultResponse> Rewrap(string token, CancellationToken ct = default(CancellationToken));
         Task<T> Unwrap<T>(string token, CancellationToken ct = default(CancellationToken));
-        Task<SecretWrapInfo> Wrap<T>(T content, CancellationToken ct = default(CancellationToken));
+        Task<WrappedVaultResponse> Wrap<T>(T content, CancellationToken ct = default(CancellationToken));
     }
 }

@@ -12,8 +12,6 @@ namespace Vault.Endpoints
         private readonly string _uriBasePath;
 
         private const string UriRootPath = "/v1";
-        private const string WrappedResponseLocation = "cubbyhole/response";
-
 
         public Endpoint(VaultClient client, string basePath = null)
         {
@@ -27,16 +25,6 @@ namespace Vault.Endpoints
         public Task<VaultResponse<TData>> Read<TData>(string path, CancellationToken ct = default(CancellationToken))
         {
             return _client.Get<VaultResponse<TData>>($"{_uriBasePath}/{path}", ct);
-        }
-
-        private Task<VaultResponse<TData>> Read<TData>(string path, string token, CancellationToken ct = default(CancellationToken))
-        {
-            return _client.Get<VaultResponse<TData>>($"{_uriBasePath}/{path}", token, ct);
-        }
-
-        public Task<WrappedVaultResponse> Read(string path, TimeSpan wrapTtl, CancellationToken ct = default(CancellationToken))
-        {
-            return _client.Get<WrappedVaultResponse>($"{_uriBasePath}/{path}", wrapTtl, ct);
         }
  
         public Task<VaultResponse<TData>> List<TData>(string path, CancellationToken ct = default(CancellationToken))
@@ -62,17 +50,6 @@ namespace Vault.Endpoints
         public Task Delete(string path, CancellationToken ct = default(CancellationToken))
         {
             return _client.DeleteVoid($"{_uriBasePath}/{path}", ct);
-        }
-
-        public async Task<VaultResponse<TData>> Unwrap<TData>(string unwrappingToken, CancellationToken ct = default(CancellationToken))
-        {
-            var wrappedSecret = await Read<WrappedSecretData>(WrappedResponseLocation, unwrappingToken, ct).ConfigureAwait(false);
-            return await Task.Run(() => JsonConvert.DeserializeObject<VaultResponse<TData>>(wrappedSecret.Data.Response), ct).ConfigureAwait(false);
-        }
-
-        internal class WrappedSecretData
-        {
-            public string Response { get; set; }
         }
     }
 }
