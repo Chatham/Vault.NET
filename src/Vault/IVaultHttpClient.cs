@@ -14,5 +14,6 @@ namespace Vault
         Task PutVoid(Uri uri, string vaultToken, CancellationToken ct);
         Task PutVoid<T>(Uri uri, T content, string vaultToken, CancellationToken ct);
         Task DeleteVoid(Uri uri, string vaultToken, CancellationToken ct);
+        Task<T> Delete<T>(Uri uri, string vaultToken, CancellationToken ct);
     }
 }
