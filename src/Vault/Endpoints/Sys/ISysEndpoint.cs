@@ -56,5 +56,10 @@ namespace Vault.Endpoints.Sys
         Task<Dictionary<string, AuthMount>> ListAuth(CancellationToken ct = default(CancellationToken));
         Task EnableAuth(string path, string authType, string description, CancellationToken ct = default(CancellationToken));
         Task DisableAuth(string path, CancellationToken ct = default(CancellationToken));
+
+        Task<WrappingLookupResponse> WrapLookup(string token, CancellationToken ct = default(CancellationToken));
+        Task<SecretWrapInfo> Rewrap(string token, CancellationToken ct = default(CancellationToken));
+        Task<T> Unwrap<T>(string token, CancellationToken ct = default(CancellationToken));
+        Task<SecretWrapInfo> Wrap<T>(T content, CancellationToken ct = default(CancellationToken));
     }
 }
