@@ -63,9 +63,9 @@ namespace Vault
             await HttpRequestVoid(HttpMethod.Delete, uri, null, vaultToken,ct).ConfigureAwait(false);
         }
 
-        public async Task<T> Delete<T>(Uri uri, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
+        public async Task<T> Delete<T>(Uri uri, string vaultToken, CancellationToken ct)
         {
-            return await HttpRequest<T>(HttpMethod.Delete, uri, null, vaultToken, wrapTtl, ct).ConfigureAwait(false);
+            return await HttpRequest<T>(HttpMethod.Delete, uri, null, vaultToken, TimeSpan.Zero, ct).ConfigureAwait(false);
         }
 
         private static Task<HttpResponseMessage> HttpSendRequest(HttpMethod method, Uri uri, string body, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
