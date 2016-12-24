@@ -85,7 +85,7 @@ namespace Vault.Tests.Secret
                 var mountPoint = Guid.NewGuid().ToString();
                 await client.Sys.Mount(mountPoint, new MountInfo { Type = "generic" });
 
-                var secret = await client.Secret.List<object>($"{mountPoint}/{secretPath}");
+                var secret = await client.Secret.List($"{mountPoint}/{secretPath}");
 
                 Assert.NotNull(secret);
                 Assert.Null(secret.Data);
@@ -107,7 +107,7 @@ namespace Vault.Tests.Secret
                 await client.Secret.Write($"{mountPoint}/{secretPath}", data);
                 await client.Secret.Write($"{mountPoint}/{secretPath}/subdata", data);
 
-                var secret = await client.Secret.List<ListResponse>($"{mountPoint}/secret/");
+                var secret = await client.Secret.List($"{mountPoint}/secret/");
 
                 var expected = new List<string>
                 {

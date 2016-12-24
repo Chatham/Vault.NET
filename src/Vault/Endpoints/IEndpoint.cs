@@ -8,7 +8,7 @@ namespace Vault.Endpoints
     public interface IEndpoint
     {
         Task Delete(string path, CancellationToken ct = default(CancellationToken));
-        Task<VaultResponse<TData>> List<TData>(string path, CancellationToken ct = default(CancellationToken));
+        Task<VaultResponse<ListResponse>> List(string path, CancellationToken ct = default(CancellationToken));
         Task<VaultResponse<TData>> Read<TData>(string path, CancellationToken ct = default(CancellationToken));
         Task Write<TParameters>(string path, TParameters data, CancellationToken ct = default(CancellationToken));
         Task<VaultResponse<TData>> Write<TData>(string path, CancellationToken ct = default(CancellationToken));

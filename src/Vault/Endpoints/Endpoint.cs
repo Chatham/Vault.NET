@@ -31,9 +31,9 @@ namespace Vault.Endpoints
             return _client.Get<WrappedVaultResponse>($"{_uriBasePath}/{path}", wrapTtl, ct);
         }
 
-        public Task<VaultResponse<TData>> List<TData>(string path, CancellationToken ct = default(CancellationToken))
+        public Task<VaultResponse<ListResponse>> List(string path, CancellationToken ct = default(CancellationToken))
         {
-            return _client.List<VaultResponse<TData>>($"{_uriBasePath}/{path}", TimeSpan.Zero, ct);
+            return _client.List<VaultResponse<ListResponse>>($"{_uriBasePath}/{path}", TimeSpan.Zero, ct);
         }
 
         public Task<WrappedVaultResponse> List(string path, TimeSpan wrapTtl, CancellationToken ct = default(CancellationToken))
