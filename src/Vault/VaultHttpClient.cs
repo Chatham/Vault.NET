@@ -115,12 +115,12 @@ namespace Vault
             }
         }
 
-        public static Task<string> JsonSerialize<T>(T content, CancellationToken ct)
+        private static Task<string> JsonSerialize<T>(T content, CancellationToken ct)
         {
             return Task.Run(() => JsonConvert.SerializeObject(content, VaultJsonSerializerSettings()), ct);
         }
 
-        public static Task<T> JsonDeserialize<T>(string result, CancellationToken ct)
+        private static Task<T> JsonDeserialize<T>(string result, CancellationToken ct)
         {
             return Task.Run(() => JsonConvert.DeserializeObject<T>(result, VaultJsonSerializerSettings()), ct);
         }
