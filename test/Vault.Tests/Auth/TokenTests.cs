@@ -33,8 +33,8 @@ namespace Vault.Tests.Auth
 
                 var policyName = Guid.NewGuid().ToString();
                 var policy = "path \"*\" {\n" +
-                                      "    policy = \"sudo\"\n" +
-                                      "}\n";
+                             "    policy = \"sudo\"\n" +
+                             "}\n";
                 await client.Sys.PutPolicy(policyName, policy);
 
                 var tokenRequest = new CreateRequest

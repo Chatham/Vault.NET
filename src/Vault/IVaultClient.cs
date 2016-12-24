@@ -7,7 +7,7 @@ namespace Vault
     public interface IVaultClient
     {
         Uri Address { get; set; }
-        string Token { get; set; }
+        string Token { set; }
 
         IEndpoint Auth { get; }
         IEndpoint Secret { get; }

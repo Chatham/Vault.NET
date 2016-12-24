@@ -23,12 +23,15 @@ namespace Vault
         private readonly Lazy<IEndpoint> _auth;
         public IEndpoint Auth => _auth.Value;
 
-        private const string DefaultAddress = "https://127.0.0.1:8200";
         public Uri Address { get; set; }
 
-        public string Token { get; set; }
+        private string _token;
+        public string Token
+        {
+            set { _token = value; }
+        }
 
-        public VaultClient() : this(new Uri(DefaultAddress), null) { }
+        public VaultClient() : this(new Uri(new VaultConfiguration().Address), null) { }
 
         public VaultClient(Uri address, string token) : this(new VaultHttpClient(), address, token) { }
 
@@ -48,12 +51,12 @@ namespace Vault
 
         internal Task<T> Get<T>(string path, CancellationToken ct)
         {
-            return Get<T>(path, Token, TimeSpan.Zero, ct);
+            return Get<T>(path, _token, TimeSpan.Zero, ct);
         }
 
         internal Task<T> Get<T>(string path, TimeSpan wrapTtl, CancellationToken ct)
         {
-            return Get<T>(path, Token, wrapTtl, ct);
+            return Get<T>(path, _token, wrapTtl, ct);
         }
 
         internal Task<T> Get<T>(string path, string token, CancellationToken ct)
@@ -69,52 +72,52 @@ namespace Vault
         internal Task<T> List<T>(string path, TimeSpan wrapTtl, CancellationToken ct)
         {
             return _httpClient.Get<T>(BuildVaultUri(path, new NameValueCollection { { "list", "true" } }),
-                Token, wrapTtl, ct);
+                _token, wrapTtl, ct);
         }
 
         internal Task<TO> Post<TI, TO>(string path, TI content, CancellationToken ct)
         {
-            return _httpClient.Post<TI, TO>(BuildVaultUri(path), content, Token, TimeSpan.Zero, ct);
+            return _httpClient.Post<TI, TO>(BuildVaultUri(path), content, _token, TimeSpan.Zero, ct);
         }
 
         internal Task<TO> Post<TI, TO>(string path, TI content, TimeSpan wrapTtl, CancellationToken ct)
         {
-            return _httpClient.Post<TI, TO>(BuildVaultUri(path), content, Token, wrapTtl, ct);
+            return _httpClient.Post<TI, TO>(BuildVaultUri(path), content, _token, wrapTtl, ct);
         }
 
         internal Task PostVoid<T>(string path, T content, CancellationToken ct)
         {
-            return _httpClient.PostVoid(BuildVaultUri(path), content, Token, ct);
+            return _httpClient.PostVoid(BuildVaultUri(path), content, _token, ct);
         }
 
         internal Task PutVoid(string path, CancellationToken ct)
         {
-            return _httpClient.PutVoid(BuildVaultUri(path), Token, ct);
+            return _httpClient.PutVoid(BuildVaultUri(path), _token, ct);
         }
 
         internal Task PutVoid<T>(string path, T content, CancellationToken ct)
         {
-            return _httpClient.PutVoid(BuildVaultUri(path), content, Token, ct);
+            return _httpClient.PutVoid(BuildVaultUri(path), content, _token, ct);
         }
 
         internal Task<TO> Put<TO>(string path, TimeSpan wrapTtl, CancellationToken ct)
         {
-            return _httpClient.Put<TO>(BuildVaultUri(path), Token, wrapTtl, ct);
+            return _httpClient.Put<TO>(BuildVaultUri(path), _token, wrapTtl, ct);
         }
 
         internal Task<TO> Put<TI, TO>(string path, TI content, CancellationToken ct)
         {
-            return _httpClient.Put<TI, TO>(BuildVaultUri(path), content, Token, TimeSpan.Zero, ct);
+            return _httpClient.Put<TI, TO>(BuildVaultUri(path), content, _token, TimeSpan.Zero, ct);
         }
 
         internal Task<TO> Put<TI, TO>(string path, TI content, TimeSpan wrapTtl, CancellationToken ct)
         {
-            return _httpClient.Put<TI, TO>(BuildVaultUri(path), content, Token, wrapTtl, ct);
+            return _httpClient.Put<TI, TO>(BuildVaultUri(path), content, _token, wrapTtl, ct);
         }
 
         internal Task DeleteVoid(string path, CancellationToken ct)
         {
-            return _httpClient.DeleteVoid(BuildVaultUri(path), Token, ct);
+            return _httpClient.DeleteVoid(BuildVaultUri(path), _token, ct);
         }
 
         private Uri BuildVaultUri(string path, NameValueCollection parameters = null)
