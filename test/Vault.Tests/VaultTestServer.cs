@@ -54,20 +54,22 @@ namespace Vault.Tests
             return port;
         }
 
-        private bool _disposedValue;
+        private bool _disposed;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposedValue)
+            if (_disposed)
             {
-                if (disposing)
-                {
-                    _process.Kill();
-                    _process.Dispose();
-                }
-
-                _disposedValue = true;
+                return;
             }
+
+            if (disposing)
+            {
+                _process.Kill();
+                _process.Dispose();
+            }
+
+            _disposed = true;
         }
 
         public void Dispose()

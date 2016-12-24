@@ -34,10 +34,14 @@ namespace Vault.Tests.Auth
                 {
                     Password = usersRequest.Password
                 };
-                var loginResponse = await client.Auth.Write<LoginRequest, VaultResponseWithoutData>($"{mountPoint}/login/{username}", loginRequest);
+                var loginResponse = await client.Auth.Write<LoginRequest, NoData>($"{mountPoint}/login/{username}", loginRequest);
 
                 Assert.Equal(username, loginResponse.Auth.Metadata["username"]);
                 Assert.Equal(usersRequest.Policies, loginResponse.Auth.Policies);
+
+                var usersResponse = await client.Auth.Read<UsersResponse>($"{mountPoint}/users/{username}");
+                Assert.Equal(usersRequest.Policies, usersResponse.Data.Policies);
+
             }
         }
     }

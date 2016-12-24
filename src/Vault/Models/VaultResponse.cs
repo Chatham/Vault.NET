@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Vault.Models
 {
-    public class VaultResponseWithoutData : VaultResponse<object> { }
+    public class NoData : object { }
 
     public class VaultResponse<TData> : VaultResponseInfo
     {

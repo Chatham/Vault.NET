@@ -4,7 +4,7 @@ using Vault.Util;
 
 namespace Vault.Models.Auth.UserPass
 {
-    public class UsersPoliciesRequest
+    public class UsersResponse
     {
         [JsonProperty("policies")]
         private string _policies
@@ -15,5 +15,11 @@ namespace Vault.Models.Auth.UserPass
 
         [JsonIgnore]
         public List<string> Policies { get; set; }
+
+        [JsonProperty("ttl")]
+        public string Ttl { get; set; }
+
+        [JsonProperty("max_ttl")]
+        public string MaxTtl { get; set; }
     }
 }
