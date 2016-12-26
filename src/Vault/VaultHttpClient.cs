@@ -36,9 +36,9 @@ namespace Vault
             return await HttpRequest<TO>(HttpMethod.Post, uri, httpContent, vaultToken, wrapTtl, ct).ConfigureAwait(false);
         }
 
-        public async Task PutVoid(Uri uri, string vaultToken, CancellationToken ct)
+        public Task PutVoid(Uri uri, string vaultToken, CancellationToken ct)
         {
-            await HttpRequestVoid(HttpMethod.Put, uri, null, vaultToken, ct).ConfigureAwait(false);
+            return HttpRequestVoid(HttpMethod.Put, uri, null, vaultToken, ct);
         }
 
         public async Task PutVoid<T>(Uri uri, T content, string vaultToken, CancellationToken ct)
@@ -47,9 +47,9 @@ namespace Vault
             await HttpRequestVoid(HttpMethod.Put, uri, httpContent, vaultToken, ct).ConfigureAwait(false);
         }
 
-        public async Task<T> Put<T>(Uri uri, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
+        public Task<T> Put<T>(Uri uri, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
         {
-            return await HttpRequest<T>(HttpMethod.Put, uri, null, vaultToken, wrapTtl, ct).ConfigureAwait(false);
+            return HttpRequest<T>(HttpMethod.Put, uri, null, vaultToken, wrapTtl, ct);
         }
 
         public async Task<TO> Put<TI, TO>(Uri uri, TI content, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
@@ -58,14 +58,14 @@ namespace Vault
             return await HttpRequest<TO>(HttpMethod.Put, uri, httpContent, vaultToken, wrapTtl, ct).ConfigureAwait(false);
         }
 
-        public async Task DeleteVoid(Uri uri, string vaultToken, CancellationToken ct)
+        public Task DeleteVoid(Uri uri, string vaultToken, CancellationToken ct)
         {
-            await HttpRequestVoid(HttpMethod.Delete, uri, null, vaultToken,ct).ConfigureAwait(false);
+            return HttpRequestVoid(HttpMethod.Delete, uri, null, vaultToken,ct);
         }
 
-        public async Task<T> Delete<T>(Uri uri, string vaultToken, CancellationToken ct)
+        public Task<T> Delete<T>(Uri uri, string vaultToken, CancellationToken ct)
         {
-            return await HttpRequest<T>(HttpMethod.Delete, uri, null, vaultToken, TimeSpan.Zero, ct).ConfigureAwait(false);
+            return HttpRequest<T>(HttpMethod.Delete, uri, null, vaultToken, TimeSpan.Zero, ct);
         }
 
         private static Task<HttpResponseMessage> HttpSendRequest(HttpMethod method, Uri uri, string body, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)

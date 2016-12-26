@@ -51,22 +51,12 @@ namespace Vault
 
         internal Task<T> Get<T>(string path, CancellationToken ct)
         {
-            return Get<T>(path, _token, TimeSpan.Zero, ct);
+            return Get<T>(path, TimeSpan.Zero, ct);
         }
 
         internal Task<T> Get<T>(string path, TimeSpan wrapTtl, CancellationToken ct)
         {
-            return Get<T>(path, _token, wrapTtl, ct);
-        }
-
-        internal Task<T> Get<T>(string path, string token, CancellationToken ct)
-        {
-            return _httpClient.Get<T>(BuildVaultUri(path), token, TimeSpan.Zero, ct);
-        }
-
-        internal Task<T> Get<T>(string path, string token, TimeSpan wrapTtl, CancellationToken ct)
-        {
-            return _httpClient.Get<T>(BuildVaultUri(path), token, wrapTtl, ct);
+            return _httpClient.Get<T>(BuildVaultUri(path), _token, wrapTtl, ct);
         }
 
         internal Task<T> List<T>(string path, TimeSpan wrapTtl, CancellationToken ct)
@@ -78,11 +68,6 @@ namespace Vault
         internal Task<TO> Post<TI, TO>(string path, TI content, CancellationToken ct)
         {
             return _httpClient.Post<TI, TO>(BuildVaultUri(path), content, _token, TimeSpan.Zero, ct);
-        }
-
-        internal Task<TO> Post<TI, TO>(string path, TI content, TimeSpan wrapTtl, CancellationToken ct)
-        {
-            return _httpClient.Post<TI, TO>(BuildVaultUri(path), content, _token, wrapTtl, ct);
         }
 
         internal Task PostVoid<T>(string path, T content, CancellationToken ct)
