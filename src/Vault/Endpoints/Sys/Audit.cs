@@ -22,11 +22,6 @@ namespace Vault.Endpoints.Sys
 
     public partial class SysEndpoint
     {
-        public Task<string> AuditHash(string path, string input)
-        {
-            return AuditHash(path, input, CancellationToken.None);
-        }
-
         public async Task<string> AuditHash(string path, string input, CancellationToken ct = default(CancellationToken))
         {
             var request = new AuditHashRequest
@@ -38,19 +33,9 @@ namespace Vault.Endpoints.Sys
             return hashData.Hash;
         }
 
-        public Task<Dictionary<string, Audit>> ListAudit()
-        {
-            return ListAudit(CancellationToken.None);
-        }
-
         public Task<Dictionary<string, Audit>> ListAudit(CancellationToken ct = default(CancellationToken))
         {
             return _client.Get<Dictionary<string, Audit>>($"${UriPathBase}/audit", ct);
-        }
-
-        public Task EnableAudit(string path, string auditType, string description, Dictionary<string, string> options)
-        {
-            return EnableAudit(path, auditType, description, options, CancellationToken.None);
         }
 
         public Task EnableAudit(string path, string auditType, string description, Dictionary<string, string> options,
@@ -63,11 +48,6 @@ namespace Vault.Endpoints.Sys
                 Options = options
             };
             return _client.PutVoid($"{UriPathBase}/audit/{path}", request, ct);
-        }
-
-        public Task DisableAudit(string path)
-        {
-            return DisableAudit(path, CancellationToken.None);
         }
 
         public Task DisableAudit(string path, CancellationToken ct = default(CancellationToken))

@@ -63,7 +63,7 @@ namespace Vault.Endpoints.Sys
                 request, ct);
         }
 
-        internal class GenerateRootInitRequest
+        private class GenerateRootInitRequest
         {
             [JsonProperty("otp")]
             public string Otp { get; set; }
@@ -72,7 +72,7 @@ namespace Vault.Endpoints.Sys
             public string PgpKey { get; set; }
         }
 
-        internal class GenerateRootUpdateRequest
+        private class GenerateRootUpdateRequest
         {
             [JsonProperty("shard")]
             public string Shard { get; set; }

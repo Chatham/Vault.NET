@@ -41,7 +41,7 @@ namespace Vault.Endpoints.Sys
             return _client.PutVoid($"{UriPathBase}/revoke-force/{id}", ct);
         }
 
-        internal class RenewRequest
+        private class RenewRequest
         {
             [JsonProperty("increment")]
             public int Increment { get; set; }

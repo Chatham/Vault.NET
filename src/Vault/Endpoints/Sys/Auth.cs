@@ -20,30 +20,20 @@ namespace Vault.Endpoints.Sys
     public class AuthConfigOptions
     {
         [JsonProperty("default_lease_ttl")]
-        public int? DefaultLeaseTTL { get; set; }
+        public int? DefaultLeaseTtl { get; set; }
 
         [JsonProperty("max_lease_ttl")]
-        public int? MaxLeaseTTL { get; set; }
+        public int? MaxLeaseTtl { get; set; }
     }
 
     public partial class SysEndpoint
     {
-        public Task<Dictionary<string, AuthMount>> ListAuth()
-        {
-            return ListAuth(CancellationToken.None);
-        }
-
-        public Task<Dictionary<string, AuthMount>> ListAuth(CancellationToken ct)
+        public Task<Dictionary<string, AuthMount>> ListAuth(CancellationToken ct = default(CancellationToken))
         {
             return _client.Get<Dictionary<string, AuthMount>>($"{UriPathBase}/auth", ct);
         }
 
-        public Task EnableAuth(string path, string authType, string description)
-        {
-            return EnableAuth(path, authType, description, CancellationToken.None);
-        }
-
-        public Task EnableAuth(string path, string authType, string description, CancellationToken ct)
+        public Task EnableAuth(string path, string authType, string description, CancellationToken ct = default(CancellationToken))
         {
             var request = new EnableAuthRequest
             {
@@ -53,17 +43,12 @@ namespace Vault.Endpoints.Sys
             return _client.PostVoid($"{UriPathBase}/auth/{path}", request, ct);
         }
 
-        public Task DisableAuth(string path)
-        {
-            return DisableAuth(path, CancellationToken.None);
-        }
-
-        public Task DisableAuth(string path, CancellationToken ct)
+        public Task DisableAuth(string path, CancellationToken ct = default(CancellationToken))
         {
             return _client.DeleteVoid($"{UriPathBase}/auth/{path}", ct);
         }
 
-        internal class EnableAuthRequest
+        private class EnableAuthRequest
         {
             [JsonProperty("type")]
             public string Type { get; set; }

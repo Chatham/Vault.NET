@@ -30,7 +30,7 @@ namespace Vault.Endpoints.Sys
             return response.Capabilities;
         }
 
-        internal class CapabilitiesRequest
+        private class CapabilitiesRequest
         {
             [JsonProperty("token")]
             public string Token { get; set; }
@@ -39,7 +39,7 @@ namespace Vault.Endpoints.Sys
             public string Path { get; set; }
         }
 
-        internal class CapabilitiesResponse
+        private class CapabilitiesResponse
         {
             [JsonProperty("capabilities")]
             public List<string> Capabilities { get; set; }

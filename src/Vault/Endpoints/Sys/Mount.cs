@@ -64,7 +64,7 @@ namespace Vault.Endpoints.Sys
             return _client.Get<MountConfig>($"{UriPathBase}/mounts/{path}/tune", ct);
         }
 
-        internal class RemountRequest
+        private class RemountRequest
         {
             [JsonProperty("from")]
             public string From { get; set; }

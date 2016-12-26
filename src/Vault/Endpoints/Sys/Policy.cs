@@ -33,13 +33,13 @@ namespace Vault.Endpoints.Sys
             return _client.DeleteVoid($"{UriPathBase}/policy/{name}", ct);
         }
 
-        internal class ListPoliciesResponse
+        private class ListPoliciesResponse
         {
             [JsonProperty("policies")]
             public List<string> Policies { get; set; }
         }
 
-        internal class PolicyRequest
+        private class PolicyRequest
         {
             [JsonProperty("rules")]
             public string Rules { get; set; }

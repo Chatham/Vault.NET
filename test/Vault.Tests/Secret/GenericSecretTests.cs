@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Vault.Endpoints.Sys;
-using Vault.Models;
 using Xunit;
 
 namespace Vault.Tests.Secret

@@ -22,7 +22,6 @@ namespace Vault.Endpoints.Sys
             {
                 Token = token
             };
-
             return _client.Post<WrappingTokenRequest, WrappingLookupResponse>($"{UriPathBase}/wrapping/lookup", request, ct);
         }
 
@@ -32,7 +31,6 @@ namespace Vault.Endpoints.Sys
             {
                 Token = token
             };
-
             return _client.Post<WrappingTokenRequest, WrappedVaultResponse>($"{UriPathBase}/wrapping/rewrap", request, ct);
         }
 
@@ -42,7 +40,6 @@ namespace Vault.Endpoints.Sys
             {
                 Token = token
             };
-
             return _client.Post<WrappingTokenRequest, T>($"{UriPathBase}/wrapping/unwrap", request, ct);
         }
 
@@ -50,11 +47,11 @@ namespace Vault.Endpoints.Sys
         {
             return _client.Post<T, WrappedVaultResponse>($"{UriPathBase}/wrapping/wrap", content, ct);
         }
-    }
 
-    internal class WrappingTokenRequest
-    {
-        [JsonProperty("token")]
-        public string Token { get; set; }
+        private class WrappingTokenRequest
+        {
+            [JsonProperty("token")]
+            public string Token { get; set; }
+        }
     }
 }
