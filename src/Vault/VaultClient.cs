@@ -32,6 +32,8 @@ namespace Vault
             set { _token = value; }
         }
 
+        public VaultClient() : this(new VaultOptions()) { }
+
         public VaultClient(IOptions<VaultOptions> options)
             : this(new Uri(options.Value.Address), options.Value.Token) { }
 
