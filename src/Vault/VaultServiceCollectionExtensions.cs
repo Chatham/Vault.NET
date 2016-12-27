@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Vault
 {
-    public static class LoggingServiceCollectionExtensions
+    public static class VaultServiceCollectionExtensions
     {
         public static IServiceCollection AddVault(this IServiceCollection services)
         {
