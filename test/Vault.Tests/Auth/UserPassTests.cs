@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Vault.Models;
 using Vault.Models.Auth.UserPass;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Vault.Tests.Auth
 {
@@ -38,10 +40,23 @@ namespace Vault.Tests.Auth
 
                 Assert.Equal(username, loginResponse.Auth.Metadata["username"]);
                 Assert.Equal(usersRequest.Policies, loginResponse.Auth.Policies);
+                Assert.NotNull(loginResponse.Auth.ClientToken);
 
                 var usersResponse = await client.Auth.Read<UsersResponse>($"{mountPoint}/users/{username}");
                 Assert.Equal(usersRequest.Policies, usersResponse.Data.Policies);
 
+                // Set client token to authentication token
+                client.Token = loginResponse.Auth.ClientToken;
+                try
+                {
+                    var ex = await Assert.ThrowsAsync<VaultRequestException>(() => 
+                        client.Auth.Read<UsersResponse>($"{mountPoint}/users/{username}"));
+                    Assert.Equal(ex.StatusCode, HttpStatusCode.Forbidden);
+                }
+                catch (AssertActualExpectedException exception)
+                {
+                    Assert.Equal("(No exception was thrown)", exception.Actual);
+                }
             }
         }
     }

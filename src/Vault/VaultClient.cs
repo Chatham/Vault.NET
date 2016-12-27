@@ -7,6 +7,7 @@ using Vault.Endpoints.Sys;
 using Microsoft.Extensions.Options;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
 
 namespace Vault
 {
@@ -31,17 +32,13 @@ namespace Vault
             set { _token = value; }
         }
 
-        public VaultClient() : this(new Uri(new VaultConfiguration().Address), null) { }
+        public VaultClient(IOptions<VaultOptions> options)
+            : this(new Uri(options.Value.Address), options.Value.Token) { }
 
-        public VaultClient(Uri address, string token) : this(new VaultHttpClient(), address, token) { }
-
-        public VaultClient(IVaultHttpClient httpClient, IOptions<VaultConfiguration> options)
-            : this(httpClient, new Uri(options.Value.Address), options.Value.Token) { }
-
-        public VaultClient(IVaultHttpClient httpClient, Uri address, string token)
+        public VaultClient(Uri address, string token = null)
         {
-            _httpClient = httpClient;
-            Token = token;
+            _httpClient = new VaultHttpClient();
+            _token = token;
             Address = address;
 
             _sys = new Lazy<ISysEndpoint>(() => new SysEndpoint(this), LazyThreadSafetyMode.PublicationOnly);
@@ -118,5 +115,13 @@ namespace Vault
             uriBuilder.Query = QueryHelpers.AddQueryString(string.Empty, dict);
             return uriBuilder.Uri;
         }
+    }
+
+    public class VaultRequestException : Exception
+    {
+        public HttpStatusCode StatusCode { get; set; }
+        public VaultRequestException() { }
+        public VaultRequestException(string message, HttpStatusCode statusCode) : base(message) { StatusCode = statusCode; }
+        public VaultRequestException(string message, HttpStatusCode statusCode, Exception inner) : base(message, inner) { StatusCode = statusCode; }
     }
 }
