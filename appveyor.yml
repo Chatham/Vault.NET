@@ -15,10 +15,10 @@ install:
 - cinst: 7zip.commandline
 - ps: mkdir -Force c:\vault | Out-Null
 - ps: |-
-    $vault_zip = "vault_$($env:VAULT_VERSION)_windows_x64.zip"
+    $vault_zip = "vault_$($env:VAULT_VERSION)_windows_amd64.zip"
     $vault_url = "https://releases.hashicorp.com/vault/$($env:VAULT_VERSION)/$vault_zip"
     if (!(Test-Path "c:\vault\$vault_zip")) {
-        Write-Output "Downloading $vault_url" 
+        Write-Output "Downloading $vault_url"
         Invoke-WebRequest $vault_url -OutFile "c:\vault\$vault_zip"
     }
     7z x -y c:\vault\$vault_zip -oc:\vault\
