@@ -63,11 +63,6 @@ namespace Vault
             return HttpRequestVoid(HttpMethod.Delete, uri, null, vaultToken,ct);
         }
 
-        public Task<T> Delete<T>(Uri uri, string vaultToken, CancellationToken ct)
-        {
-            return HttpRequest<T>(HttpMethod.Delete, uri, null, vaultToken, TimeSpan.Zero, ct);
-        }
-
         private static Task<HttpResponseMessage> HttpSendRequest(HttpMethod method, Uri uri, string body, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
         {
             var requestMessage = new HttpRequestMessage(method, uri);
