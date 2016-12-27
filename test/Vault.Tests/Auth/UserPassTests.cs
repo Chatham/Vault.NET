@@ -45,7 +45,6 @@ namespace Vault.Tests.Auth
                 var usersResponse = await client.Auth.Read<UsersResponse>($"{mountPoint}/users/{username}");
                 Assert.Equal(usersRequest.Policies, usersResponse.Data.Policies);
 
-                // Set client token to authentication token
                 client.Token = loginResponse.Auth.ClientToken;
                 try
                 {
@@ -57,6 +56,13 @@ namespace Vault.Tests.Auth
                 {
                     Assert.Equal("(No exception was thrown)", exception.Actual);
                 }
+
+                // Login with new unauthenticated client
+                var newClient = new VaultClient(new UriBuilder(server.ListenAddress).Uri);
+                var newLoginResponse = await newClient.Auth.Write<LoginRequest, NoData>($"{mountPoint}/login/{username}", loginRequest);
+                Assert.Equal(username, newLoginResponse.Auth.Metadata["username"]);
+                Assert.Equal(usersRequest.Policies, newLoginResponse.Auth.Policies);
+                Assert.NotNull(newLoginResponse.Auth.ClientToken);
             }
         }
     }
