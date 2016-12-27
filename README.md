@@ -84,3 +84,9 @@ vaultClient.Token = loginResponse.Auth.ClientToken;
 ## Models
 
 Many request/response objects are provided in this package to support different backends.  This is in no way an exhaustive list of all the objects.
+
+## Testing
+
+Since most of the operation of this library are just building requests and passing them to the vault API and the vault team provides an easy to use local development server, each test runs against its own vault server.  This means that tests require the vault binary available to spin up the vault server instance.  The test suite will first look for the environment variable `VAULT_BIN` and if not found will fall back to use the `vault` binary in the `$PATH`.
+
+Downloads for vault can be found [here](https://www.vaultproject.io/downloads.html).
