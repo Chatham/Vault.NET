@@ -39,7 +39,7 @@ build_script:
 after_build:
 - dotnet pack .\src\Vault -c %CONFIGURATION% --no-build --version-suffix %LABEL% -o artifacts
 
-test:
+test_script:
 - dotnet test .\test\Vault.Tests --configuration %CONFIGURATION%
 
 artifacts:
