@@ -23,9 +23,10 @@ namespace Vault.Tests
                 $"-dev-listen-address={ListenAddress}"
             });
 
+            var vaultBin = Environment.GetEnvironmentVariable("VAULT_BIN") ?? "vault";
             _process = new Process
             {
-                StartInfo = new ProcessStartInfo("vault", vaultArgs),
+                StartInfo = new ProcessStartInfo(vaultBin, vaultArgs),
             };
             _process.StartInfo.RedirectStandardOutput = true;
             _process.StartInfo.RedirectStandardError = true;
