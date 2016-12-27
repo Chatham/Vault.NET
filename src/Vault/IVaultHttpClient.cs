@@ -11,7 +11,7 @@ namespace Vault
         Task PostVoid<T>(Uri uri, T content, string vaultToken, CancellationToken ct);
         Task<TO> Put<TI, TO>(Uri uri, TI content, string vaultToken, TimeSpan wrapTtl, CancellationToken ct);
         Task<T> Put<T>(Uri uri, string vaultToken, TimeSpan wrapTtl, CancellationToken ct);
-        Task PutVoid(Uri uri, string vaultToken,CancellationToken ct);
+        Task PutVoid(Uri uri, string vaultToken, CancellationToken ct);
         Task PutVoid<T>(Uri uri, T content, string vaultToken, CancellationToken ct);
         Task DeleteVoid(Uri uri, string vaultToken, CancellationToken ct);
     }
