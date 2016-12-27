@@ -42,7 +42,7 @@ namespace Vault.Tests.Secret
                     MaxTtl = "1h"
                 };
                 await client.Secret.Write($"{mountPoint}/roles/{roleName}", role);
-                
+
                 var certRequest = new IssueRequest
                 {
                     CommonName = "Test Cert"
@@ -94,7 +94,7 @@ namespace Vault.Tests.Secret
                 var certRequest = new IssueRequest
                 {
                     CommonName = commonName,
-                    AltNames = new List<string> { "example.com", "test.example.com"},
+                    AltNames = new List<string> { "example.com", "test.example.com" },
                     Format = CertificateFormat.Der
                 };
                 var cert =
@@ -145,8 +145,8 @@ namespace Vault.Tests.Secret
                 {
                     CommonName = "Vault Testing Intermediate CA"
                 };
-                var pki1Request = 
-                    await 
+                var pki1Request =
+                    await
                         client.Secret.Write<IntermediateGenerateRequest, IntermediateGenerateInternalResponse>(
                             "pki1/intermediate/generate/internal", pki1CaConfig);
 

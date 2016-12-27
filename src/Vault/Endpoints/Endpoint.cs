@@ -18,7 +18,6 @@ namespace Vault.Endpoints
 
             var path = basePath != null ? $"/{basePath}" : "";
             _uriBasePath = $"{UriRootPath}{path}";
-
         }
 
         public Task<VaultResponse<TData>> Read<TData>(string path, CancellationToken ct = default(CancellationToken))
