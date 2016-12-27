@@ -94,7 +94,7 @@ namespace Vault
             {
                 if (r.StatusCode != HttpStatusCode.NotFound && !r.IsSuccessStatusCode)
                 {
-                    throw new Exceptions.VaultRequestException($"Unexpected response, status code {r.StatusCode}", r.StatusCode);
+                    throw new VaultRequestException($"Unexpected response, status code {r.StatusCode}", r.StatusCode);
                 }
 
                 await r.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -107,7 +107,7 @@ namespace Vault
             {
                 if (r.StatusCode != HttpStatusCode.NotFound && !r.IsSuccessStatusCode)
                 {
-                    throw new Exceptions.VaultRequestException($"Unexpected response, status code {r.StatusCode}", r.StatusCode);
+                    throw new VaultRequestException($"Unexpected response, status code {r.StatusCode}", r.StatusCode);
                 }
 
                 var content = await r.Content.ReadAsStringAsync().ConfigureAwait(false);

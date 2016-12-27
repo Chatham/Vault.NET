@@ -6,14 +6,21 @@ namespace Vault
 {
     public static class VaultServiceCollectionExtensions
     {
-        public static IServiceCollection AddVault(this IServiceCollection services)
+        public static IServiceCollection AddVault(this IServiceCollection services, Action<VaultOptions> setupAction)
         {
             if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.TryAdd(ServiceDescriptor.Singleton<IVaultHttpClient, VaultHttpClient>());
+
+            if (setupAction == null)
+            {
+                throw new ArgumentNullException(nameof(setupAction));
+            }
+
+            services.AddOptions();
+            services.Configure(setupAction);
             services.TryAdd(ServiceDescriptor.Singleton<IVaultClient, VaultClient>());
 
             return services;
