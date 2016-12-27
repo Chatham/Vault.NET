@@ -1,9 +1,9 @@
 # Vault.NET
 
-* Vault API: v0.6.2
-* .NET: >= 4.6 - .NET Core: >= 1.0.0
+* Vault API: v0.6.4
+* .NET Standard 1.2 (.NET: >= 4.5.1 - .NET Core: >= 1.0.0)
 
-Vault.NET is an .NET API client for the interacting with [Vault](https://www.vaultproject.io/).  This is a port of the go api client and provides generic methods for interacting with the virtual paths in Vault.  
+Vault.NET is an .NET API client for the interacting with [Vault](https://www.vaultproject.io/).  This is a port of the go api client and provides generic methods for interacting with the paths in Vault.  
 
 ## Example
 
