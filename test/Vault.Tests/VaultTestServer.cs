@@ -31,12 +31,12 @@ namespace Vault.Tests
             _process.StartInfo.RedirectStandardOutput = true;
             _process.StartInfo.RedirectStandardError = true;
 
-            Thread.Sleep(500);
-
             if (!_process.Start())
             {
                 throw new Exception($"Process did not start successfully: {_process.StandardError}");
             }
+
+            Thread.Sleep(500);
 
             if (_process.HasExited)
             {

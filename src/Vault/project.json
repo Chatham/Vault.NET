@@ -1,7 +1,7 @@
 {
   "name": "Vault",
   "description": ".NET API client for Vault (https://www.vaultproject.io/)",
-  "version": "0.6.4",
+  "version": "0.6.4.1-*",
   "authors": [
     "Chatham Financial Corp."
   ],
