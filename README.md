@@ -94,4 +94,4 @@ Downloads for vault can be found [here](https://www.vaultproject.io/downloads.ht
 
 ## Versioning
 
-This library will follow the version of vault that it was developed against.  Since most core operations of vault maintain backwards compatibility, this library can be used against many older and newer versions of vault.  If there is some functionality that breaks on a newer version of vault, please submit a pull request.
+This library will follow the version of vault that it was developed against.  Since most core operations of vault maintain backwards compatibility, this library can be used against many older and newer versions of vault.  If features are added or bugs are fixed, a new point release will be created (ex. 0.6.4 -> 0.6.4.1).  If there is some functionality that breaks on a newer version of vault, please submit a pull request.
