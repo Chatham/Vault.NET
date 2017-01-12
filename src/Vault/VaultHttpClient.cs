@@ -60,7 +60,7 @@ namespace Vault
 
         public Task DeleteVoid(Uri uri, string vaultToken, CancellationToken ct)
         {
-            return HttpRequestVoid(HttpMethod.Delete, uri, null, vaultToken,ct);
+            return HttpRequestVoid(HttpMethod.Delete, uri, null, vaultToken, ct);
         }
 
         private static Task<HttpResponseMessage> HttpSendRequest(HttpMethod method, Uri uri, string body, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
@@ -83,7 +83,7 @@ namespace Vault
             return HttpClient.SendAsync(requestMessage, ct);
         }
 
-        private static async Task HttpRequestVoid(HttpMethod method, Uri uri, string body, string vaultToken,CancellationToken ct)
+        private static async Task HttpRequestVoid(HttpMethod method, Uri uri, string body, string vaultToken, CancellationToken ct)
         {
             using (var r = await HttpSendRequest(method, uri, body, vaultToken, TimeSpan.Zero, ct))
             {
