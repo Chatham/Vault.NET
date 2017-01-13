@@ -7,23 +7,23 @@ namespace Vault.Endpoints.Sys
 {
     public partial class SysEndpoint
     {
-        public Task<VaultResponse<TData>> Renew<TData>(string leaseId, int increment, CancellationToken ct = default(CancellationToken))
+        public Task<VaultResponse<NoData>> Renew(string leaseId, int increment, CancellationToken ct = default(CancellationToken))
         {
             var request = new RenewRequest
             {
                 Increment = increment,
                 LeaseId = leaseId
             };
-            return _client.Put<RenewRequest, VaultResponse<TData>>($"{UriPathBase}/renew", request, ct);
+            return _client.Put<RenewRequest, VaultResponse<NoData>>($"{UriPathBase}/renew", request, ct);
         }
 
-        public Task<VaultResponse<TData>> Renew<TData>(string leaseId, CancellationToken ct = default(CancellationToken))
+        public Task<VaultResponse<NoData>> Renew(string leaseId, CancellationToken ct = default(CancellationToken))
         {
             var request = new RenewRequest
             {
                 LeaseId = leaseId
             };
-            return _client.Put<RenewRequest, VaultResponse<TData>>($"{UriPathBase}/renew", request, ct);
+            return _client.Put<RenewRequest, VaultResponse<NoData>>($"{UriPathBase}/renew", request, ct);
         }
 
         public Task Revoke(string id, CancellationToken ct = default(CancellationToken))

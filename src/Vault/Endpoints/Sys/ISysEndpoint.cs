@@ -36,8 +36,8 @@ namespace Vault.Endpoints.Sys
         Task<LeaderResponse> Leader(CancellationToken ct = default(CancellationToken));
 
         // Lease
-        Task<VaultResponse<TData>> Renew<TData>(string leaseId, CancellationToken ct = default(CancellationToken));
-        Task<VaultResponse<TData>> Renew<TData>(string leaseId, int increment, CancellationToken ct = default(CancellationToken));
+        Task<VaultResponse<NoData>> Renew(string leaseId, CancellationToken ct = default(CancellationToken));
+        Task<VaultResponse<NoData>> Renew(string leaseId, int increment, CancellationToken ct = default(CancellationToken));
         Task Revoke(string id, CancellationToken ct = default(CancellationToken));
         Task RevokeForce(string id, CancellationToken ct = default(CancellationToken));
         Task RevokePrefix(string id, CancellationToken ct = default(CancellationToken));
