@@ -56,13 +56,13 @@ namespace Vault.Endpoints.Sys
                 new ResetUnsealProcessRequest {Reset = true}, ct);
         }
 
-        internal class UnsealRequest
+        private class UnsealRequest
         {
             [JsonProperty("key")]
             public string Key { get; set; }
         }
 
-        internal class ResetUnsealProcessRequest
+        private class ResetUnsealProcessRequest
         {
             [JsonProperty("reset")]
             public bool Reset { get; set; }
