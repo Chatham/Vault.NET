@@ -17,9 +17,10 @@ install:
 - ps: |-
     $vault_zip = "vault_$($env:VAULT_VERSION)_windows_amd64.zip"
     $vault_url = "https://releases.hashicorp.com/vault/$($env:VAULT_VERSION)/$vault_zip"
-    if (!(Test-Path "c:\vault\$vault_zip")) {
+    $destination = "c:\vault\$vault_zip"
+    if (!(Test-Path $destination)) {
         Write-Output "Downloading $vault_url"
-        Invoke-WebRequest $vault_url -OutFile "c:\vault\$vault_zip"
+        Start-FileDownload $vault_url -FileName $destination
     }
     7z x -y c:\vault\$vault_zip -oc:\vault\
 
