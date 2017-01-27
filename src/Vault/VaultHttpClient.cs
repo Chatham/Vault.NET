@@ -24,16 +24,16 @@ namespace Vault
             return HttpRequest<T>(HttpMethod.Get, uri, null, vaultToken, wrapTtl, ct);
         }
 
-        public async Task PostVoid<T>(Uri uri, T content, string vaultToken, CancellationToken ct)
+        public Task PostVoid<T>(Uri uri, T content, string vaultToken, CancellationToken ct)
         {
-            var httpContent = await JsonSerialize(content, ct).ConfigureAwait(false);
-            await HttpRequestVoid(HttpMethod.Post, uri, httpContent, vaultToken, ct).ConfigureAwait(false);
+            var httpContent = JsonSerialize(content);
+            return HttpRequestVoid(HttpMethod.Post, uri, httpContent, vaultToken, ct);
         }
 
-        public async Task<TO> Post<TI, TO>(Uri uri, TI content, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
+        public Task<TO> Post<TI, TO>(Uri uri, TI content, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
         {
-            var httpContent = await JsonSerialize(content, ct).ConfigureAwait(false);
-            return await HttpRequest<TO>(HttpMethod.Post, uri, httpContent, vaultToken, wrapTtl, ct).ConfigureAwait(false);
+            var httpContent = JsonSerialize(content);
+            return HttpRequest<TO>(HttpMethod.Post, uri, httpContent, vaultToken, wrapTtl, ct);
         }
 
         public Task PutVoid(Uri uri, string vaultToken, CancellationToken ct)
@@ -41,10 +41,10 @@ namespace Vault
             return HttpRequestVoid(HttpMethod.Put, uri, null, vaultToken, ct);
         }
 
-        public async Task PutVoid<T>(Uri uri, T content, string vaultToken, CancellationToken ct)
+        public Task PutVoid<T>(Uri uri, T content, string vaultToken, CancellationToken ct)
         {
-            var httpContent = await JsonSerialize(content, ct).ConfigureAwait(false);
-            await HttpRequestVoid(HttpMethod.Put, uri, httpContent, vaultToken, ct).ConfigureAwait(false);
+            var httpContent = JsonSerialize(content);
+            return HttpRequestVoid(HttpMethod.Put, uri, httpContent, vaultToken, ct);
         }
 
         public Task<T> Put<T>(Uri uri, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
@@ -52,10 +52,10 @@ namespace Vault
             return HttpRequest<T>(HttpMethod.Put, uri, null, vaultToken, wrapTtl, ct);
         }
 
-        public async Task<TO> Put<TI, TO>(Uri uri, TI content, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
+        public Task<TO> Put<TI, TO>(Uri uri, TI content, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
         {
-            var httpContent = await JsonSerialize(content, ct).ConfigureAwait(false);
-            return await HttpRequest<TO>(HttpMethod.Put, uri, httpContent, vaultToken, wrapTtl, ct).ConfigureAwait(false);
+            var httpContent = JsonSerialize(content);
+            return HttpRequest<TO>(HttpMethod.Put, uri, httpContent, vaultToken, wrapTtl, ct);
         }
 
         public Task DeleteVoid(Uri uri, string vaultToken, CancellationToken ct)
@@ -85,7 +85,7 @@ namespace Vault
 
         private static async Task HttpRequestVoid(HttpMethod method, Uri uri, string body, string vaultToken, CancellationToken ct)
         {
-            using (var r = await HttpSendRequest(method, uri, body, vaultToken, TimeSpan.Zero, ct))
+            using (var r = await HttpSendRequest(method, uri, body, vaultToken, TimeSpan.Zero, ct).ConfigureAwait(false))
             {
                 if (r.StatusCode != HttpStatusCode.NotFound && !r.IsSuccessStatusCode)
                 {
@@ -98,7 +98,7 @@ namespace Vault
 
         private static async Task<T> HttpRequest<T>(HttpMethod method, Uri uri, string body, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
         {
-            using (var r = await HttpSendRequest(method, uri, body, vaultToken, wrapTtl, ct))
+            using (var r = await HttpSendRequest(method, uri, body, vaultToken, wrapTtl, ct).ConfigureAwait(false))
             {
                 if (r.StatusCode != HttpStatusCode.NotFound && !r.IsSuccessStatusCode)
                 {
@@ -106,18 +106,18 @@ namespace Vault
                 }
 
                 var content = await r.Content.ReadAsStringAsync().ConfigureAwait(false);
-                return await JsonDeserialize<T>(content, ct).ConfigureAwait(false);
+                return JsonDeserialize<T>(content);
             }
         }
 
-        private static Task<string> JsonSerialize<T>(T content, CancellationToken ct)
+        private static string JsonSerialize<T>(T content)
         {
-            return Task.Run(() => JsonConvert.SerializeObject(content, VaultJsonSerializerSettings()), ct);
+            return JsonConvert.SerializeObject(content, VaultJsonSerializerSettings());
         }
 
-        private static Task<T> JsonDeserialize<T>(string result, CancellationToken ct)
+        private static T JsonDeserialize<T>(string result)
         {
-            return Task.Run(() => JsonConvert.DeserializeObject<T>(result, VaultJsonSerializerSettings()), ct);
+            return JsonConvert.DeserializeObject<T>(result, VaultJsonSerializerSettings());
         }
 
         private static JsonSerializerSettings VaultJsonSerializerSettings()
