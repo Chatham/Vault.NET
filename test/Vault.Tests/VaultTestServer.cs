@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -24,9 +25,11 @@ namespace Vault.Tests
             });
 
             var vaultBin = Environment.GetEnvironmentVariable("VAULT_BIN") ?? "vault";
+            var startInfo = new ProcessStartInfo(vaultBin, vaultArgs);
+            startInfo.Environment["HOME"] = Directory.GetCurrentDirectory();
             _process = new Process
             {
-                StartInfo = new ProcessStartInfo(vaultBin, vaultArgs),
+                StartInfo = startInfo
             };
             _process.StartInfo.RedirectStandardOutput = true;
             _process.StartInfo.RedirectStandardError = true;
