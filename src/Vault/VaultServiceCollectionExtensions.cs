@@ -13,7 +13,6 @@ namespace Vault
                 throw new ArgumentNullException(nameof(services));
             }
 
-
             if (setupAction != null)
             {
                 services.AddOptions();
