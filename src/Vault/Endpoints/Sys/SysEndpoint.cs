@@ -1,4 +1,4 @@
-﻿namespace Vault.Endpoints.Sys
+namespace Vault.Endpoints.Sys
 {
     public partial class SysEndpoint : ISysEndpoint
     {

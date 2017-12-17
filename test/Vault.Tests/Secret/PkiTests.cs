@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -106,7 +106,7 @@ namespace Vault.Tests.Secret
                 Assert.NotNull(cert.Data.Certificate);
                 Assert.NotNull(cert.Data.PrivateKey);
 
-                var x509Cert = new X509Certificate2(Encoding.UTF8.GetBytes(cert.Data.Certificate));
+                var x509Cert = new X509Certificate2(Convert.FromBase64String(cert.Data.Certificate));
                 Assert.Equal($"CN={commonName}", x509Cert.SubjectName.Name);
             }
         }

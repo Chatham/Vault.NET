@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -85,18 +85,15 @@ namespace Vault
 
         private static async Task HttpRequestVoid(HttpMethod method, Uri uri, string body, string vaultToken, CancellationToken ct)
         {
-            using (var r = await HttpSendRequest(method, uri, body, vaultToken, TimeSpan.Zero, ct).ConfigureAwait(false))
-            {
-                if (r.StatusCode != HttpStatusCode.NotFound && !r.IsSuccessStatusCode)
-                {
-                    throw new VaultRequestException($"Unexpected response, status code {r.StatusCode}", r.StatusCode);
-                }
-
-                await r.Content.ReadAsStringAsync().ConfigureAwait(false);
-            }
+            await HttpRequest(method, uri, body, vaultToken, TimeSpan.Zero, ct).ConfigureAwait(false);
         }
 
         private static async Task<T> HttpRequest<T>(HttpMethod method, Uri uri, string body, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
+        {
+            return JsonDeserialize<T>(await HttpRequest(method, uri, body, vaultToken, wrapTtl, ct).ConfigureAwait(false));
+        }
+
+        private static async Task<string> HttpRequest(HttpMethod method, Uri uri, string body, string vaultToken, TimeSpan wrapTtl, CancellationToken ct)
         {
             using (var r = await HttpSendRequest(method, uri, body, vaultToken, wrapTtl, ct).ConfigureAwait(false))
             {
@@ -104,9 +101,11 @@ namespace Vault
                 {
                     throw new VaultRequestException($"Unexpected response, status code {r.StatusCode}", r.StatusCode);
                 }
+                if (r.Content.Headers.ContentType.MediaType != "application/json") {
+                    throw new VaultRequestException($"Unexpected content media type {r.Content.Headers.ContentType.MediaType}", HttpStatusCode.InternalServerError);
+                }
 
-                var content = await r.Content.ReadAsStringAsync().ConfigureAwait(false);
-                return JsonDeserialize<T>(content);
+                return await r.Content.ReadAsStringAsync().ConfigureAwait(false);
             }
         }
 
