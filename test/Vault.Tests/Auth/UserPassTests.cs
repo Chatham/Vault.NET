@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -81,7 +81,7 @@ namespace Vault.Tests.Auth
                 {
                     var ex = await Assert.ThrowsAsync<VaultRequestException>(() =>
                             client.Auth.Read<UsersResponse>($"{mountPoint}/users/{username}"));
-                    Assert.Equal(ex.StatusCode, HttpStatusCode.Forbidden);
+                    Assert.Equal(HttpStatusCode.Forbidden, ex.StatusCode);
                 }
                 catch (AssertActualExpectedException exception)
                 {

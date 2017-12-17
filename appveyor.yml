@@ -1,10 +1,7 @@
-version: 0.6.4.2-{build}-{branch}
+version: 0.6.4.3-{build}-{branch}
 configuration: Release
 pull_requests:
   do_not_increment_build_number: true
-branches:
-  only:
-  - master
 nuget:
   account_feed: true
   project_feed: true
@@ -47,24 +44,17 @@ test_script:
 - dotnet test .\test\Vault.Tests --configuration %CONFIGURATION%
 
 artifacts:
-- path: .\artifacts\**\*.*
+- path: .\**\artifacts\*.*
   name: NuGet
 
-assembly_info:
+dotnet_csproj:
   patch: true
-  file: '**\AssemblyInfo.*'
+  file: '**\*.csproj'
+  version: $(APPVEYOR_BUILD_VERSION)
+  package_version: $(APPVEYOR_BUILD_VERSION)
   assembly_version: $(APPVEYOR_BUILD_VERSION)
-  assembly_file_version: $(APPVEYOR_BUILD_VERSION)
-  assembly_informational_version: $(APPVEYOR_BUILD_VERSION)
 
 deploy:
-- provider: NuGet
-  server: https://www.myget.org/F/chatham/api/v2/package
-  api_key:
-    secure: Zj8bjUB0ykUgS7wA0QDyQcxxKE4nd3lXtEkh3MRTELjGByXUb4P4x9+h2iGTNui1
-  skip_symbols: true
-  on:
-    branch: master
 - provider: NuGet
   name: production
   api_key:
@@ -76,7 +66,7 @@ deploy:
 notifications:
   - provider: Email
     to:
-      - choffman@chathamfinancial.com
+      - christopher.hoffman@gmail.com
     on_build_success: false
     on_build_failure: true
     on_build_status_changed: true
