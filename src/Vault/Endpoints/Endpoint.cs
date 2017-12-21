@@ -25,6 +25,11 @@ namespace Vault.Endpoints
             return _client.Get<VaultResponse<TData>>($"{_uriBasePath}/{path}", TimeSpan.Zero, ct);
         }
 
+        public Task<byte[]> ReadRaw(string path, CancellationToken ct = default(CancellationToken))
+        {
+            return _client.GetRaw($"{_uriBasePath}/{path}", ct);
+        }
+
         public Task<WrappedVaultResponse> Read(string path, TimeSpan wrapTtl = default(TimeSpan), CancellationToken ct = default(CancellationToken))
         {
             return _client.Get<WrappedVaultResponse>($"{_uriBasePath}/{path}", wrapTtl, ct);

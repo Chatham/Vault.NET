@@ -24,6 +24,11 @@ namespace Vault
             return HttpRequest<T>(HttpMethod.Get, uri, null, vaultToken, wrapTtl, ct);
         }
 
+        public Task<byte[]> GetRaw(Uri uri, string vaultToken, CancellationToken ct)
+        {
+            return HttpRequestRaw(HttpMethod.Get, uri, null, vaultToken, ct);
+        }
+
         public Task PostVoid<T>(Uri uri, T content, string vaultToken, CancellationToken ct)
         {
             var httpContent = JsonSerialize(content);
@@ -106,6 +111,22 @@ namespace Vault
                 }
 
                 return await r.Content.ReadAsStringAsync().ConfigureAwait(false);
+            }
+        }
+
+        private static async Task<byte[]> HttpRequestRaw(HttpMethod method, Uri uri, string body, string vaultToken, CancellationToken ct)
+        {
+            using (var r = await HttpSendRequest(method, uri, body, vaultToken, TimeSpan.Zero, ct).ConfigureAwait(false))
+            {
+                if (r.StatusCode != HttpStatusCode.NotFound && !r.IsSuccessStatusCode)
+                {
+                    throw new VaultRequestException($"Unexpected response, status code {r.StatusCode}", r.StatusCode);
+                }
+                if (r.Content.Headers.ContentType.MediaType == "application/json") {
+                    throw new VaultRequestException($"Unexpected content media type {r.Content.Headers.ContentType.MediaType}", HttpStatusCode.InternalServerError);
+                }
+
+                return await r.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
             }
         }
 
