@@ -7,13 +7,6 @@ namespace Vault.Models.Auth.UserPass
     public class UsersResponse
     {
         [JsonProperty("policies")]
-        private string _policies
-        {
-            get { return StringUtil.ListToCsvString(Policies); }
-            set { Policies = StringUtil.CsvStringToList(value); }
-        }
-
-        [JsonIgnore]
         public List<string> Policies { get; set; }
 
         [JsonProperty("ttl")]
