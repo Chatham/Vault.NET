@@ -7,6 +7,7 @@ namespace Vault
     public interface IVaultHttpClient
     {
         Task<T> Get<T>(Uri uri, string vaultToken, TimeSpan wrapTtl, CancellationToken ct);
+        Task<byte[]> GetRaw(Uri uri, string vaultToken, CancellationToken ct);
         Task<TO> Post<TI, TO>(Uri uri, TI content, string vaultToken, TimeSpan wrapTtl, CancellationToken ct);
         Task PostVoid<T>(Uri uri, T content, string vaultToken, CancellationToken ct);
         Task<TO> Put<TI, TO>(Uri uri, TI content, string vaultToken, TimeSpan wrapTtl, CancellationToken ct);

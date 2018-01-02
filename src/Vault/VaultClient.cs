@@ -53,6 +53,11 @@ namespace Vault
             return Get<T>(path, TimeSpan.Zero, ct);
         }
 
+        internal Task<byte[]> GetRaw(string path, CancellationToken ct)
+        {
+            return _httpClient.GetRaw(BuildVaultUri(path), _token, ct);
+        }
+
         internal Task<T> Get<T>(string path, TimeSpan wrapTtl, CancellationToken ct)
         {
             return _httpClient.Get<T>(BuildVaultUri(path), _token, wrapTtl, ct);

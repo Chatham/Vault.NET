@@ -222,5 +222,42 @@ namespace Vault.Tests.Secret
                 Assert.Equal(2, cert.Data.CaChain.Count);
             }
         }
+
+        [Fact]
+        public async Task SecretPki_SetUpRootCA_ReadCaCertificate()
+        {
+            using (var server = new VaultTestServer())
+            {
+                var client = server.TestClient();
+
+                var mountPoint = Guid.NewGuid().ToString();
+                await client.Sys.Mount(mountPoint, new MountInfo {Type = "pki"});
+
+                var mountConfig = new MountConfig
+                {
+                    MaxLeaseTtl = "87600h"
+                };
+                await client.Sys.TuneMount(mountPoint, mountConfig);
+
+                var rootCaConfig = new RootGenerateRequest
+                {
+                    CommonName = "Vault Testing Root Certificate Authority",
+                    Ttl = "87600h"
+                };
+                await client.Secret.Write($"{mountPoint}/root/generate/internal", rootCaConfig);
+
+                var roleName = Guid.NewGuid().ToString();
+                var role = new RolesRequest
+                {
+                    AllowAnyDomain = true,
+                    EnforceHostnames = false,
+                    MaxTtl = "1h"
+                };
+                await client.Secret.Write($"{mountPoint}/roles/{roleName}", role);
+
+                var caCert = await client.Secret.ReadRaw($"{mountPoint}/ca/pem");
+                Assert.StartsWith("-----", System.Text.Encoding.Default.GetString(caCert));
+            }
+        }
     }
 }
