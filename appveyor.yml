@@ -9,6 +9,7 @@ nuget:
 environment:
   VAULT_BIN: C:\vault\vault.exe
   VAULT_VERSION: 0.9.1
+  PACKAGE_VERSION: 0.9.1.0
 
 install:
 - cinst: 7zip.commandline
@@ -51,14 +52,14 @@ dotnet_csproj:
   patch: true
   file: '**\*.csproj'
   version: $(APPVEYOR_BUILD_VERSION)
-  package_version: $(APPVEYOR_BUILD_VERSION)
+  package_version: $(PACKAGE_VERSION)
   assembly_version: $(APPVEYOR_BUILD_VERSION)
 
 deploy:
 - provider: NuGet
   name: production
   api_key:
-    secure: nzEW6y+XMlS9DGKV5JLUEJqC5CglLPJS65paev8Ps9kXITS+kUS+q3tLGBp2o+96
+    secure: jX7JJEA/9kvjiLBsPoSLefOUUvUBSdsiMRtvFnS0TKefwtRfZFX7RGuY5sr4ZaR+
   on:
     branch: master
     appveyor_repo_tag: true
