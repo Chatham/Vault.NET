@@ -32,7 +32,7 @@ namespace Vault.Endpoints.Sys
     {
         public Task<SealStatusResponse> SealStatus(CancellationToken ct = default(CancellationToken))
         {
-            return _client.Get<SealStatusResponse>($"${UriPathBase}/seal-status", ct);
+            return _client.Get<SealStatusResponse>($"{UriPathBase}/seal-status", ct);
         }
 
         public Task Seal(CancellationToken ct = default(CancellationToken))
