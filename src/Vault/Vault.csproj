@@ -7,7 +7,7 @@
     <PackageProjectUrl>https://github.com/Chatham/Vault.NET/</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/Chatham/Vault.NET/blob/master/LICENSE</PackageLicenseUrl>
     <PackageIconUrl>https://github.com/Chatham/Vault.NET/blob/master/vault.png?raw=true</PackageIconUrl>
-    <PackageVersion>0.9.1.0</PackageVersion>
+    <PackageVersion>0.9.1.1</PackageVersion>
     <PackageTags>vault;api;hashicorp</PackageTags>
     <Authors>Chatham Financial Corp.</Authors>
     <Description>.NET API for Vault (https://www.vaultproject.io/)</Description>
