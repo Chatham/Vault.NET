@@ -102,12 +102,14 @@ namespace Vault
         {
             using (var r = await HttpSendRequest(method, uri, body, vaultToken, wrapTtl, ct).ConfigureAwait(false))
             {
-                if (r.StatusCode != HttpStatusCode.NotFound && !r.IsSuccessStatusCode)
-                {
-                    throw new VaultRequestException($"Unexpected response, status code {r.StatusCode}", r.StatusCode);
-                }
-                if (r.Content.Headers.ContentType.MediaType != "application/json") {
-                    throw new VaultRequestException($"Unexpected content media type {r.Content.Headers.ContentType.MediaType}", HttpStatusCode.InternalServerError);
+                if (r.StatusCode != HttpStatusCode.NotFound) {
+                    if (!r.IsSuccessStatusCode)
+                    {
+                        throw new VaultRequestException($"Unexpected response, status code {r.StatusCode}", r.StatusCode);
+                    }
+                    if (r.Content.Headers.ContentType.MediaType != "application/json") {
+                        throw new VaultRequestException($"Unexpected content media type {r.Content.Headers.ContentType.MediaType}", HttpStatusCode.InternalServerError);
+                    }
                 }
 
                 return await r.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -118,12 +120,14 @@ namespace Vault
         {
             using (var r = await HttpSendRequest(method, uri, body, vaultToken, TimeSpan.Zero, ct).ConfigureAwait(false))
             {
-                if (r.StatusCode != HttpStatusCode.NotFound && !r.IsSuccessStatusCode)
-                {
-                    throw new VaultRequestException($"Unexpected response, status code {r.StatusCode}", r.StatusCode);
-                }
-                if (r.Content.Headers.ContentType.MediaType == "application/json") {
-                    throw new VaultRequestException($"Unexpected content media type {r.Content.Headers.ContentType.MediaType}", HttpStatusCode.InternalServerError);
+                if (r.StatusCode != HttpStatusCode.NotFound) {
+                    if (!r.IsSuccessStatusCode)
+                    {
+                        throw new VaultRequestException($"Unexpected response, status code {r.StatusCode}", r.StatusCode);
+                    }
+                    if (r.Content.Headers.ContentType.MediaType == "application/json") {
+                        throw new VaultRequestException($"Unexpected content media type {r.Content.Headers.ContentType.MediaType}", HttpStatusCode.InternalServerError);
+                    }
                 }
 
                 return await r.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
