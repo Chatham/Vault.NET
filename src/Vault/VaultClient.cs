@@ -38,8 +38,11 @@ namespace Vault
             : this(new Uri(options.Value.Address), options.Value.Token) { }
 
         public VaultClient(Uri address, string token = null)
+            : this(new VaultHttpClient(), address, token) { }
+
+        public VaultClient(IVaultHttpClient httpClient, Uri address, string token = null)
         {
-            _httpClient = new VaultHttpClient();
+            _httpClient = httpClient;
             _token = token;
             Address = address;
 
