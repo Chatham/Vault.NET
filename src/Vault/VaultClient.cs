@@ -122,8 +122,7 @@ namespace Vault
             if (parameters == null) return uriBuilder.Uri;
 
             var dict = parameters.AllKeys.ToDictionary(t => t, t => parameters[t]);
-            uriBuilder.Query = QueryHelpers.AddQueryString(string.Empty, dict);
-            return uriBuilder.Uri;
+            return new Uri(QueryHelpers.AddQueryString(uriBuilder.Uri.ToString(), dict));	
         }
     }
 
