@@ -5,6 +5,7 @@ using Vault.Endpoints;
 using Vault.Endpoints.Sys;
 using Microsoft.Extensions.Options;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
@@ -67,7 +68,7 @@ namespace Vault
 
         internal Task<T> List<T>(string path, TimeSpan wrapTtl, CancellationToken ct)
         {
-            var parameters = new DictionaryEntry[] { new DictionaryEntry("list", "true") };
+            var parameters = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("list", "true") };
             return _httpClient.Get<T>(BuildVaultUri(path, parameters),
                 _token, wrapTtl, ct);
         }
@@ -112,7 +113,7 @@ namespace Vault
             return _httpClient.DeleteVoid(BuildVaultUri(path), _token, ct);
         }
 
-        private Uri BuildVaultUri(string path, DictionaryEntry[] parameters = null)
+        private Uri BuildVaultUri(string path, IEnumerable<KeyValuePair<string, string>> parameters = null)
         {
             var uriBuilder = new UriBuilder(Address)
             {
