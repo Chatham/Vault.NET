@@ -25,8 +25,8 @@ namespace Vault.Tests
             });
 
             var vaultBin = Environment.GetEnvironmentVariable("VAULT_BIN") ?? "vault";
-            var startInfo = new ProcessStartInfo(vaultBin, vaultArgs);
-            startInfo.Environment["HOME"] = Directory.GetCurrentDirectory();
+            var startInfo = new ProcessStartInfo(vaultBin, vaultArgs) { UseShellExecute = false };
+            startInfo.EnvironmentVariables["HOME"] = Directory.GetCurrentDirectory();
             _process = new Process
             {
                 StartInfo = startInfo
@@ -39,7 +39,7 @@ namespace Vault.Tests
                 throw new Exception($"Process did not start successfully: {_process.StandardError}");
             }
 
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
 
             if (_process.HasExited)
             {
@@ -69,7 +69,11 @@ namespace Vault.Tests
 
             if (disposing)
             {
-                _process.Kill();
+                try
+                {
+                    _process.Kill();
+                }
+                catch { }
                 _process.Dispose();
             }
 
