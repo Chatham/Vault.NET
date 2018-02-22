@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 
 namespace Vault.Tests
 {
@@ -25,8 +24,8 @@ namespace Vault.Tests
             });
 
             var vaultBin = Environment.GetEnvironmentVariable("VAULT_BIN") ?? "vault";
-            var startInfo = new ProcessStartInfo(vaultBin, vaultArgs);
-            startInfo.Environment["HOME"] = Directory.GetCurrentDirectory();
+            var startInfo = new ProcessStartInfo(vaultBin, vaultArgs) { UseShellExecute = false };
+            startInfo.EnvironmentVariables["HOME"] = Directory.GetCurrentDirectory();
             _process = new Process
             {
                 StartInfo = startInfo
@@ -39,7 +38,11 @@ namespace Vault.Tests
                 throw new Exception($"Process did not start successfully: {_process.StandardError}");
             }
 
-            Thread.Sleep(500);
+            var line = _process.StandardOutput.ReadLine();
+            while (line?.StartsWith("==> Vault server started!") == false)
+            {
+                line = _process.StandardOutput.ReadLine();
+            }
 
             if (_process.HasExited)
             {
@@ -69,7 +72,12 @@ namespace Vault.Tests
 
             if (disposing)
             {
-                _process.Kill();
+                try
+                {
+                    _process.CloseMainWindow();
+                    _process.Kill();
+                }
+                catch { }
                 _process.Dispose();
             }
 

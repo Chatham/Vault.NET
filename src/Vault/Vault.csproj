@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
 
     <PackageId>Vault</PackageId>
     <PackageProjectUrl>https://github.com/Chatham/Vault.NET/</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/Chatham/Vault.NET/blob/master/LICENSE</PackageLicenseUrl>
     <PackageIconUrl>https://github.com/Chatham/Vault.NET/blob/master/vault.png?raw=true</PackageIconUrl>
-    <PackageVersion>0.9.1.2</PackageVersion>
+    <PackageVersion>0.9.1.3</PackageVersion>
     <PackageTags>vault;api;hashicorp</PackageTags>
     <Authors>Chatham Financial Corp.</Authors>
     <Description>.NET API for Vault (https://www.vaultproject.io/)</Description>
@@ -15,11 +15,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="1.0.0" />
     <PackageReference Include="NewtonSoft.Json" Version="10.0.3" />
+  </ItemGroup>
+
+   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="1.0.0" />
     <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System.Web" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
 
 </Project>
