@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.WebUtilities;
 using Vault.Endpoints;
 using Vault.Endpoints.Sys;
 using Microsoft.Extensions.Options;
@@ -121,8 +120,13 @@ namespace Vault
 
             if (parameters == null) return uriBuilder.Uri;
 
+#if NET45
+            var query = string.Join("&", parameters.AllKeys.Select(k => $"{System.Web.HttpUtility.UrlEncode(k)}={System.Web.HttpUtility.UrlEncode(parameters[k])}"));
+            uriBuilder.Query = query;
+#else
             var dict = parameters.AllKeys.ToDictionary(t => t, t => parameters[t]);
-            uriBuilder.Query = QueryHelpers.AddQueryString(string.Empty, dict);
+            uriBuilder.Query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(string.Empty, dict);
+#endif
             return uriBuilder.Uri;
         }
     }

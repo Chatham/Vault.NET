@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
 
     <PackageId>Vault</PackageId>
     <PackageProjectUrl>https://github.com/Chatham/Vault.NET/</PackageProjectUrl>
@@ -15,11 +15,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="1.0.0" />
     <PackageReference Include="NewtonSoft.Json" Version="10.0.3" />
+  </ItemGroup>
+
+   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="1.0.0" />
     <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System.Web" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
 
 </Project>
