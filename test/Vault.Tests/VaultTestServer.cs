@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 
 namespace Vault.Tests
 {
@@ -39,7 +38,11 @@ namespace Vault.Tests
                 throw new Exception($"Process did not start successfully: {_process.StandardError}");
             }
 
-            Thread.Sleep(1000);
+            var line = _process.StandardOutput.ReadLine();
+            while (line?.StartsWith("==> Vault server started!") == false)
+            {
+                line = _process.StandardOutput.ReadLine();
+            }
 
             if (_process.HasExited)
             {
@@ -71,6 +74,7 @@ namespace Vault.Tests
             {
                 try
                 {
+                    _process.CloseMainWindow();
                     _process.Kill();
                 }
                 catch { }
