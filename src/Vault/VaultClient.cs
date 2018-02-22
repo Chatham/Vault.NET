@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Vault.Endpoints;
 using Vault.Endpoints.Sys;
 using Microsoft.Extensions.Options;
-using System.Collections.Specialized;
+using System.Collections;
 using System.Linq;
 using System.Net;
 
@@ -67,7 +67,8 @@ namespace Vault
 
         internal Task<T> List<T>(string path, TimeSpan wrapTtl, CancellationToken ct)
         {
-            return _httpClient.Get<T>(BuildVaultUri(path, new NameValueCollection { { "list", "true" } }),
+            var parameters = new DictionaryEntry[] { new DictionaryEntry("list", "true") };
+            return _httpClient.Get<T>(BuildVaultUri(path, parameters),
                 _token, wrapTtl, ct);
         }
 
@@ -111,7 +112,7 @@ namespace Vault
             return _httpClient.DeleteVoid(BuildVaultUri(path), _token, ct);
         }
 
-        private Uri BuildVaultUri(string path, NameValueCollection parameters = null)
+        private Uri BuildVaultUri(string path, DictionaryEntry[] parameters = null)
         {
             var uriBuilder = new UriBuilder(Address)
             {
@@ -120,13 +121,9 @@ namespace Vault
 
             if (parameters == null) return uriBuilder.Uri;
 
-#if NET45
-            var query = string.Join("&", parameters.AllKeys.Select(k => $"{System.Web.HttpUtility.UrlEncode(k)}={System.Web.HttpUtility.UrlEncode(parameters[k])}"));
+            var query = string.Join("&", parameters.Select(de => $"{System.Net.WebUtility.UrlEncode(de.Key.ToString())}={System.Net.WebUtility.UrlEncode(de.Value.ToString())}"));
             uriBuilder.Query = query;
-#else
-            var dict = parameters.AllKeys.ToDictionary(t => t, t => parameters[t]);
-            uriBuilder.Query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(string.Empty, dict);
-#endif
+
             return uriBuilder.Uri;
         }
     }
