@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Vault.Endpoints;
 using Vault.Endpoints.Sys;
 using Microsoft.Extensions.Options;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -122,7 +121,7 @@ namespace Vault
 
             if (parameters == null) return uriBuilder.Uri;
 
-            var query = string.Join("&", parameters.Select(de => $"{System.Net.WebUtility.UrlEncode(de.Key.ToString())}={System.Net.WebUtility.UrlEncode(de.Value.ToString())}"));
+            var query = string.Join("&", parameters.Select(x => $"{WebUtility.UrlEncode(x.Key.ToString())}={WebUtility.UrlEncode(x.Value.ToString())}"));
             uriBuilder.Query = query;
 
             return uriBuilder.Uri;
