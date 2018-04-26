@@ -1,5 +1,9 @@
 # Vault.NET Local Certificate
 
+Required NuGe Packages:
+
+- Microsoft.AspNet.WebApi.Client
+
 I have defined a new property "CertPah" that is populated before the definition of the httpcliet.
 
 In case it is empty, the behavior remains unchanged.
