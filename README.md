@@ -1,8 +1,9 @@
 # Vault.NET Local Certificate
 
-Required NuGe Packages:
+Required Packages/Assembly:
 
 - Microsoft.AspNet.WebApi.Client
+- System.Net.Http.Formatting.dll
 
 I have defined a new property "CertPah" that is populated before the definition of the httpcliet.
 
