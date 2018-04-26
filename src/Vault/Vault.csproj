@@ -29,5 +29,11 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Net.Http" />
   </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client">
+      <Version>5.2.4</Version>
+    </PackageReference>
+  </ItemGroup>  
 
 </Project>
