@@ -29,29 +29,29 @@ namespace Vault
                 else
                     httpClient = new HttpClient();
             #else
-            if (!string.IsNullOrEmpty(Vault.VaultOptions.Default.CertPath))
-            {
-                var handler = new HttpClientHandler();            
-                handler.ServerCertificateCustomValidationCallback = (request, cert, chain, errors) =>
+                if (!string.IsNullOrEmpty(Vault.VaultOptions.Default.CertPath))
                 {
-                    const SslPolicyErrors unforgivableErrors =
-                        SslPolicyErrors.RemoteCertificateNotAvailable |
-                        SslPolicyErrors.RemoteCertificateNameMismatch;
-
-                    if ((errors & unforgivableErrors) != 0)
+                    var handler = new HttpClientHandler();            
+                    handler.ServerCertificateCustomValidationCallback = (request, cert, chain, errors) =>
                     {
-                        return false;
-                    }
+                        const SslPolicyErrors unforgivableErrors =
+                            SslPolicyErrors.RemoteCertificateNotAvailable |
+                            SslPolicyErrors.RemoteCertificateNameMismatch;
 
-                    X509Certificate2 remoteRoot = chain.ChainElements[chain.ChainElements.Count - 1].Certificate;
-                    return new X509Certificate2(Vault.VaultOptions.Default.CertPath).RawData.SequenceEqual(remoteRoot.RawData);
-                };
-                httpClient = new HttpClient(handler);
-            }
-            else
-            {
-                httpClient = new HttpClient();
-            }
+                        if ((errors & unforgivableErrors) != 0)
+                        {
+                            return false;
+                        }
+
+                        X509Certificate2 remoteRoot = chain.ChainElements[chain.ChainElements.Count - 1].Certificate;
+                        return new X509Certificate2(Vault.VaultOptions.Default.CertPath).RawData.SequenceEqual(remoteRoot.RawData);
+                    };
+                    httpClient = new HttpClient(handler);
+                }
+                else
+                {
+                    httpClient = new HttpClient();
+                }
             #endif
             return httpClient;
         }
