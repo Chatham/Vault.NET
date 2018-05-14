@@ -14,7 +14,7 @@ namespace Vault
 {
     public class VaultHttpClient : IVaultHttpClient
     {
-        public static HttpClient HttpClientinitialization()
+        private static HttpClient HttpClientInitialization()
         {
             HttpClient httpClient = new HttpClient();
             
@@ -56,7 +56,7 @@ namespace Vault
             return httpClient;
         }
 
-        private static readonly HttpClient HttpClient = HttpClientinitialization();
+        private static readonly HttpClient HttpClient = HttpClientInitialization();
 
         public VaultHttpClient()
         {
