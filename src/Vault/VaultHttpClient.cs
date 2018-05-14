@@ -17,20 +17,21 @@ namespace Vault
         public static HttpClient HttpClientinitialization()
         {
             HttpClient httpClient = null;
-            var handler = new HttpClientHandler();
-
+            
             #if NET45
                 if (!string.IsNullOrEmpty(Vault.VaultOptions.Default.CertPath))
                 {
-                    X509Certificate cert = new X509Certificate();
-                    cert.Import(Vault.VaultOptions.Default.CertPath);
-                    httpClient = new HttpClient(handler);
+                    WebRequestHandler requestHandler = new WebRequestHandler();
+                    requestHandler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                    requestHandler.ClientCertificates.Add(new X509Certificate2(Vault.VaultOptions.Default.CertPath));
+                    httpClient = new HttpClient(requestHandler);
                 }
                 else
                     httpClient = new HttpClient();
             #else
             if (!string.IsNullOrEmpty(Vault.VaultOptions.Default.CertPath))
             {
+                var handler = new HttpClientHandler();            
                 handler.ServerCertificateCustomValidationCallback = (request, cert, chain, errors) =>
                 {
                     const SslPolicyErrors unforgivableErrors =
