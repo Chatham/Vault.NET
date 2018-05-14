@@ -8,6 +8,7 @@ namespace Vault
 
         public string Address { get; set; } = "https://localhost:8200";
         public string Token { get; set; }
+        public string CertPath { get; set; }        
 
         VaultOptions IOptions<VaultOptions>.Value => this;
     }

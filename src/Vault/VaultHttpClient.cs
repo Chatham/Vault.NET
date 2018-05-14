@@ -1,7 +1,10 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +14,49 @@ namespace Vault
 {
     public class VaultHttpClient : IVaultHttpClient
     {
-        private static readonly HttpClient HttpClient = new HttpClient();
+        private static HttpClient HttpClientInitialization()
+        {
+            HttpClient httpClient = null;
+            
+            #if NET45
+                if (!string.IsNullOrEmpty(Vault.VaultOptions.Default.CertPath))
+                {
+                    WebRequestHandler requestHandler = new WebRequestHandler();
+                    requestHandler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                    requestHandler.ClientCertificates.Add(new X509Certificate2(Vault.VaultOptions.Default.CertPath));
+                    httpClient = new HttpClient(requestHandler);
+                }
+                else
+                    httpClient = new HttpClient();
+            #else
+                if (!string.IsNullOrEmpty(Vault.VaultOptions.Default.CertPath))
+                {
+                    var handler = new HttpClientHandler();            
+                    handler.ServerCertificateCustomValidationCallback = (request, cert, chain, errors) =>
+                    {
+                        const SslPolicyErrors unforgivableErrors =
+                            SslPolicyErrors.RemoteCertificateNotAvailable |
+                            SslPolicyErrors.RemoteCertificateNameMismatch;
+
+                        if ((errors & unforgivableErrors) != 0)
+                        {
+                            return false;
+                        }
+
+                        X509Certificate2 remoteRoot = chain.ChainElements[chain.ChainElements.Count - 1].Certificate;
+                        return new X509Certificate2(Vault.VaultOptions.Default.CertPath).RawData.SequenceEqual(remoteRoot.RawData);
+                    };
+                    httpClient = new HttpClient(handler);
+                }
+                else
+                {
+                    httpClient = new HttpClient();
+                }
+            #endif
+            return httpClient;
+        }
+
+        private static readonly HttpClient HttpClient = HttpClientInitialization();
 
         public VaultHttpClient()
         {
