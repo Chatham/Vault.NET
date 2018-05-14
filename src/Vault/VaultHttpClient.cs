@@ -16,7 +16,7 @@ namespace Vault
     {
         private static HttpClient HttpClientInitialization()
         {
-            HttpClient httpClient = new HttpClient();
+            HttpClient httpClient = null;
             
             #if NET45
                 if (!string.IsNullOrEmpty(Vault.VaultOptions.Default.CertPath))
