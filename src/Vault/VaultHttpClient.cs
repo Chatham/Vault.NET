@@ -13,7 +13,7 @@ namespace Vault
     {
         private static readonly HttpClient HttpClient = new HttpClient();
 
-        public VaultHttpClient()
+        static VaultHttpClient()
         {
             HttpClient.DefaultRequestHeaders.Accept
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
