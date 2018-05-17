@@ -9,9 +9,6 @@ namespace Vault.Models.Auth.AppRole
 {
     public class RoleRequest
     {
-        [JsonProperty("role_name")]
-        public string RoleName { get; set; }
-
         [JsonProperty("bind_secret_id")]
         public bool? BindSecretId { get; set; }
 
