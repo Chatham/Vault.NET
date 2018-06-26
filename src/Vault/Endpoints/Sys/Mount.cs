@@ -16,6 +16,9 @@ namespace Vault.Endpoints.Sys
 
         [JsonProperty("config")]
         public MountConfig Config { get; set; }
+
+        [JsonProperty("options")]
+        public Dictionary<string, string> Options {get; set; }
     }
 
     public class MountConfig
