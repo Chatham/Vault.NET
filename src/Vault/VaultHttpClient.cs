@@ -12,6 +12,11 @@ namespace Vault
     public class VaultHttpClient : IVaultHttpClient
     {
         private static readonly HttpClient HttpClient = new HttpClient();
+        public static TimeSpan Timeout
+        {
+            get { return HttpClient.Timeout; }
+            set { HttpClient.Timeout = value; }
+        }
 
         public VaultHttpClient()
         {
