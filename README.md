@@ -1,6 +1,7 @@
 # Vault.NET [![Build status](https://ci.appveyor.com/api/projects/status/784hg5j70vcnumeb/branch/master?svg=true)](https://ci.appveyor.com/project/chatham/vault-net/branch/master)
 
 * Vault API: v0.9.1
+* .NET Standard 2.0
 * .NET Standard 1.3 (.NET: >= 4.6, .NET Core: >= 1.0.0)
 * .NET 4.5
 * Nuget: Vault [![NuGet](https://img.shields.io/nuget/v/Vault.svg)](https://www.nuget.org/packages/Vault/)
