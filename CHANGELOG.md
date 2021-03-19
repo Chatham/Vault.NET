@@ -1,4 +1,9 @@
 
+## 0.9.1.4 (March 19, 2021)
+
+* Added .NET Standard 2.0 to target frameworks.
+* Updated dependencies.
+
 ## 0.9.1.3 (February 22, 2018)
 
 * Added support for retrieving raw endpoints
